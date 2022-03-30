@@ -8,15 +8,19 @@
  *        Description: 暂无
  ***********************************************************************/
 
-namespace FuFuShop.Model.ViewModels.Basics
+namespace FuFuShop.Model.ViewModels.DTO
 {
-    public interface IPageList<T> : IList<T>
+    public class FormStatisticsDto
     {
-        int PageIndex { get; }
-        int PageSize { get; }
-        int TotalCount { get; }
-        int TotalPages { get; }
-        bool HasPreviousPage { get; }
-        bool HasNextPage { get; }
+        public string day { get; set; }
+        public int nums { get; set; }
+        public int formId { get; set; }
+    }
+
+    public class FormStatisticsViewDto
+    {
+        public string[] day { get; set; }
+        public int[] data { get; set; }
+        public int formId { get; set; }
     }
 }

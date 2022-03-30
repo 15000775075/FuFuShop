@@ -8,15 +8,18 @@
  *        Description: 暂无
  ***********************************************************************/
 
-namespace FuFuShop.Model.ViewModels.Basics
+namespace FuFuShop.Model.ViewModels.DTO
 {
-    public interface IPageList<T> : IList<T>
+    /// <summary>
+    ///     随机用户数据(用于首页返回购买用户随机数据)
+    /// </summary>
+    public class RandUser
     {
-        int PageIndex { get; }
-        int PageSize { get; }
-        int TotalCount { get; }
-        int TotalPages { get; }
-        bool HasPreviousPage { get; }
-        bool HasNextPage { get; }
+        public string avatar { get; set; }
+        public string nickname { get; set; }
+        public string createTime { get; set; }
+        public string desc { get; set; }
+
+        public DateTime dt { get; set; }
     }
 }

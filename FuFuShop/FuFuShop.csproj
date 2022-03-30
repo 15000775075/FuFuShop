@@ -7,7 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Essensoft.Paylink.Alipay" Version="4.0.9" />
+    <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.0.9" />
+    <PackageReference Include="Hangfire" Version="1.7.28" />
+    <PackageReference Include="Hangfire.MySql" Version="0.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FuFuShop.Common\FuFuShop.Common.csproj" />
+    <ProjectReference Include="..\FuFuShop.WeChat\FuFuShop.WeChat.csproj" />
   </ItemGroup>
 
 </Project>

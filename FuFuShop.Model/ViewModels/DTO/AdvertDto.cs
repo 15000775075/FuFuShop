@@ -8,15 +8,9 @@
  *        Description: 暂无
  ***********************************************************************/
 
-namespace FuFuShop.Model.ViewModels.Basics
+namespace FuFuShop.Model.ViewModels.DTO
 {
-    public interface IPageList<T> : IList<T>
+    public class AdvertDto
     {
-        int PageIndex { get; }
-        int PageSize { get; }
-        int TotalCount { get; }
-        int TotalPages { get; }
-        bool HasPreviousPage { get; }
-        bool HasNextPage { get; }
     }
 }

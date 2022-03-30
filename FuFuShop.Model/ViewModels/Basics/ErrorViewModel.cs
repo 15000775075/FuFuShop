@@ -10,13 +10,21 @@
 
 namespace FuFuShop.Model.ViewModels.Basics
 {
-    public interface IPageList<T> : IList<T>
+    /// <summary>
+    ///     验证错误信息视图模型
+    /// </summary>
+    public class ErrorView
     {
-        int PageIndex { get; }
-        int PageSize { get; }
-        int TotalCount { get; }
-        int TotalPages { get; }
-        bool HasPreviousPage { get; }
-        bool HasNextPage { get; }
+        /// <summary>
+        ///     错误字段
+        /// </summary>
+
+        public string ErrorName { get; set; }
+
+        /// <summary>
+        ///     错误内容ErrorMessage
+        /// </summary>
+
+        public string Error { get; set; }
     }
 }

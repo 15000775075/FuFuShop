@@ -8,15 +8,16 @@
  *        Description: 暂无
  ***********************************************************************/
 
-namespace FuFuShop.Model.ViewModels.Basics
+namespace FuFuShop.Model.ViewModels.QueryMuch
 {
-    public interface IPageList<T> : IList<T>
+    /// <summary>
+    ///     根据订单号查询已经售后的内容.算退货商品明细
+    /// </summary>
+    public class QMAftersalesItems
     {
-        int PageIndex { get; }
-        int PageSize { get; }
-        int TotalCount { get; }
-        int TotalPages { get; }
-        bool HasPreviousPage { get; }
-        bool HasNextPage { get; }
+        public int orderItemsId { get; set; }
+        public int nums { get; set; }
+        public int status { get; set; }
+        public int type { get; set; }
     }
 }

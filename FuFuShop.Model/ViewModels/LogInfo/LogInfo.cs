@@ -8,15 +8,17 @@
  *        Description: 暂无
  ***********************************************************************/
 
-namespace FuFuShop.Model.ViewModels.Basics
+namespace FuFuShop.Model.ViewModels.LogInfo
 {
-    public interface IPageList<T> : IList<T>
+    /// <summary>
+    ///     日志实体
+    /// </summary>
+    public class LogInfo
     {
-        int PageIndex { get; }
-        int PageSize { get; }
-        int TotalCount { get; }
-        int TotalPages { get; }
-        bool HasPreviousPage { get; }
-        bool HasNextPage { get; }
+        public DateTime Datetime { get; set; }
+        public string Content { get; set; }
+        public string IP { get; set; }
+        public string LogColor { get; set; }
+        public int Import { get; set; } = 0;
     }
 }

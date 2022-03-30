@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuFuShop", "FuFuShop\FuFuShop.csproj", "{E3B987BA-FE0B-4C6D-B1F4-B3AF5EE682F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuFuShop", "FuFuShop\FuFuShop.csproj", "{E3B987BA-FE0B-4C6D-B1F4-B3AF5EE682F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuFuShop.Services", "FuFuShop.Services\FuFuShop.Services.csproj", "{56B20466-A642-410B-BB4F-EADA9DDCE375}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuFuShop.Services", "FuFuShop.Services\FuFuShop.Services.csproj", "{56B20466-A642-410B-BB4F-EADA9DDCE375}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuFuShop.Repository", "FuFuShop.Repository\FuFuShop.Repository.csproj", "{9305E7F6-0C19-4368-84EE-D92201B182CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuFuShop.Repository", "FuFuShop.Repository\FuFuShop.Repository.csproj", "{9305E7F6-0C19-4368-84EE-D92201B182CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuFuShop.Model", "FuFuShop.Model\FuFuShop.Model.csproj", "{BC51AE4E-AB2D-48F2-8BD5-81B50AEFD8BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuFuShop.Model", "FuFuShop.Model\FuFuShop.Model.csproj", "{BC51AE4E-AB2D-48F2-8BD5-81B50AEFD8BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuFuShop.Common", "FuFuShop.Common\FuFuShop.Common.csproj", "{7BC38DF4-73F6-48A2-9AC6-C0A914F4E3E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuFuShop.Common", "FuFuShop.Common\FuFuShop.Common.csproj", "{7BC38DF4-73F6-48A2-9AC6-C0A914F4E3E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuFuShop.WeChat", "FuFuShop.WeChat\FuFuShop.WeChat.csproj", "{B90B3481-B65C-4007-A676-CFF1685EB048}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{7BC38DF4-73F6-48A2-9AC6-C0A914F4E3E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BC38DF4-73F6-48A2-9AC6-C0A914F4E3E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BC38DF4-73F6-48A2-9AC6-C0A914F4E3E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B90B3481-B65C-4007-A676-CFF1685EB048}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B90B3481-B65C-4007-A676-CFF1685EB048}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B90B3481-B65C-4007-A676-CFF1685EB048}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B90B3481-B65C-4007-A676-CFF1685EB048}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

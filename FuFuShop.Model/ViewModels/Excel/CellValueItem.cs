@@ -4,19 +4,20 @@
  *                Web: https://www.corecms.net                      
  *             Author: 大灰灰                                          
  *              Email: jianweie@163.com                                
- *         CreateTime: 2021/1/31 21:45:10
+ *         CreateTime: 2021/8/19 15:38:54
  *        Description: 暂无
  ***********************************************************************/
 
-namespace FuFuShop.Model.ViewModels.Basics
+namespace FuFuShop.Model.ViewModels.Excel
 {
-    public interface IPageList<T> : IList<T>
+    /// <summary>
+    /// 导出excel头字段名称信息
+    /// </summary>
+    public class CellValueItem
     {
-        int PageIndex { get; }
-        int PageSize { get; }
-        int TotalCount { get; }
-        int TotalPages { get; }
-        bool HasPreviousPage { get; }
-        bool HasNextPage { get; }
+        public string name { get; set; }
+        public int width { get; set; } = 10 * 256;
+
+
     }
 }

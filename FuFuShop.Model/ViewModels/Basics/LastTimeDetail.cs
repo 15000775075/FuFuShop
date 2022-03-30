@@ -10,13 +10,29 @@
 
 namespace FuFuShop.Model.ViewModels.Basics
 {
-    public interface IPageList<T> : IList<T>
+    /// <summary>
+    ///     剩余时间
+    /// </summary>
+    public class LastTimeDetail
     {
-        int PageIndex { get; }
-        int PageSize { get; }
-        int TotalCount { get; }
-        int TotalPages { get; }
-        bool HasPreviousPage { get; }
-        bool HasNextPage { get; }
+        /// <summary>
+        ///     日
+        /// </summary>
+        public int day { get; set; } = 0;
+
+        /// <summary>
+        ///     时
+        /// </summary>
+        public int hour { get; set; } = 0;
+
+        /// <summary>
+        ///     分
+        /// </summary>
+        public int minute { get; set; } = 0;
+
+        /// <summary>
+        ///     秒
+        /// </summary>
+        public int second { get; set; } = 0;
     }
 }

@@ -8,15 +8,20 @@
  *        Description: 暂无
  ***********************************************************************/
 
-namespace FuFuShop.Model.ViewModels.Basics
+namespace FuFuShop.Model.ViewModels.DTO
 {
-    public interface IPageList<T> : IList<T>
+    /// <summary>
+    /// </summary>
+    public class reshipGoods
     {
-        int PageIndex { get; }
-        int PageSize { get; }
-        int TotalCount { get; }
-        int TotalPages { get; }
-        bool HasPreviousPage { get; }
-        bool HasNextPage { get; }
+        /// <summary>
+        ///     售后商品数量，包含申请中和审核通过的
+        /// </summary>
+        public int reshipNums { get; set; } = 0;
+
+        /// <summary>
+        ///     已发货的商品进行退货的数量
+        /// </summary>
+        public int reshipedNums { get; set; } = 0;
     }
 }

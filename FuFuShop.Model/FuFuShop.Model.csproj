@@ -11,6 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="SqlSugar.IOC" Version="1.7.0" />
     <PackageReference Include="SqlSugarCore" Version="5.0.6.4" />
   </ItemGroup>
 
