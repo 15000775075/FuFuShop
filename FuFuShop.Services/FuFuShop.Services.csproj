@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FuFuShop.Model\FuFuShop.Model.csproj" />
+    <ProjectReference Include="..\FuFuShop.Repository\FuFuShop.Repository.csproj" />
+  </ItemGroup>
+
 </Project>
