@@ -1,7 +1,8 @@
+using FuFuShop.Model.Entitys;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 
-namespace FuFuShop.Repository.UserLog
+namespace FuFuShop.Repository
 {
     /// <summary>
     ///     用户日志 接口实现

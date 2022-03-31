@@ -1,12 +1,19 @@
+
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Essensoft.Paylink.Alipay;
 using Essensoft.Paylink.WeChatPay;
 using FuFuShop.Common.AppSettings;
+using FuFuShop.Common.AutoFac;
 using FuFuShop.Common.Helper;
 using FuFuShop.Common.Loging;
 using FuFuShop.Model.ViewModels.Mapping;
 using FuFuShop.WeChat.Options;
 using FuFuShop.WeChat.Service.HttpClients;
 using FuFuShop.WeChat.Services.HttpClients;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SqlSugar;
@@ -166,6 +173,20 @@ NLogUtil.EnsureNlogConfig("NLog.config");
 //其他项目启动时需要做的事情
 NLogUtil.WriteAll(NLog.LogLevel.Trace, LogType.Web, "接口启动", "接口启动成功");
 
+
+#region AutoFac
+//AutoFac
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
+{
+    builder.RegisterModule(new AutofacModuleRegister());
+    var controllerBaseType = typeof(ControllerBase);
+    builder.RegisterAssemblyTypes(typeof(Program).Assembly).Where(t => controllerBaseType.IsAssignableFrom(t) & t != controllerBaseType).PropertiesAutowired();
+});
+//服务配置中加入AutoFac控制器替换规则。
+builder.Services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
+
+#endregion
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

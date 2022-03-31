@@ -3,7 +3,6 @@ using FuFuShop.Model.Entitys;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Repository.User;
 using FuFuShop.Services.BaseServices;
-using FuFuShop.Services.UserLog;
 using Microsoft.AspNetCore.Http;
 
 namespace FuFuShop.Services.User

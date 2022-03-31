@@ -1,6 +1,7 @@
+using FuFuShop.Model.Entitys;
 using FuFuShop.Repository.BaseRepository;
 
-namespace FuFuShop.Repository.UserLog
+namespace FuFuShop.Repository
 {
     /// <summary>
     ///     用户日志 工厂接口

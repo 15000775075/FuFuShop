@@ -18,7 +18,7 @@ namespace FuFuShop.WeChat.Utilities
             IHttpBodyControlFeature bodyControlFeature = request.HttpContext.Features.Get<IHttpBodyControlFeature>();
             if (bodyControlFeature != null && allowSynchronousIO.HasValue)
                 bodyControlFeature.AllowSynchronousIO = allowSynchronousIO.Value;
-            return (Stream)new MemoryStream(Encoding.UTF8.GetBytes(await new StreamReader(request.Body).ReadToEndAsync()));
+            return new MemoryStream(Encoding.UTF8.GetBytes(await new StreamReader(request.Body).ReadToEndAsync()));
         }
 
         /// <summary>从 Request.Body 中读取流，并复制到一个独立的 MemoryStream 对象中</summary>
@@ -32,7 +32,7 @@ namespace FuFuShop.WeChat.Utilities
             IHttpBodyControlFeature bodyControlFeature = request.HttpContext.Features.Get<IHttpBodyControlFeature>();
             if (bodyControlFeature != null && allowSynchronousIO.HasValue)
                 bodyControlFeature.AllowSynchronousIO = allowSynchronousIO.Value;
-            return (Stream)new MemoryStream(Encoding.UTF8.GetBytes(new StreamReader(request.Body).ReadToEnd()));
+            return new MemoryStream(Encoding.UTF8.GetBytes(new StreamReader(request.Body).ReadToEnd()));
         }
 
         /// <summary>从 Request.Body 中读取流，并复制到一个独立的 MemoryStream 对象中</summary>
