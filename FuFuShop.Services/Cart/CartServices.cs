@@ -12,39 +12,39 @@ namespace FuFuShop.Services
     {
         private readonly ICartRepository _dal;
 
-        //private readonly ICoreCmsGoodsCollectionServices _goodsCollectionServices;
-        //private readonly ICoreCmsPinTuanRuleServices _pinTuanRuleServices;
-        //private readonly ICoreCmsShipServices _shipServices;
-        //private readonly ICoreCmsPromotionServices _promotionServices;
-        //private readonly ICoreCmsPromotionConditionServices _promotionConditionServices;
-        //private readonly ICoreCmsPromotionResultServices _promotionResultServices;
-        //private readonly ICoreCmsCouponServices _couponServices;
-        //private readonly ICoreCmsUserServices _userServices;
-        //private readonly ICoreCmsSettingServices _settingServices;
+        //private readonly IGoodsCollectionServices _goodsCollectionServices;
+        //private readonly IPinTuanRuleServices _pinTuanRuleServices;
+        //private readonly IShipServices _shipServices;
+        //private readonly IPromotionServices _promotionServices;
+        //private readonly IPromotionConditionServices _promotionConditionServices;
+        //private readonly IPromotionResultServices _promotionResultServices;
+        //private readonly ICouponServices _couponServices;
+        //private readonly IUserServices _userServices;
+        //private readonly ISettingServices _settingServices;
         private readonly IServiceProvider _serviceProvider;
-        //private readonly ICoreCmsProductsServices _productsServices;
-        //private readonly ICoreCmsPinTuanGoodsServices _pinTuanGoodsServices;
-        //private readonly ICoreCmsPinTuanRecordServices _pinTuanRecordServices;
-        //private readonly ICoreCmsGoodsServices _goodsServices;
-        //private readonly ICoreCmsGoodsCategoryServices _goodsCategoryServices;
+        //private readonly IProductsServices _productsServices;
+        //private readonly IPinTuanGoodsServices _pinTuanGoodsServices;
+        //private readonly IPinTuanRecordServices _pinTuanRecordServices;
+        //private readonly IGoodsServices _goodsServices;
+        //private readonly IGoodsCategoryServices _goodsCategoryServices;
 
         public CartServices(
             ICartRepository dal
             , IServiceProvider serviceProvider
-            //, ICoreCmsGoodsCollectionServices goodsCollectionServices
-            //, ICoreCmsPinTuanRuleServices pinTuanRuleServices
-            //, ICoreCmsShipServices shipServices
-            //, ICoreCmsPromotionServices promotionServices
-            //, ICoreCmsCouponServices couponServices
-            //, ICoreCmsUserServices userServices
-            //, ICoreCmsSettingServices settingServices
-            //, ICoreCmsProductsServices productsServices
-            //, ICoreCmsPinTuanGoodsServices pinTuanGoodsServices,
-            //ICoreCmsPromotionConditionServices promotionConditionServices,
-            //ICoreCmsGoodsServices goodsServices, 
-            //ICoreCmsGoodsCategoryServices goodsCategoryServices,
-            //ICoreCmsPromotionResultServices promotionResultServices,
-            //ICoreCmsPinTuanRecordServices pinTuanRecordServices
+            //, IGoodsCollectionServices goodsCollectionServices
+            //, IPinTuanRuleServices pinTuanRuleServices
+            //, IShipServices shipServices
+            //, IPromotionServices promotionServices
+            //, ICouponServices couponServices
+            //, IUserServices userServices
+            //, ISettingServices settingServices
+            //, IProductsServices productsServices
+            //, IPinTuanGoodsServices pinTuanGoodsServices,
+            //IPromotionConditionServices promotionConditionServices,
+            //IGoodsServices goodsServices, 
+            //IGoodsCategoryServices goodsCategoryServices,
+            //IPromotionResultServices promotionResultServices,
+            //IPinTuanRecordServices pinTuanRecordServices
 
             )
         {

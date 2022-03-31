@@ -1,4 +1,4 @@
-using CoreCms.Net.Model.Entities;
+using FuFuShop.Model.Entities;
 using FuFuShop.Services.BaseServices;
 
 namespace FuFuShop.Services

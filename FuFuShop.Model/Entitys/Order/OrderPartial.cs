@@ -1,7 +1,7 @@
 using FuFuShop.Model.Entitys;
 using SqlSugar;
 
-namespace CoreCms.Net.Model.Entities
+namespace FuFuShop.Model.Entities
 {
     /// <summary>
     ///     订单表
@@ -24,49 +24,49 @@ namespace CoreCms.Net.Model.Entities
         /////     支付单关系
         ///// </summary>
         //[SugarColumn(IsIgnore = true)]
-        //public List<CoreCmsBillPayments> paymentItem { get; set; }
+        //public List<BillPayments> paymentItem { get; set; }
 
         ///// <summary>
         /////     退款单
         ///// </summary>
         //[SugarColumn(IsIgnore = true)]
-        //public List<CoreCmsBillRefund> refundItem { get; set; }
+        //public List<BillRefund> refundItem { get; set; }
 
         ///// <summary>
         /////     提货单
         ///// </summary>
         //[SugarColumn(IsIgnore = true)]
-        //public List<CoreCmsBillLading> ladingItem { get; set; }
+        //public List<BillLading> ladingItem { get; set; }
 
         ///// <summary>
         /////     退货单
         ///// </summary>
         //[SugarColumn(IsIgnore = true)]
-        //public List<CoreCmsBillReship> returnItem { get; set; }
+        //public List<BillReship> returnItem { get; set; }
 
         ///// <summary>
         /////     售后单
         ///// </summary>
         //[SugarColumn(IsIgnore = true)]
-        //public List<CoreCmsBillAftersales> aftersalesItem { get; set; }
+        //public List<BillAftersales> aftersalesItem { get; set; }
 
         ///// <summary>
         /////     发货单
         ///// </summary>
         //[SugarColumn(IsIgnore = true)]
-        //public List<CoreCmsBillDelivery> delivery { get; set; }
+        //public List<BillDelivery> delivery { get; set; }
 
         ///// <summary>
         /////     门店
         ///// </summary>
         //[SugarColumn(IsIgnore = true)]
-        //public CoreCmsStore store { get; set; }
+        //public Store store { get; set; }
 
         ///// <summary>
         /////     配送方式
         ///// </summary>
         //[SugarColumn(IsIgnore = true)]
-        //public CoreCmsShip logistics { get; set; }
+        //public Ship logistics { get; set; }
 
         /// <summary>
         ///     获取订单全局状态
@@ -97,7 +97,7 @@ namespace CoreCms.Net.Model.Entities
         ///     优惠券列表
         /// </summary>
         //[SugarColumn(IsIgnore = true)]
-        //  public List<CoreCmsCoupon> couponObj { get; set; } = new();
+        //  public List<Coupon> couponObj { get; set; } = new();
 
         /// <summary>
         ///     促销信息

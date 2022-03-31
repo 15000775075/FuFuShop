@@ -1,5 +1,4 @@
 ﻿using FuFuShop.Common.Loging;
-using FuFuShop.Model.ViewModels.Basics;
 using FuFuShop.Model.ViewModels.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
