@@ -7,6 +7,7 @@ using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.AutoFac;
 using FuFuShop.Common.Helper;
 using FuFuShop.Common.Loging;
+using FuFuShop.Filter;
 using FuFuShop.Model.ViewModels.Mapping;
 using FuFuShop.WeChat.Options;
 using FuFuShop.WeChat.Service.HttpClients;
@@ -117,8 +118,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IWeChatApiHttpClientFactory, WeChatApiHttpClientFactory>();
 
 
-#region
-//注册Hangfire定时任务
+#region     Hangfire
+
 
 //var configuration = ConfigurationOptions.Parse(AppSettingsConstVars.RedisConfigConnectionString, true);
 //_redis = ConnectionMultiplexer.Connect(configuration);
@@ -149,7 +150,7 @@ builder.Services.AddSingleton<IWeChatApiHttpClientFactory, WeChatApiHttpClientFa
 builder.Services.AddMvc(options =>
 {
     //实体验证
-    //options.Filters.Add<RequiredErrorForClent>();
+    options.Filters.Add<GlobalExceptionsFilter>();
     //异常处理
     // options.Filters.Add<GlobalExceptionsFilterForClent>();
     //Swagger剔除不需要加入api展示的列表
@@ -160,7 +161,7 @@ builder.Services.AddMvc(options =>
         //数据格式首字母小写 不使用驼峰
         p.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         //不使用驼峰样式的key
-        //p.SerializerSettings.ContractResolver = new DefaultContractResolver();
+        p.SerializerSettings.ContractResolver = new DefaultContractResolver();
         //忽略循环引用
         p.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
         //设置时间格式（必须使用yyyy/MM/dd格式，因为ios系统不支持2018-03-29格式的时间，只识别2018/03/09这种格式。）

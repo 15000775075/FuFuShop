@@ -40,13 +40,15 @@ namespace FuFuShop.Controllers
             IUserWeChatInfoServices userWeChatInfoServices,
             IWeChatApiHttpClientFactory weChatApiHttpClientFactory,
             IHttpContextAccessor httpContextAccessor,
-            IUserLogServices userLogServices)
+            IUserLogServices userLogServices,
+            PermissionRequirement permissionRequirement)
         {
             _userLogServices = userLogServices;
             _userServices = userServices;
             _userWeChatInfoServices = userWeChatInfoServices;
             _weChatApiHttpClientFactory = weChatApiHttpClientFactory;
             _httpContextAccessor = httpContextAccessor;
+            _permissionRequirement = permissionRequirement;
 
         }
         /// <summary>
@@ -126,9 +128,6 @@ namespace FuFuShop.Controllers
                         }
                     }
                 }
-
-                //注意：生产环境下SessionKey属于敏感信息，不能进行传输！
-                //return new JsonResult(new { success = true, msg = "OK", sessionAuthId = sessionBag.Key, sessionKey = sessionBag.SessionKey, data = jsonResult, sessionBag = sessionBag });
                 jm.status = true;
                 jm.data = response.OpenId;
                 jm.otherData = response.OpenId;
