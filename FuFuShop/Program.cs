@@ -1,4 +1,3 @@
-using CoreCms.Net.WeChat.Service.HttpClients;
 using Essensoft.Paylink.Alipay;
 using Essensoft.Paylink.WeChatPay;
 using FuFuShop.Common.AppSettings;
@@ -6,8 +5,8 @@ using FuFuShop.Common.Helper;
 using FuFuShop.Common.Loging;
 using FuFuShop.Model.ViewModels.Mapping;
 using FuFuShop.WeChat.Options;
+using FuFuShop.WeChat.Service.HttpClients;
 using FuFuShop.WeChat.Services.HttpClients;
-using Hangfire;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SqlSugar;

@@ -1,6 +1,6 @@
 ﻿/***********************************************************************
- *            Project: CoreCms.Net                                     *
- *                Web: https://CoreCms.Net                             *
+ *            Project: .Net                                     *
+ *                Web: https://.Net                             *
  *        ProjectName: 核心内容管理系统                                *
  *             Author: 大灰灰                                          *
  *              Email: JianWeie@163.com                                *

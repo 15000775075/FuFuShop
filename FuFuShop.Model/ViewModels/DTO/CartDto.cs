@@ -93,9 +93,9 @@ namespace FuFuShop.Model.ViewModels.DTO
         public int type { get; set; } = 1;
         public decimal weight { get; set; } = 0;
 
-        // public CoreCmsProducts products { get; set; } = new();
+        // public Products products { get; set; } = new();
 
-        // public CoreCmsGoods good { get; set; }
+        // public Goods good { get; set; }
     }
 
     /// <summary>

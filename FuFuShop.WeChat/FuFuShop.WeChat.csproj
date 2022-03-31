@@ -13,4 +13,8 @@
     <PackageReference Include="SKIT.FlurlHttpClient.Wechat.Api" Version="2.9.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FuFuShop.Common\FuFuShop.Common.csproj" />
+  </ItemGroup>
+
 </Project>

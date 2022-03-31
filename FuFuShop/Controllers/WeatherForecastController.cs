@@ -18,8 +18,8 @@ namespace FuFuShop.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpPost(Name = "GetWeatherForecast")]
+        public IEnumerable<WeatherForecast> Get(string par)
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

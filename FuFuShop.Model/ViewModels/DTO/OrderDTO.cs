@@ -1,7 +1,7 @@
 ﻿/***********************************************************************
- *            Project: CoreCms
+ *            Project: 
  *        ProjectName: 核心内容管理系统                                
- *                Web: https://www.corecms.net                      
+ *                Web: https://www..net                      
  *             Author: 大灰灰                                          
  *              Email: jianweie@163.com                                
  *         CreateTime: 2021/1/31 21:45:10
@@ -376,10 +376,10 @@ namespace FuFuShop.Model.ViewModels.DTO
         public string shipName { get; set; }
         public string shipMobile { get; set; }
         public int logisticsId { get; set; } = 0;
-        // public CoreCmsShip ship { get; set; } = null;
+        // public Ship ship { get; set; } = null;
         public string logisticsName { get; set; }
-        // public List<CoreCmsOrderItem> items { get; set; }
-        // public List<CoreCmsOrder> orders { get; set; }
+        // public List<OrderItem> items { get; set; }
+        // public List<Order> orders { get; set; }
     }
 
     /// <summary>
@@ -397,10 +397,10 @@ namespace FuFuShop.Model.ViewModels.DTO
         public string shipName { get; set; }
         public string shipMobile { get; set; }
         public int logisticsId { get; set; } = 0;
-        //  public CoreCmsShip ship { get; set; } = null;
+        //  public Ship ship { get; set; } = null;
         public string logisticsName { get; set; }
-        // public List<CoreCmsOrderItem> items { get; set; }
-        // public CoreCmsOrder orderInfo { get; set; }
+        // public List<OrderItem> items { get; set; }
+        // public Order orderInfo { get; set; }
     }
 
 

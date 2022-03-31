@@ -63,7 +63,7 @@ namespace FuFuShop.Common.AppSettings
         }
         /// <summary>
         /// 来源
-        /// 订单来源[对应CoreCmsOrder表source字段]
+        /// 订单来源[对应Order表source字段]
         /// </summary>
         public enum Source
         {
@@ -126,7 +126,7 @@ namespace FuFuShop.Common.AppSettings
         #region User用户相关===========================================================================
         /// <summary>
         /// 性别[1男2女3未知]
-        /// 对应CoreCmsUserWX表的gender类型
+        /// 对应UserWX表的gender类型
         /// </summary>
         public enum UserSexTypes
         {
@@ -149,7 +149,7 @@ namespace FuFuShop.Common.AppSettings
         }
         /// <summary>
         /// 第三方账号来源
-        /// [对应CoreCmsUserWX表的type类型]
+        /// [对应UserWX表的type类型]
         /// </summary>
         public enum UserAccountTypes
         {
@@ -167,7 +167,7 @@ namespace FuFuShop.Common.AppSettings
             头条系小程序 = 6,
         }
         /// <summary>
-        /// 用户余额变动来源类型【对应CoreCmsUserBalance.type字段】
+        /// 用户余额变动来源类型【对应UserBalance.type字段】
         /// </summary>
         public enum UserBalanceSourceTypes
         {
@@ -219,7 +219,7 @@ namespace FuFuShop.Common.AppSettings
         }
         /// <summary>
         /// 用户积分变动来源类型
-        /// 对应CoreCmsUserPointLog表type字段
+        /// 对应UserPointLog表type字段
         /// </summary>
         public enum UserPointSourceTypes
         {
@@ -284,7 +284,7 @@ namespace FuFuShop.Common.AppSettings
 
 
         /// <summary>
-        /// 用户日志状态[对应CoreCmsUserLog表的state字段]
+        /// 用户日志状态[对应UserLog表的state字段]
         /// </summary>
         public enum UserLogTypes
         {
@@ -296,7 +296,7 @@ namespace FuFuShop.Common.AppSettings
             注册 = 3
         }
         /// <summary>
-        /// 用户提现状态[对应CoreCmsUserTocash表的status字段]
+        /// 用户提现状态[对应UserTocash表的status字段]
         /// </summary>
         public enum UserTocashTypes
         {
@@ -312,7 +312,7 @@ namespace FuFuShop.Common.AppSettings
         #region Order订单相关=========================================================
 
         /// <summary>
-        /// 订单支付状态[对应CoreCmsOrder表payStatus字段]
+        /// 订单支付状态[对应Order表payStatus字段]
         /// </summary>
         public enum OrderPayStatus
         {
@@ -343,7 +343,7 @@ namespace FuFuShop.Common.AppSettings
             Refunded = 5
         }
         /// <summary>
-        /// 订单发货状态[对应CoreCmsOrder表shipStatus字段]
+        /// 订单发货状态[对应Order表shipStatus字段]
         /// </summary>
         public enum OrderShipStatus
         {
@@ -374,7 +374,7 @@ namespace FuFuShop.Common.AppSettings
             Returned = 5
         }
         /// <summary>
-        /// 订单状态[对应CoreCmsOrder表status字段]
+        /// 订单状态[对应Order表status字段]
         /// </summary>
         public enum OrderStatus
         {
@@ -396,7 +396,7 @@ namespace FuFuShop.Common.AppSettings
         }
 
         /// <summary>
-        /// 订单状态[对应CoreCmsOrder表status字段]
+        /// 订单状态[对应Order表status字段]
         /// </summary>
         public enum OrderStatusDescription
         {
@@ -418,7 +418,7 @@ namespace FuFuShop.Common.AppSettings
         }
 
         /// <summary>
-        /// 订单收货状态[对应CoreCmsOrder表confirmStatus字段]
+        /// 订单收货状态[对应Order表confirmStatus字段]
         /// </summary>
         public enum OrderConfirmStatus
         {
@@ -491,7 +491,7 @@ namespace FuFuShop.Common.AppSettings
             Order = 1
         }
         /// <summary>
-        /// 订单开票类型[对应CoreCmsOrder表taxType字段]
+        /// 订单开票类型[对应Order表taxType字段]
         /// </summary>
         public enum OrderTaxType
         {
@@ -556,7 +556,7 @@ namespace FuFuShop.Common.AppSettings
             AlreadyComment = 2
         }
         /// <summary>
-        /// 订单类型[对应CoreCmsOrder表orderType字段]/也对应购物车cart订单类型
+        /// 订单类型[对应Order表orderType字段]/也对应购物车cart订单类型
         /// </summary>
         public enum OrderType
         {
@@ -775,7 +775,7 @@ namespace FuFuShop.Common.AppSettings
         #region OrderLog订单日志=====================================================
 
         /// <summary>
-        /// 订单日志状态[对应CoreCmsOrderLog表Type字段]
+        /// 订单日志状态[对应OrderLog表Type字段]
         /// </summary>
         public enum OrderLogTypes
         {
@@ -942,7 +942,7 @@ namespace FuFuShop.Common.AppSettings
 
         #region BillPayments付款单========================================================
         /// <summary>
-        /// 付款单类型 【对应CoreCmsBillPayments.type】
+        /// 付款单类型 【对应BillPayments.type】
         /// </summary>
         public enum BillPaymentsType
         {
@@ -973,7 +973,7 @@ namespace FuFuShop.Common.AppSettings
             ServiceOrder = 5,
         }
         /// <summary>
-        /// 付款单状态【对应CoreCmsBillPayments.status字段】
+        /// 付款单状态【对应BillPayments.status字段】
         /// </summary>
         public enum BillPaymentsStatus
         {
@@ -1051,7 +1051,7 @@ namespace FuFuShop.Common.AppSettings
 
         #region BillRefund退款单========================================================
         /// <summary>
-        /// 退款单状态 【对应CoreCmsBillRefund.status字段】
+        /// 退款单状态 【对应BillRefund.status字段】
         /// </summary>
         public enum BillRefundStatus
         {
@@ -1175,7 +1175,7 @@ namespace FuFuShop.Common.AppSettings
         #region  PinTuan拼团=============================================================
 
         /// <summary>
-        /// 拼团记录状态表[对应CoreCmsPinTuanRecord表status字段]
+        /// 拼团记录状态表[对应PinTuanRecord表status字段]
         /// </summary>
         public enum PinTuanRecordStatus
         {
@@ -1473,7 +1473,7 @@ namespace FuFuShop.Common.AppSettings
 
         #region 消息推送=====================================================
         /// <summary>
-        /// 模板列表类型[对应CoreCmsTemplate表type字段]
+        /// 模板列表类型[对应Template表type字段]
         /// </summary>
         public enum TemplateTypes
         {
@@ -1571,7 +1571,7 @@ namespace FuFuShop.Common.AppSettings
         #region 微信配置相关=========================================================
 
         /// <summary>
-        /// 授权方认证类型[关联CoreCmsWeixinAuthor表verifyTypeInfo字段]
+        /// 授权方认证类型[关联WeixinAuthor表verifyTypeInfo字段]
         /// </summary>
         public enum WeiChatAuthorVerifyTypes
         {
@@ -1579,7 +1579,7 @@ namespace FuFuShop.Common.AppSettings
         }
 
         /// <summary>
-        /// 微信消息类型[关联CoreCmsWeixinMessage表type字段]
+        /// 微信消息类型[关联WeixinMessage表type字段]
         /// </summary>
         public enum WeiChatMessageTypes
         {
@@ -1638,7 +1638,7 @@ namespace FuFuShop.Common.AppSettings
 
         #region 广告相关==================================================
         /// <summary>
-        /// 广告表类型【关联CoreCmsAdvertisement.type字段】
+        /// 广告表类型【关联Advertisement.type字段】
         /// </summary>
         public enum AdvertPositionType
         {
@@ -1704,7 +1704,7 @@ namespace FuFuShop.Common.AppSettings
 
         #region 促销相关===================================================
         /// <summary>
-        /// 促销形式类型【对应CoreCmsPromotion.type字段】
+        /// 促销形式类型【对应Promotion.type字段】
         /// </summary>
         public enum PromotionType
         {
@@ -1926,7 +1926,7 @@ namespace FuFuShop.Common.AppSettings
 
         #region 银行卡相关
         /// <summary>
-        /// 用户银行卡类型[对应CoreCmsUserBankCard的cardType字段]
+        /// 用户银行卡类型[对应UserBankCard的cardType字段]
         /// </summary>
         public enum BankType
         {

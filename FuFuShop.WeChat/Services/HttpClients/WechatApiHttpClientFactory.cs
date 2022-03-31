@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using SKIT.FlurlHttpClient;
 using SKIT.FlurlHttpClient.Wechat.Api;
 
-namespace CoreCms.Net.WeChat.Service.HttpClients
+namespace FuFuShop.WeChat.Service.HttpClients
 {
     public partial class WeChatApiHttpClientFactory : IWeChatApiHttpClientFactory
     {

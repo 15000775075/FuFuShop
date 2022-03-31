@@ -31,7 +31,23 @@ namespace FuFuShop.Common.AppSettings
         public static readonly string DbDbType = AppSettingsHelper.GetContent("ConnectionStrings", "DbType");
         #endregion
 
+        #region redis================================================================================
 
+        /// <summary>
+        /// 获取redis连接字符串
+        /// </summary>
+        public static readonly string RedisConfigConnectionString = AppSettingsHelper.GetContent("RedisConfig", "ConnectionString");
+
+        /// <summary>
+        /// 启用redis作为缓存选择
+        /// </summary>
+        public static readonly bool RedisUseCache = AppSettingsHelper.GetContent("RedisConfig", "UseCache").ObjToBool();
+        /// <summary>
+        /// 启用redis作为定时任务
+        /// </summary>
+        public static readonly bool RedisUseTimedTask = AppSettingsHelper.GetContent("RedisConfig", "UseTimedTask").ObjToBool();
+
+        #endregion
 
         #region AOP================================================================================
         /// <summary>

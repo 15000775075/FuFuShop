@@ -19,7 +19,7 @@
     /// </summary>
     public class AreasDtoForAdminEdit
     {
-        //public CoreCmsArea info { get; set; } = new();
-        //public List<CoreCmsArea> list { get; set; } = new();
+        //public Area info { get; set; } = new();
+        //public List<Area> list { get; set; } = new();
     }
 }

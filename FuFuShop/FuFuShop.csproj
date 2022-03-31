@@ -11,6 +11,7 @@
     <PackageReference Include="Essensoft.Paylink.Alipay" Version="4.0.9" />
     <PackageReference Include="Essensoft.Paylink.WeChatPay" Version="4.0.9" />
     <PackageReference Include="Hangfire" Version="1.7.28" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.3" />
     <PackageReference Include="StackExchange.Redis" Version="2.5.43" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
@@ -18,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FuFuShop.Common\FuFuShop.Common.csproj" />
+    <ProjectReference Include="..\FuFuShop.Services\FuFuShop.Services.csproj" />
     <ProjectReference Include="..\FuFuShop.WeChat\FuFuShop.WeChat.csproj" />
   </ItemGroup>
 
