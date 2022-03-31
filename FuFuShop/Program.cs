@@ -8,21 +8,18 @@ using FuFuShop.Model.ViewModels.Mapping;
 using FuFuShop.WeChat.Options;
 using FuFuShop.WeChat.Services.HttpClients;
 using Hangfire;
-using Hangfire.MySql;
-using Hangfire.MySql.src;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SqlSugar;
 using SqlSugar.IOC;
-using System.Data;
 
-//确保NLog.config中连接字符串与appsettings.json中同步
-NLogUtil.EnsureNlogConfig("NLog.config");
-//其他项目启动时需要做的事情
-NLogUtil.WriteAll(NLog.LogLevel.Trace, LogType.Web, "接口启动", "接口启动成功");
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-
+//添加本地路径获取支持
+builder.Services.AddSingleton(new AppSettingsHelper(builder.Environment.ContentRootPath));
+builder.Services.AddSingleton(new LogLockHelper(builder.Environment.ContentRootPath));
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -117,28 +114,27 @@ builder.Services.AddSingleton<IWeChatApiHttpClientFactory, WeChatApiHttpClientFa
 #region
 //注册Hangfire定时任务
 
+//var configuration = ConfigurationOptions.Parse(AppSettingsConstVars.RedisConfigConnectionString, true);
+//_redis = ConnectionMultiplexer.Connect(configuration);
+//var db = _redis.GetDatabase();
 
-builder.Services.AddHangfire(x => x.UseStorage(new MySqlStorage(AppSettingsConstVars.DbSqlConnection, new MySqlStorageOptions
-        {
-           // TransactionIsolationLevel = IsolationLevel.ReadCommitted, // 事务隔离级别。默认是读取已提交。
-            QueuePollInterval = TimeSpan.FromSeconds(15),             //- 作业队列轮询间隔。默认值为15秒。
-            //JobExpirationCheckInterval = TimeSpan.FromHours(1),       //- 作业到期检查间隔（管理过期记录）。默认值为1小时。
-            //CountersAggregateInterval = TimeSpan.FromMinutes(5),      //- 聚合计数器的间隔。默认为5分钟。
-           // PrepareSchemaIfNecessary = true,                          //- 如果设置为true，则创建数据库表。默认是true。
-           // DashboardJobListLimit = 500,                            //- 仪表板作业列表限制。默认值为50000。
-           // TransactionTimeout = TimeSpan.FromMinutes(1),             //- 交易超时。默认为1分钟。
-            //TablesPrefix = "Hangfire"                                  //- 数据库中表的前缀。默认为none
-        })));
+//services.AddHangfire(x => x.UseRedisStorage(_redis, new RedisStorageOptions()
+//{
+//    Db = db.Database, //建议根据
+//    SucceededListSize = 500,//后续列表中的最大可见后台作业，以防止它无限增长。
+//    DeletedListSize = 500,//删除列表中的最大可见后台作业，以防止其无限增长。
+//    InvisibilityTimeout = TimeSpan.FromMinutes(30),
+//}));
 
 
-builder.Services.AddHangfireServer(options =>
-{
-    options.Queues = new[] { GlobalEnumVars.HangFireQueuesConfig.@default.ToString(), GlobalEnumVars.HangFireQueuesConfig.apis.ToString(), GlobalEnumVars.HangFireQueuesConfig.web.ToString(), GlobalEnumVars.HangFireQueuesConfig.recurring.ToString() };
-    options.ServerTimeout = TimeSpan.FromMinutes(4);
-    options.SchedulePollingInterval = TimeSpan.FromSeconds(15);//秒级任务需要配置短点，一般任务可以配置默认时间，默认15秒
-    options.ShutdownTimeout = TimeSpan.FromMinutes(5); //超时时间
-    options.WorkerCount = Math.Max(Environment.ProcessorCount, 20); //工作线程数，当前允许的最大线程，默认20
-});
+//builder.Services.AddHangfireServer(options =>
+//{
+//    options.Queues = new[] { GlobalEnumVars.HangFireQueuesConfig.@default.ToString(), GlobalEnumVars.HangFireQueuesConfig.apis.ToString(), GlobalEnumVars.HangFireQueuesConfig.web.ToString(), GlobalEnumVars.HangFireQueuesConfig.recurring.ToString() };
+//    options.ServerTimeout = TimeSpan.FromMinutes(4);
+//    options.SchedulePollingInterval = TimeSpan.FromSeconds(15);//秒级任务需要配置短点，一般任务可以配置默认时间，默认15秒
+//    options.ShutdownTimeout = TimeSpan.FromMinutes(5); //超时时间
+//    options.WorkerCount = Math.Max(Environment.ProcessorCount, 20); //工作线程数，当前允许的最大线程，默认20
+//});
 
 #endregion
 
@@ -149,24 +145,28 @@ builder.Services.AddMvc(options =>
     //实体验证
     //options.Filters.Add<RequiredErrorForClent>();
     //异常处理
-   // options.Filters.Add<GlobalExceptionsFilterForClent>();
+    // options.Filters.Add<GlobalExceptionsFilterForClent>();
     //Swagger剔除不需要加入api展示的列表
     //options.Conventions.Add(new ApiExplorerIgnores());
 })
     .AddNewtonsoftJson(p =>
     {
-                    //数据格式首字母小写 不使用驼峰
-                    p.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                    //不使用驼峰样式的key
-                    //p.SerializerSettings.ContractResolver = new DefaultContractResolver();
-                    //忽略循环引用
-                    p.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    //设置时间格式（必须使用yyyy/MM/dd格式，因为ios系统不支持2018-03-29格式的时间，只识别2018/03/09这种格式。）
-                    p.SerializerSettings.DateFormatString = "yyyy/MM/dd HH:mm:ss";
+        //数据格式首字母小写 不使用驼峰
+        p.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        //不使用驼峰样式的key
+        //p.SerializerSettings.ContractResolver = new DefaultContractResolver();
+        //忽略循环引用
+        p.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        //设置时间格式（必须使用yyyy/MM/dd格式，因为ios系统不支持2018-03-29格式的时间，只识别2018/03/09这种格式。）
+        p.SerializerSettings.DateFormatString = "yyyy/MM/dd HH:mm:ss";
     });
-//添加本地路径获取支持
-builder.Services.AddSingleton(new AppSettingsHelper(builder.Environment.ContentRootPath));
-builder.Services.AddSingleton(new LogLockHelper(builder.Environment.ContentRootPath));
+
+
+//确保NLog.config中连接字符串与appsettings.json中同步
+NLogUtil.EnsureNlogConfig("NLog.config");
+//其他项目启动时需要做的事情
+NLogUtil.WriteAll(NLog.LogLevel.Trace, LogType.Web, "接口启动", "接口启动成功");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
