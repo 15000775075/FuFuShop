@@ -1,8 +1,6 @@
-
-using FuFuShop.Model.Entitys;
 using FuFuShop.Repository.BaseRepository;
 
-namespace CoreCms.Net.IRepository
+namespace FuFuShop.Repository.UserLog
 {
     /// <summary>
     ///     用户日志 工厂接口

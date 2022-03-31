@@ -1,7 +1,6 @@
-using FuFuShop.Model.Entitys;
 using FuFuShop.Services.BaseServices;
 
-namespace CoreCms.Net.IServices
+namespace FuFuShop.Services.UserLog
 {
     /// <summary>
     ///     用户日志 服务工厂接口

@@ -1,10 +1,7 @@
-
-using CoreCms.Net.IRepository;
-using FuFuShop.Model.Entitys;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 
-namespace CoreCms.Net.Repository
+namespace FuFuShop.Repository.UserLog
 {
     /// <summary>
     ///     用户日志 接口实现

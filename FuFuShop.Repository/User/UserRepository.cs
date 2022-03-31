@@ -4,7 +4,7 @@ using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 using SqlSugar;
 
-namespace FuFuShop.Repository
+namespace FuFuShop.Repository.User
 {
     /// <summary>
     /// 用户表 接口实现
@@ -115,7 +115,7 @@ namespace FuFuShop.Repository
         //            childNum = SqlFunc.Subqueryable<User>().Where(o => o.parentId == p.id).Count()
         //        })
         //        .MergeTable().With(SqlWith.Null)
-        //        .OrderBy(orderByExpression, orderByType)
+        //        By(orderByExpression, orderByType)
         //        .Where(predicate)
         //        .ToPageListAsync(pageIndex, pageSize, totalCount);
         //    var list = new PageList<User>(page, pageIndex, pageSize, totalCount);
@@ -157,7 +157,7 @@ namespace FuFuShop.Repository
         //    for (int i = 0; i < day; i++)
         //    {
         //        var dt = DateTime.Now;
-        //        var where = PredicateBuilder.True<CoreCmsOrder>();
+        //        var where = PredicateBuilder.True<Order>();
         //        var currDay = DateTime.Now.ToString("yyyy-MM-dd");
         //        if (i == 0)
         //        {
@@ -176,7 +176,7 @@ namespace FuFuShop.Repository
         //        where = where.And(p => p.createTime >= dtStart);
 
         //        var item = new StatisticsOut();
-        //        item.nums = await DbClient.Queryable<CoreCmsOrder>().Where(where).GroupBy(p => p.userId).Select(p => p.userId).CountAsync();
+        //        item.nums = await DbClient.Queryable<Order>().Where(where).GroupBy(p => p.userId).Select(p => p.userId).CountAsync();
         //        item.day = currDay;
         //        outs.Add(item);
         //    }

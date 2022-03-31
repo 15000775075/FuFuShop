@@ -1,10 +1,10 @@
-﻿using CoreCms.Net.IServices;
-using FuFuShop.Common.AppSettings;
+﻿using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Auth;
 using FuFuShop.Model.Entitys;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.UI;
-using FuFuShop.Services;
+using FuFuShop.Services.User;
+using FuFuShop.Services.UserLog;
 using FuFuShop.Services.WeChat;
 using FuFuShop.WeChat.Enums;
 using FuFuShop.WeChat.Services.HttpClients;

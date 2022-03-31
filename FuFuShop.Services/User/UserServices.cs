@@ -1,9 +1,9 @@
-using CoreCms.Net.IServices;
 using FuFuShop.Common.Auth;
 using FuFuShop.Model.Entitys;
-using FuFuShop.Repository;
 using FuFuShop.Repository.UnitOfWork;
+using FuFuShop.Repository.User;
 using FuFuShop.Services.BaseServices;
+using FuFuShop.Services.UserLog;
 using Microsoft.AspNetCore.Http;
 
 namespace FuFuShop.Services.User

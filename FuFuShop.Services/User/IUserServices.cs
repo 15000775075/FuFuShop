@@ -1,7 +1,7 @@
 using FuFuShop.Model.Entitys;
 using FuFuShop.Services.BaseServices;
 
-namespace FuFuShop.Services
+namespace FuFuShop.Services.User
 {
     /// <summary>
     ///     用户表 服务工厂接口
