@@ -5,7 +5,7 @@ using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 
 
-namespace CoreCms.Net.Services
+namespace FuFuShop.Services
 {
     /// <summary>
     /// 发货单表 接口实现

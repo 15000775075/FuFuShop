@@ -5,7 +5,7 @@ using CoreCms.Net.Model.Entities;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 
-namespace CoreCms.Net.Repository
+namespace FuFuShop.Repository
 {
     /// <summary>
     ///     发货单详情表 接口实现

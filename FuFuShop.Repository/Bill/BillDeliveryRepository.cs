@@ -5,7 +5,7 @@ using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 using SqlSugar;
 
-namespace CoreCms.Net.Repository
+namespace FuFuShop.Repository
 {
     /// <summary>
     /// 发货单表 接口实现

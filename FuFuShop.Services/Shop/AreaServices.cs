@@ -10,7 +10,7 @@ using FuFuShop.Services.BaseServices;
 using SqlSugar;
 using System.Linq.Expressions;
 
-namespace CoreCms.Net.Services.Basic
+namespace FuFuShop.Services.Basic
 {
     public class AreaServices : BaseServices<Area>, IAreaServices
     {

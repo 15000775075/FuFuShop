@@ -4,6 +4,7 @@ using Autofac.Extensions.DependencyInjection;
 using Essensoft.Paylink.Alipay;
 using Essensoft.Paylink.WeChatPay;
 using FuFuShop.Common.AppSettings;
+using FuFuShop.Common.Auth.HttpContextUser;
 using FuFuShop.Common.AutoFac;
 using FuFuShop.Common.Helper;
 using FuFuShop.Common.Loging;
@@ -169,6 +170,8 @@ builder.Services.AddMvc(options =>
     });
 
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<IHttpContextUser, AspNetUser>();
 //确保NLog.config中连接字符串与appsettings.json中同步
 NLogUtil.EnsureNlogConfig("NLog.config");
 //其他项目启动时需要做的事情

@@ -1,7 +1,7 @@
 using CoreCms.Net.IRepository;
-using CoreCms.Net.Model.Entities;
 using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Caching.Manual;
+using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
@@ -10,11 +10,11 @@ using SqlSugar;
 namespace FuFuShop.Repository
 {
     /// <summary>
-    /// 地区表 接口实现
+    /// 商品分类 接口实现
     /// </summary>
-    public class AreaRepository : BaseRepository<Area>, IAreaRepository
+    public class GoodsCategoryRepository : BaseRepository<GoodsCategory>, IGoodsCategoryRepository
     {
-        public AreaRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public GoodsCategoryRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
 
@@ -25,10 +25,9 @@ namespace FuFuShop.Repository
         /// </summary>
         /// <param name="entity">实体数据</param>
         /// <returns></returns>
-        public new async Task<AdminUiCallBack> InsertAsync(Area entity)
+        public new async Task<AdminUiCallBack> InsertAsync(GoodsCategory entity)
         {
             var jm = new AdminUiCallBack();
-
             var bl = await DbClient.Insertable(entity).ExecuteReturnIdentityAsync() > 0;
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.CreateSuccess : GlobalConstVars.CreateFailure;
@@ -36,7 +35,6 @@ namespace FuFuShop.Repository
             {
                 await UpdateCaChe();
             }
-
             return jm;
         }
 
@@ -45,26 +43,12 @@ namespace FuFuShop.Repository
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public new async Task<AdminUiCallBack> UpdateAsync(Area entity)
+        public new async Task<AdminUiCallBack> UpdateAsync(GoodsCategory entity)
         {
             var jm = new AdminUiCallBack();
 
-            var oldModel = await DbClient.Queryable<Area>().In(entity.id).SingleAsync();
-            if (oldModel == null)
-            {
-                jm.msg = "不存在此信息";
-                return jm;
-            }
-            //事物处理过程开始
-            //oldModel.id = entity.id;
-            //oldModel.parentId = entity.parentId;
-            //oldModel.depth = entity.depth;
-            oldModel.name = entity.name;
-            oldModel.postalCode = entity.postalCode;
-            oldModel.sort = entity.sort;
-
             //事物处理过程结束
-            var bl = await DbClient.Updateable(oldModel).ExecuteCommandHasChangeAsync();
+            var bl = await DbClient.Updateable(entity).ExecuteCommandHasChangeAsync();
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
             if (bl)
@@ -76,11 +60,11 @@ namespace FuFuShop.Repository
         }
 
         /// <summary>
-        /// 重写异步更新方法
+        /// 重写异步更新方法方法
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public new async Task<AdminUiCallBack> UpdateAsync(List<Area> entity)
+        public new async Task<AdminUiCallBack> UpdateAsync(List<GoodsCategory> entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -104,7 +88,7 @@ namespace FuFuShop.Repository
         {
             var jm = new AdminUiCallBack();
 
-            var bl = await DbClient.Deleteable<Area>(id).ExecuteCommandHasChangeAsync();
+            var bl = await DbClient.Deleteable<GoodsCategory>(id).ExecuteCommandHasChangeAsync();
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
             if (bl)
@@ -124,16 +108,17 @@ namespace FuFuShop.Repository
         {
             var jm = new AdminUiCallBack();
 
-            var bl = await DbClient.Deleteable<Area>().In(ids).ExecuteCommandHasChangeAsync();
+            var bl = await DbClient.Deleteable<GoodsCategory>().In(ids).ExecuteCommandHasChangeAsync();
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
             if (bl)
             {
                 await UpdateCaChe();
             }
-
             return jm;
         }
+
+
 
         #endregion
 
@@ -143,9 +128,9 @@ namespace FuFuShop.Repository
         /// 获取缓存的所有数据
         /// </summary>
         /// <returns></returns>
-        public async Task<List<Area>> GetCaChe()
+        public async Task<List<GoodsCategory>> GetCaChe()
         {
-            var cache = ManualDataCache.Instance.Get<List<Area>>(GlobalConstVars.CacheArea);
+            var cache = ManualDataCache.Instance.Get<List<GoodsCategory>>(GlobalConstVars.CacheGoodsCategory);
             if (cache != null)
             {
                 return cache;
@@ -156,11 +141,10 @@ namespace FuFuShop.Repository
         /// <summary>
         ///     更新cache
         /// </summary>
-        public async Task<List<Area>> UpdateCaChe()
+        private async Task<List<GoodsCategory>> UpdateCaChe()
         {
-
-            var list = await DbClient.Queryable<Area>().OrderBy(p => p.sort).With(SqlWith.NoLock).ToListAsync();
-            ManualDataCache.Instance.Set(GlobalConstVars.CacheArea, list);
+            var list = await DbClient.Queryable<GoodsCategory>().With(SqlWith.NoLock).ToListAsync();
+            ManualDataCache.Instance.Set(GlobalConstVars.CacheGoodsCategory, list);
             return list;
         }
 
