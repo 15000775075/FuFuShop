@@ -1,6 +1,7 @@
 using CoreCms.Net.IRepository;
 using CoreCms.Net.Model.Entities;
 using FuFuShop.Common.AppSettings;
+using FuFuShop.Common.Caching.Manual;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
