@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using CoreCms.Net.IServices;
 using FuFuShop.Common.Auth.HttpContextUser;
+using FuFuShop.Common.Extensions;
+using FuFuShop.Model.Entities;
+using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.DTO;
 using FuFuShop.Model.ViewModels.UI;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SqlSugar;
 
 namespace FuFuShop.Controllers
@@ -18,6 +22,7 @@ namespace FuFuShop.Controllers
         private readonly IMapper _mapper;
         private readonly IHttpContextUser _user;
         private readonly IGoodsCategoryServices _goodsCategoryServices;
+        private readonly IGoodsServices _goodsServices;
 
 
         /// <summary>
@@ -25,18 +30,20 @@ namespace FuFuShop.Controllers
         /// </summary>
         public GoodController(IMapper mapper
             , IHttpContextUser user
-            , IGoodsCategoryServices goodsCategoryServices
+            , IGoodsCategoryServices goodsCategoryServices,
+            IGoodsServices goodsServices
         )
         {
             _mapper = mapper;
             _user = user;
             _goodsCategoryServices = goodsCategoryServices;
+            _goodsServices = goodsServices;
 
         }
 
         //公共接口====================================================================================================
 
-       
+
         /// <summary>
         /// 获取所有商品分类栏目数据
         /// </summary>
@@ -86,8 +93,156 @@ namespace FuFuShop.Controllers
             return jm;
         }
 
+        /// <summary>
+        /// 根据查询条件获取分页数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<WebApiCallBack> GetGoodsPageList([FromBody] FMPageByWhereOrder entity)
+        {
+            var jm = new WebApiCallBack();
+
+            var where = PredicateBuilder.True<Goods>();
+            where = where.And(p => p.isDel == false);
+            where = where.And(p => p.isMarketable == true);
+
+            var className = string.Empty;
+            if (!string.IsNullOrWhiteSpace(entity.where))
+            {
+                var obj = JsonConvert.DeserializeAnonymousType(entity.where, new
+                {
+                    priceFrom = "",
+                    priceTo = "",
+                    catId = "",
+                    brandId = "",
+                    labelId = "",
+                    searchName = "",
+                });
+
+                if (!string.IsNullOrWhiteSpace(obj.priceFrom))
+                {
+                    var priceF = obj.priceFrom.ObjectToDouble(0);
+                    if (priceF >= 0)
+                    {
+                        var f = Convert.ToDecimal(priceF);
+                        where = where.And(p => p.price >= f);
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(obj.priceTo))
+                {
+                    var priceT = obj.priceTo.ObjectToDouble(0);
+                    if (priceT > 0)
+                    {
+                        var f = Convert.ToDecimal(priceT);
+                        where = where.And(p => p.price <= f);
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(obj.catId))
+                {
+                    var catId = obj.catId.ObjectToInt(0);
+                    if (catId > 0)
+                    {
+                        var category = await _goodsCategoryServices.QueryByIdAsync(catId);
+                        if (category != null)
+                        {
+                            className = category.name;
+                        }
+
+                        var childs = await _goodsCategoryServices.QueryListByClauseAsync(p => p.parentId == catId);
+                        if (childs.Any())
+                        {
+                            var ids = childs.Select(p => p.id).ToList();
+                            where = where.And(p => ids.Contains(p.goodsCategoryId) || p.goodsCategoryId == catId);
+                        }
+                        else
+                        {
+                            where = where.And(p => p.goodsCategoryId == catId);
+                        }
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(obj.brandId))
+                {
+                    var brandId = obj.brandId.ObjectToInt(0);
+                    if (brandId > 0)
+                    {
+                        where = where.And(p => p.brandId == brandId);
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(obj.labelId))
+                {
+                    where = where.And(p => (',' + p.labelIds.Trim(',') + ',').Contains(',' + obj.labelId.Trim(',') + ','));
+                }
+                if (!string.IsNullOrWhiteSpace(obj.searchName))
+                {
+                    where = where.And(p => p.name.Contains(obj.searchName));
+                }
+            }
+
+            var orderBy = " isRecommend desc,isHot desc";
+            if (!string.IsNullOrWhiteSpace(entity.order))
+            {
+                orderBy += "," + entity.order;
+            }
 
 
+            //获取数据
+            var list = await _goodsServices.QueryPageAsync(where, orderBy, entity.page, entity.limit, false);
+            if (list.Any())
+            {
+                foreach (var goods in list)
+                {
+                    goods.images = !string.IsNullOrEmpty(goods.images) ? goods.images.Split(",")[0] : "/static/images/common/empty.png";
+                }
+            }
 
+
+            //返回数据
+            jm.status = true;
+            jm.data = new
+            {
+                list,
+                className,
+                entity.page,
+                list.TotalCount,
+                list.TotalPages,
+                entity.limit,
+                entity.where,
+                entity.order,
+            };
+            jm.msg = "数据调用成功!";
+
+            return jm;
+        }
+
+        /// <summary>
+        /// 获取商品详情
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<WebApiCallBack> GetDetial([FromBody] FMIntId entity)
+        {
+            var jm = new WebApiCallBack();
+
+            var userId = 0;
+            if (_user != null)
+            {
+                userId = _user.ID;
+            }
+
+            var model = await _goodsServices.GetGoodsDetial(entity.id, userId, false);
+            if (model == null)
+            {
+                jm.msg = "商品获取失败";
+                return jm;
+            }
+
+            jm.status = true;
+            jm.msg = "获取商品详情成功";
+            jm.data = model;
+            jm.methodDescription = JsonConvert.SerializeObject(_user);
+
+            return jm;
+        }
     }
 }

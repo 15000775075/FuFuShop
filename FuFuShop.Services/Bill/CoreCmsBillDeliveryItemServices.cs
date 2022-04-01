@@ -1,8 +1,8 @@
 
 
-using CoreCms.Net.IRepository;
 using CoreCms.Net.IServices;
 using CoreCms.Net.Model.Entities;
+using FuFuShop.IRepository;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 

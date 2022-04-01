@@ -1,4 +1,6 @@
 ﻿
+using CoreCms.Net.Model.Entities;
+using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.UI;
 
 namespace FuFuShop.Model.ViewModels.DTO
@@ -93,9 +95,9 @@ namespace FuFuShop.Model.ViewModels.DTO
         public int type { get; set; } = 1;
         public decimal weight { get; set; } = 0;
 
-        // public Products products { get; set; } = new();
+        public Products products { get; set; } = new();
 
-        // public Goods good { get; set; }
+        public Goods good { get; set; }
     }
 
     /// <summary>

@@ -3,7 +3,7 @@
 using CoreCms.Net.Model.Entities;
 using FuFuShop.Repository.BaseRepository;
 
-namespace CoreCms.Net.IRepository
+namespace FuFuShop.IRepository
 {
     /// <summary>
     ///     发货单详情表 工厂接口
