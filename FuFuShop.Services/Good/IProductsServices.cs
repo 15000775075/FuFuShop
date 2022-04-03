@@ -21,5 +21,12 @@ namespace CoreCms.Net.IServices
         Task<Products> GetProductInfo(int id, bool isPromotion, int userId, string type = "goods",
             int groupId = 0);
 
+        /// <summary>
+        ///     判断货品上下架状态
+        /// </summary>
+        /// <param name="productsId">货品序列</param>
+        /// <returns></returns>
+        Task<bool> GetShelfStatus(int productsId);
+
     }
 }

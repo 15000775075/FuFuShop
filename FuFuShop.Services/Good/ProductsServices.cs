@@ -182,6 +182,14 @@ namespace FuFuShop.Services
             }
             return productModel;
         }
-
+        /// <summary>
+        /// 判断货品上下架状态
+        /// </summary>
+        /// <param name="productsId">货品序列</param>
+        /// <returns></returns>
+        public async Task<bool> GetShelfStatus(int productsId)
+        {
+            return await _dal.GetShelfStatus(productsId);
+        }
     }
 }

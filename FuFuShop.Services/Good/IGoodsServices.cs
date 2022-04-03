@@ -19,5 +19,14 @@ namespace CoreCms.Net.IServices
         /// <returns></returns>
         Task<Goods> GetGoodsDetial(int id, int userId = 0, bool isPromotion = false, string type = "goods",
             int groupId = 0);
+
+
+        /// <summary>
+        ///     获取随机推荐数据
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="isRecommend">是否推荐</param>
+        /// <returns></returns>
+        Task<List<Goods>> GetGoodsRecommendList(int number, bool isRecommend = false);
     }
 }

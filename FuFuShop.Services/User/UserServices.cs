@@ -15,23 +15,24 @@ namespace FuFuShop.Services.User
         private readonly IUserRepository _dal;
 
         private readonly IUnitOfWork _unitOfWork;
-        private readonly PermissionRequirement _permissionRequirement;
+       // private readonly PermissionRequirement _permissionRequirement;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IUserLogServices _userLogServices;
+     //   private readonly IUserLogServices _userLogServices;
 
         public UserServices(IUnitOfWork unitOfWork,
             IUserRepository dal,
-             IHttpContextAccessor httpContextAccessor,
-             IUserLogServices userLogServices,
-              PermissionRequirement permissionRequirement)
+             IHttpContextAccessor httpContextAccessor
+          //   IUserLogServices userLogServices,
+            //  PermissionRequirement permissionRequirement
+            )
         {
             _dal = dal;
             BaseDal = dal;
             _unitOfWork = unitOfWork;
 
-            _permissionRequirement = permissionRequirement;
+           // _permissionRequirement = permissionRequirement;
             _httpContextAccessor = httpContextAccessor;
-            _userLogServices = userLogServices;
+           // _userLogServices = userLogServices;
         }
 
 

@@ -41,9 +41,6 @@ namespace FuFuShop.Controllers
 
         }
 
-        //公共接口====================================================================================================
-
-
         /// <summary>
         /// 获取所有商品分类栏目数据
         /// </summary>
@@ -242,6 +239,29 @@ namespace FuFuShop.Controllers
             jm.data = model;
             jm.methodDescription = JsonConvert.SerializeObject(_user);
 
+            return jm;
+        }
+        /// <summary>
+        /// 获取随机推荐商品
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<WebApiCallBack> GetGoodsRecommendList([FromBody] FMIntId entity)
+        {
+            if (entity.id <= 0)
+            {
+                entity.id = 10;
+            }
+
+            var bl = entity.data.ObjectToBool();
+
+            var jm = new WebApiCallBack()
+            {
+                status = true,
+                code = 0,
+                msg = "获取成功",
+                data = await _goodsServices.GetGoodsRecommendList(entity.id, bl)
+            };
             return jm;
         }
     }

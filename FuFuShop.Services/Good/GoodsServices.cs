@@ -16,9 +16,14 @@ namespace FuFuShop.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IProductsServices _productsServices;
         private readonly IGoodsCollectionServices _goodsCollectionServices;
+        private readonly IOrderItemServices _orderItemServices;
 
 
-        public GoodsServices(IUnitOfWork unitOfWork, IProductsServices productsServices, IGoodsCollectionServices goodsCollectionServices, IGoodsRepository dal
+        public GoodsServices(IUnitOfWork unitOfWork, 
+            IProductsServices productsServices, 
+            IGoodsCollectionServices goodsCollectionServices, 
+            IGoodsRepository dal,
+            IOrderItemServices orderItemServices
         )
         {
             _dal = dal;
@@ -26,6 +31,7 @@ namespace FuFuShop.Services
             _unitOfWork = unitOfWork;
             _productsServices = productsServices;
             _goodsCollectionServices = goodsCollectionServices;
+            _orderItemServices = orderItemServices;
 
         }
 
@@ -68,14 +74,21 @@ namespace FuFuShop.Services
             model.freezeStock = getProductInfo.freezeStock;
             model.weight = getProductInfo.weight;
 
-
-
-            //取出销量
-            //model.buyCount = await _orderItemServices.GetCountAsync(p => p.goodsId == model.id);
+           //取出销量
+            model.buyCount = await _orderItemServices.GetCountAsync(p => p.goodsId == model.id);
             return model;
         }
 
-
+        /// <summary>
+        /// 获取随机推荐数据
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="isRecommend"></param>
+        /// <returns></returns>
+        public async Task<List<Goods>> GetGoodsRecommendList(int number, bool isRecommend = false)
+        {
+            return await _dal.GetGoodsRecommendList(number, isRecommend);
+        }
 
 
     }
