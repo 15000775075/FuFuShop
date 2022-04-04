@@ -1,7 +1,7 @@
 using CoreCms.Net.Model.Entities;
 using FuFuShop.Services.BaseServices;
 
-namespace CoreCms.Net.IServices
+namespace FuFuShop.Services.Good
 {
     /// <summary>
     ///     货品表 服务工厂接口

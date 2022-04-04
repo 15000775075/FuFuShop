@@ -1,9 +1,9 @@
-using CoreCms.Net.Model.Entities;
+using FuFuShop.Model.Entities.Shop;
 using FuFuShop.Model.ViewModels.DTO;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services.BaseServices;
 
-namespace CoreCms.Net.IServices
+namespace FuFuShop.Services.Shop
 {
     /// <summary>
     ///     地区表 服务工厂接口

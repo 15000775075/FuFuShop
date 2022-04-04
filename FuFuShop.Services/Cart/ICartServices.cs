@@ -1,5 +1,5 @@
 using FuFuShop.Common.AppSettings;
-using FuFuShop.Model.Entitys;
+using FuFuShop.Model.Entities.Cart;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services.BaseServices;
 
@@ -75,7 +75,7 @@ namespace FuFuShop.Services
             int deliveryType = (int)GlobalEnumVars.OrderReceiptType.Logistics, int objectId = 0);
 
 
-   
+
 
     }
 }

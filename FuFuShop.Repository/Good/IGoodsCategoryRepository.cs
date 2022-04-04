@@ -2,7 +2,7 @@ using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 
-namespace FuFuShop.IRepository
+namespace FuFuShop.Repository.Good
 {
     /// <summary>
     ///     商品分类 工厂接口

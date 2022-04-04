@@ -1,15 +1,13 @@
-
-using CoreCms.Net.IServices;
-using FuFuShop.IRepository;
 using FuFuShop.Model.ViewModels.Basics;
 using FuFuShop.Model.ViewModels.UI;
+using FuFuShop.Repository.Good;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 using SqlSugar;
 using System.Linq.Expressions;
 using GoodsCollection = FuFuShop.Model.Entities.GoodsCollection;
 
-namespace CoreCms.Net.Services
+namespace FuFuShop.Services.Good
 {
     /// <summary>
     /// 商品收藏表 接口实现
@@ -21,7 +19,7 @@ namespace CoreCms.Net.Services
         public GoodsCollectionServices(IUnitOfWork unitOfWork, IGoodsCollectionRepository dal)
         {
             _dal = dal;
-            base.BaseDal = dal;
+            BaseDal = dal;
             _unitOfWork = unitOfWork;
         }
 

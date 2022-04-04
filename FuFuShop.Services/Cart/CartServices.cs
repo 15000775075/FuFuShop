@@ -1,11 +1,10 @@
-
-using CoreCms.Net.IServices;
 using FuFuShop.Common.AppSettings;
-using FuFuShop.Model.Entitys;
+using FuFuShop.Model.Entities.Cart;
 using FuFuShop.Model.ViewModels.DTO;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository;
 using FuFuShop.Services.BaseServices;
+using FuFuShop.Services.Good;
 using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 
@@ -232,7 +231,7 @@ namespace FuFuShop.Services
                     continue;
                 }
                 //获取重量
-               // var goodsWeight = await goodsServices.GetWeight(item.productId);
+                // var goodsWeight = await goodsServices.GetWeight(item.productId);
 
                 //开始赋值
                 cartProducts.id = item.id;
@@ -240,7 +239,7 @@ namespace FuFuShop.Services
                 cartProducts.productId = item.productId;
                 cartProducts.nums = item.nums;
                 cartProducts.type = item.type;
-               // cartProducts.weight = goodsWeight;
+                // cartProducts.weight = goodsWeight;
                 cartProducts.products = productInfo;
                 //如果传过来了购物车数据，就算指定的购物车的数据，否则，就算全部购物车的数据
                 if (ids != null && ids.Any() && ids.Contains(item.id))
@@ -252,7 +251,7 @@ namespace FuFuShop.Services
                     cartProducts.isSelect = false;
                 }
                 //判断商品是否已收藏
-                cartProducts.isCollection = await _goodsCollectionServices.Check(userId, (int)cartProducts.products.goodsId);
+                cartProducts.isCollection = await _goodsCollectionServices.Check(userId, cartProducts.products.goodsId);
 
                 cartDto.list.Add(cartProducts);
             }
@@ -301,7 +300,7 @@ namespace FuFuShop.Services
                     item.isSelect = false;
                 }
                 //单条商品总价
-                item.products.amount = Math.Round(item.nums * (decimal)item.products.price, 2);
+                item.products.amount = Math.Round(item.nums * item.products.price, 2);
 
                 if (item.isSelect)
                 {
@@ -319,7 +318,7 @@ namespace FuFuShop.Services
             {
                 freeFreight = true;
             }
-          
+
             jm.status = true;
             jm.data = cartDto;
             jm.msg = "4";

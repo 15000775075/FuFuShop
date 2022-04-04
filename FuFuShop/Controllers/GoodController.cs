@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using CoreCms.Net.IServices;
 using FuFuShop.Common.Auth.HttpContextUser;
 using FuFuShop.Common.Extensions;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.DTO;
 using FuFuShop.Model.ViewModels.UI;
+using FuFuShop.Services.Good;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SqlSugar;

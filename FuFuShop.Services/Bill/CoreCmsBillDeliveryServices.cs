@@ -1,16 +1,15 @@
-using CoreCms.Net.IServices;
 using CoreCms.Net.Model.Entities;
-using FuFuShop.IRepository;
+using FuFuShop.Repository.Bill;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 
 
-namespace FuFuShop.Services
+namespace FuFuShop.Services.Bill
 {
     /// <summary>
     /// 发货单表 接口实现
     /// </summary>
-    public class CoreCmsBillDeliveryServices : BaseServices<CoreCmsBillDelivery>, ICoreCmsBillDeliveryServices
+    public class BillDeliveryServices : BaseServices<BillDelivery>, IBillDeliveryServices
     {
         private readonly IBillDeliveryRepository _dal;
         private readonly IBillDeliveryItemServices _billDeliveryItemServices;
@@ -19,14 +18,14 @@ namespace FuFuShop.Services
 
 
 
-        public CoreCmsBillDeliveryServices(
+        public BillDeliveryServices(
             IUnitOfWork unitOfWork,
             IServiceProvider serviceProvider
             , IBillDeliveryRepository dal
             , IBillDeliveryItemServices billDeliveryItemServices)
         {
             _dal = dal;
-            base.BaseDal = dal;
+            BaseDal = dal;
             _unitOfWork = unitOfWork;
             _serviceProvider = serviceProvider;
             _billDeliveryItemServices = billDeliveryItemServices;

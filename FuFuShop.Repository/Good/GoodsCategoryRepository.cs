@@ -1,13 +1,12 @@
 using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Caching.Manual;
-using FuFuShop.IRepository;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 using SqlSugar;
 
-namespace FuFuShop.Repository
+namespace FuFuShop.Repository.Good
 {
     /// <summary>
     /// 商品分类 接口实现

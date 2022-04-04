@@ -1,4 +1,3 @@
-using FuFuShop.IRepository;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.Basics;
 using FuFuShop.Model.ViewModels.UI;
@@ -8,7 +7,7 @@ using SqlSugar;
 using System.Linq.Expressions;
 using GoodsCollection = FuFuShop.Model.Entities.GoodsCollection;
 
-namespace FuFuShop.Repository
+namespace FuFuShop.Repository.Good
 {
     /// <summary>
     /// 商品收藏表 接口实现

@@ -2,7 +2,7 @@ using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services.BaseServices;
 
-namespace CoreCms.Net.IServices
+namespace FuFuShop.Services.Good
 {
     /// <summary>
     ///     商品分类 服务工厂接口

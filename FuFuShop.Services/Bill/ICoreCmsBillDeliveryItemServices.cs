@@ -1,8 +1,7 @@
-
-using CoreCms.Net.Model.Entities;
+using FuFuShop.Model.Entities.Bill;
 using FuFuShop.Services.BaseServices;
 
-namespace CoreCms.Net.IServices
+namespace FuFuShop.Services.Bill
 {
     /// <summary>
     ///     发货单详情表 服务工厂接口

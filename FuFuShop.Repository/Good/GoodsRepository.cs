@@ -1,12 +1,11 @@
-
 using CoreCms.Net.Model.Entities;
-using FuFuShop.IRepository;
 using FuFuShop.Model.Entities;
+using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 using SqlSugar;
 
-namespace FuFuShop.Repository
+namespace FuFuShop.Repository.Good
 {
     /// <summary>
     /// 商品表 接口实现
@@ -145,12 +144,16 @@ namespace FuFuShop.Repository
         }
 
         // 随机抽取数组中的数据
-        static int GetRandomNumber(int[] a)
+        private static int GetRandomNumber(int[] a)
         {
             Random rnd = new Random();
             int index = rnd.Next(a.Length);
             return a[index];
         }
 
+        public WebApiCallBack ChangeStock(int productsId, string type = "order", int num = 0)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

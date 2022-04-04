@@ -1,7 +1,7 @@
 ﻿using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace FuFuShop.Model.Entitys
+namespace FuFuShop.Model.Entities
 {
     /// <summary>
     ///     微信授权交互

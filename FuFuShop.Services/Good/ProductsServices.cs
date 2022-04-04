@@ -1,16 +1,14 @@
-
-using CoreCms.Net.IServices;
 using CoreCms.Net.Model.Entities;
 using FuFuShop.Common.Helper;
-using FuFuShop.IRepository;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.DTO;
+using FuFuShop.Repository.Good;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 using FuFuShop.Services.User;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FuFuShop.Services
+namespace FuFuShop.Services.Good
 {
     /// <summary>
     /// 货品表 接口实现
@@ -26,7 +24,7 @@ namespace FuFuShop.Services
             )
         {
             _dal = dal;
-            base.BaseDal = dal;
+            BaseDal = dal;
             _unitOfWork = unitOfWork;
             _serviceProvider = serviceProvider;
         }

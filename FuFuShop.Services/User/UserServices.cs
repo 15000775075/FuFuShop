@@ -1,5 +1,4 @@
-using FuFuShop.Common.Auth;
-using FuFuShop.Model.Entitys;
+using FuFuShop.Model.Entities;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Repository.User;
 using FuFuShop.Services.BaseServices;
@@ -15,14 +14,14 @@ namespace FuFuShop.Services.User
         private readonly IUserRepository _dal;
 
         private readonly IUnitOfWork _unitOfWork;
-       // private readonly PermissionRequirement _permissionRequirement;
+        // private readonly PermissionRequirement _permissionRequirement;
         private readonly IHttpContextAccessor _httpContextAccessor;
-     //   private readonly IUserLogServices _userLogServices;
+        //   private readonly IUserLogServices _userLogServices;
 
         public UserServices(IUnitOfWork unitOfWork,
             IUserRepository dal,
              IHttpContextAccessor httpContextAccessor
-          //   IUserLogServices userLogServices,
+            //   IUserLogServices userLogServices,
             //  PermissionRequirement permissionRequirement
             )
         {
@@ -30,9 +29,9 @@ namespace FuFuShop.Services.User
             BaseDal = dal;
             _unitOfWork = unitOfWork;
 
-           // _permissionRequirement = permissionRequirement;
+            // _permissionRequirement = permissionRequirement;
             _httpContextAccessor = httpContextAccessor;
-           // _userLogServices = userLogServices;
+            // _userLogServices = userLogServices;
         }
 
 

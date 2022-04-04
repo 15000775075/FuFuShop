@@ -79,11 +79,11 @@ namespace FuFuShop.Model.Entities
         public bool isFav { get; set; } = false;
 
 
-   
+
         /// <summary>
         ///     标签列表
         /// </summary>
-       // [SugarColumn(IsIgnore = true)]
+        // [SugarColumn(IsIgnore = true)]
         //public List<CoreCmsLabel> labels { get; set; } = new();
 
         /// <summary>

@@ -3,7 +3,6 @@ using FuFuShop.Repository;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 
-
 namespace FuFuShop.Services
 {
     /// <summary>
@@ -21,7 +20,7 @@ namespace FuFuShop.Services
         {
             _serviceProvider = serviceProvider;
             _dal = dal;
-            base.BaseDal = dal;
+            BaseDal = dal;
             _unitOfWork = unitOfWork;
         }
 

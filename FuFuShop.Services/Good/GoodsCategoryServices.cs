@@ -1,11 +1,10 @@
-using CoreCms.Net.IServices;
-using FuFuShop.IRepository;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.UI;
+using FuFuShop.Repository.Good;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 
-namespace FuFuShop.Services
+namespace FuFuShop.Services.Good
 {
     /// <summary>
     /// 商品分类 接口实现
@@ -17,7 +16,7 @@ namespace FuFuShop.Services
         public GoodsCategoryServices(IUnitOfWork unitOfWork, IGoodsCategoryRepository dal)
         {
             _dal = dal;
-            base.BaseDal = dal;
+            BaseDal = dal;
             _unitOfWork = unitOfWork;
         }
 

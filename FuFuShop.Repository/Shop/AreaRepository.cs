@@ -1,13 +1,12 @@
-using CoreCms.Net.Model.Entities;
 using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Caching.Manual;
-using FuFuShop.IRepository;
+using FuFuShop.Model.Entities.Shop;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 using SqlSugar;
 
-namespace FuFuShop.Repository
+namespace FuFuShop.Repository.Shop
 {
     /// <summary>
     /// 地区表 接口实现

@@ -5,7 +5,7 @@ using SqlSugar;
 using System.Linq.Expressions;
 using GoodsCollection = FuFuShop.Model.Entities.GoodsCollection;
 
-namespace CoreCms.Net.IServices
+namespace FuFuShop.Services.Good
 {
     /// <summary>
     ///     商品收藏表 服务工厂接口

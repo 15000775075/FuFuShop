@@ -1,6 +1,6 @@
 ﻿using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Auth;
-using FuFuShop.Model.Entitys;
+using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services;

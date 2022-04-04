@@ -1,4 +1,4 @@
-using FuFuShop.Model.Entitys;
+using FuFuShop.Model.Entities;
 using FuFuShop.Services.BaseServices;
 
 namespace FuFuShop.Services.User

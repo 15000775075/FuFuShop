@@ -6,7 +6,7 @@ namespace CoreCms.Net.Model.Entities
     /// <summary>
     /// 发货单表
     /// </summary>
-    public partial class CoreCmsBillDelivery
+    public partial class BillDelivery
     {
 
         /// <summary>

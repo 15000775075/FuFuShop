@@ -1,4 +1,3 @@
-using FuFuShop.Model.Entitys;
 using SqlSugar;
 
 namespace FuFuShop.Model.Entities

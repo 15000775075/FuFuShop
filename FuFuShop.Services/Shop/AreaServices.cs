@@ -1,16 +1,15 @@
-﻿using CoreCms.Net.IServices;
-using CoreCms.Net.Model.Entities;
-using FuFuShop.Common.AppSettings;
-using FuFuShop.IRepository;
+﻿using FuFuShop.Common.AppSettings;
+using FuFuShop.Model.Entities.Shop;
 using FuFuShop.Model.ViewModels.Basics;
 using FuFuShop.Model.ViewModels.DTO;
 using FuFuShop.Model.ViewModels.UI;
+using FuFuShop.Repository.Shop;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 using SqlSugar;
 using System.Linq.Expressions;
 
-namespace FuFuShop.Services.Basic
+namespace FuFuShop.Services.Shop
 {
     public class AreaServices : BaseServices<Area>, IAreaServices
     {
@@ -19,7 +18,7 @@ namespace FuFuShop.Services.Basic
         public AreaServices(IUnitOfWork unitOfWork, IAreaRepository dal)
         {
             _dal = dal;
-            base.BaseDal = dal;
+            BaseDal = dal;
             _unitOfWork = unitOfWork;
         }
 

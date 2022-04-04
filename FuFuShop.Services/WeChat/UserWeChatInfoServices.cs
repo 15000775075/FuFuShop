@@ -1,4 +1,4 @@
-using FuFuShop.Model.Entitys;
+using FuFuShop.Model.Entities;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Repository.WeChat;
 using FuFuShop.Services.BaseServices;

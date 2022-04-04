@@ -1,7 +1,6 @@
 using CoreCms.Net.Model.Entities;
 using FuFuShop.Common.Auth.HttpContextUser;
 using FuFuShop.Common.Extensions;
-using FuFuShop.IRepository;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.Basics;
 using FuFuShop.Repository.BaseRepository;
@@ -9,7 +8,7 @@ using FuFuShop.Repository.UnitOfWork;
 using SqlSugar;
 using System.Linq.Expressions;
 
-namespace FuFuShop.Repository
+namespace FuFuShop.Repository.Good
 {
     /// <summary>
     /// 货品表 接口实现
@@ -45,7 +44,7 @@ namespace FuFuShop.Repository
                 .Select((products, goods) => new
                 {
                     productsId = products.id,
-                    isMarketable = goods.isMarketable
+                    goods.isMarketable
                 }).FirstAsync();
             return data != null && data.isMarketable == true;
         }

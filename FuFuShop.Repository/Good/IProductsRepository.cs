@@ -4,7 +4,7 @@ using FuFuShop.Repository.BaseRepository;
 using SqlSugar;
 using System.Linq.Expressions;
 
-namespace FuFuShop.IRepository
+namespace FuFuShop.Repository.Good
 {
     /// <summary>
     ///     货品表 工厂接口

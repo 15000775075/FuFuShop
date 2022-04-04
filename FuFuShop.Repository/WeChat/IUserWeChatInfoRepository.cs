@@ -1,4 +1,4 @@
-using FuFuShop.Model.Entitys;
+using FuFuShop.Model.Entities;
 using FuFuShop.Repository.BaseRepository;
 
 namespace FuFuShop.Repository.WeChat

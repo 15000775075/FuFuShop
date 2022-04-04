@@ -1,10 +1,9 @@
-using CoreCms.Net.IServices;
-using FuFuShop.IRepository;
-using FuFuShop.Model.Entities;
+using FuFuShop.Model.Entities.Good;
+using FuFuShop.Repository.Good;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 
-namespace FuFuShop.Services
+namespace FuFuShop.Services.Good
 {
     /// <summary>
     /// 商品分类扩展表 接口实现
@@ -16,7 +15,7 @@ namespace FuFuShop.Services
         public GoodsCategoryExtendServices(IUnitOfWork unitOfWork, IGoodsCategoryExtendRepository dal)
         {
             _dal = dal;
-            base.BaseDal = dal;
+            BaseDal = dal;
             _unitOfWork = unitOfWork;
         }
 

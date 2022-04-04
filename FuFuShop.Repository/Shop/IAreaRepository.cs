@@ -1,8 +1,8 @@
-using CoreCms.Net.Model.Entities;
+using FuFuShop.Model.Entities.Shop;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 
-namespace FuFuShop.IRepository
+namespace FuFuShop.Repository.Shop
 {
     /// <summary>
     ///     地区表 工厂接口

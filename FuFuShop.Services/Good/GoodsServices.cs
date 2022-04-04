@@ -1,11 +1,10 @@
-using CoreCms.Net.IServices;
-using FuFuShop.IRepository;
 using FuFuShop.Model.Entities;
+using FuFuShop.Model.ViewModels.UI;
+using FuFuShop.Repository.Good;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 
-
-namespace FuFuShop.Services
+namespace FuFuShop.Services.Good
 {
     /// <summary>
     /// 商品表 接口实现
@@ -19,15 +18,15 @@ namespace FuFuShop.Services
         private readonly IOrderItemServices _orderItemServices;
 
 
-        public GoodsServices(IUnitOfWork unitOfWork, 
-            IProductsServices productsServices, 
-            IGoodsCollectionServices goodsCollectionServices, 
+        public GoodsServices(IUnitOfWork unitOfWork,
+            IProductsServices productsServices,
+            IGoodsCollectionServices goodsCollectionServices,
             IGoodsRepository dal,
             IOrderItemServices orderItemServices
         )
         {
             _dal = dal;
-            base.BaseDal = dal;
+            BaseDal = dal;
             _unitOfWork = unitOfWork;
             _productsServices = productsServices;
             _goodsCollectionServices = goodsCollectionServices;
@@ -74,7 +73,7 @@ namespace FuFuShop.Services
             model.freezeStock = getProductInfo.freezeStock;
             model.weight = getProductInfo.weight;
 
-           //取出销量
+            //取出销量
             model.buyCount = await _orderItemServices.GetCountAsync(p => p.goodsId == model.id);
             return model;
         }
@@ -89,6 +88,25 @@ namespace FuFuShop.Services
         {
             return await _dal.GetGoodsRecommendList(number, isRecommend);
         }
+
+
+        #region 库存改变机制
+        /// <summary>
+        /// 库存改变机制。
+        /// 库存机制：商品下单 总库存不变，冻结库存加1，
+        /// 商品发货：冻结库存减1，总库存减1，
+        /// 订单完成但未发货：总库存不变，冻结库存减1
+        /// 商品退款&取消订单：总库存不变，冻结库存减1,
+        /// 商品退货：总库存加1，冻结库存不变,
+        /// 可销售库存：总库存-冻结库存
+        /// </summary>
+        /// <returns></returns>
+        public WebApiCallBack ChangeStock(int productsId, string type = "order", int num = 0)
+        {
+
+            return _dal.ChangeStock(productsId, type, num);
+        }
+        #endregion
 
 
     }

@@ -1,8 +1,7 @@
-
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace CoreCms.Net.Model.Entities
+namespace FuFuShop.Model.Entities.Bill
 {
     /// <summary>
     /// 发货单详情表
@@ -27,7 +26,7 @@ namespace CoreCms.Net.Model.Entities
 
 
 
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
 
 
         /// <summary>
@@ -39,7 +38,7 @@ namespace CoreCms.Net.Model.Entities
         [StringLength(maximumLength: 20, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String orderId { get; set; }
+        public string orderId { get; set; }
 
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace CoreCms.Net.Model.Entities
         [StringLength(maximumLength: 20, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String deliveryId { get; set; }
+        public string deliveryId { get; set; }
 
 
         /// <summary>
@@ -63,7 +62,7 @@ namespace CoreCms.Net.Model.Entities
 
 
 
-        public System.Int32 goodsId { get; set; }
+        public int goodsId { get; set; }
 
 
         /// <summary>
@@ -75,7 +74,7 @@ namespace CoreCms.Net.Model.Entities
 
 
 
-        public System.Int32 productId { get; set; }
+        public int productId { get; set; }
 
 
         /// <summary>
@@ -87,7 +86,7 @@ namespace CoreCms.Net.Model.Entities
         [StringLength(maximumLength: 30, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String sn { get; set; }
+        public string sn { get; set; }
 
 
         /// <summary>
@@ -99,7 +98,7 @@ namespace CoreCms.Net.Model.Entities
         [StringLength(maximumLength: 30, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String bn { get; set; }
+        public string bn { get; set; }
 
 
         /// <summary>
@@ -111,7 +110,7 @@ namespace CoreCms.Net.Model.Entities
         [StringLength(maximumLength: 200, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String name { get; set; }
+        public string name { get; set; }
 
 
         /// <summary>
@@ -123,7 +122,7 @@ namespace CoreCms.Net.Model.Entities
 
 
 
-        public System.Int32 nums { get; set; }
+        public int nums { get; set; }
 
 
         /// <summary>
@@ -135,7 +134,7 @@ namespace CoreCms.Net.Model.Entities
 
 
 
-        public System.Decimal weight { get; set; }
+        public decimal weight { get; set; }
 
 
         /// <summary>
@@ -147,7 +146,7 @@ namespace CoreCms.Net.Model.Entities
 
 
 
-        public System.String addon { get; set; }
+        public string addon { get; set; }
 
 
     }

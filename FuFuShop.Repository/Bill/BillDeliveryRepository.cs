@@ -1,16 +1,15 @@
 using CoreCms.Net.Model.Entities;
-using FuFuShop.IRepository;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 using SqlSugar;
 
-namespace FuFuShop.Repository
+namespace FuFuShop.Repository.Bill
 {
     /// <summary>
     /// 发货单表 接口实现
     /// </summary>
-    public class BillDeliveryRepository : BaseRepository<CoreCmsBillDelivery>, IBillDeliveryRepository
+    public class BillDeliveryRepository : BaseRepository<BillDelivery>, IBillDeliveryRepository
     {
         public BillDeliveryRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
@@ -24,7 +23,7 @@ namespace FuFuShop.Repository
         {
             var dt = DateTime.Now.AddDays(-8);
 
-            var list = await DbClient.Queryable<CoreCmsBillDelivery>()
+            var list = await DbClient.Queryable<BillDelivery>()
                 .Where(p => p.createTime >= dt)
                 .Select(it => new
                 {

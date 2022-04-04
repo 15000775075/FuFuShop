@@ -1,7 +1,7 @@
 ﻿using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace FuFuShop.Model.Entitys
+namespace FuFuShop.Model.Entities.Cart
 {
     /// <summary>
     /// 购物车表
@@ -22,35 +22,35 @@ namespace FuFuShop.Model.Entitys
         [Display(Name = "序列")]
         [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
         /// <summary>
         /// 用户序列
         /// </summary>
         [Display(Name = "用户序列")]
         [SugarColumn(ColumnDescription = "用户序列")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 userId { get; set; }
+        public int userId { get; set; }
         /// <summary>
         /// 货品序列
         /// </summary>
         [Display(Name = "货品序列")]
         [SugarColumn(ColumnDescription = "货品序列")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 productId { get; set; }
+        public int productId { get; set; }
         /// <summary>
         /// 货品数量
         /// </summary>
         [Display(Name = "货品数量")]
         [SugarColumn(ColumnDescription = "货品数量")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 nums { get; set; }
+        public int nums { get; set; }
         /// <summary>
         /// 购物车类型
         /// </summary>
         [Display(Name = "购物车类型")]
         [SugarColumn(ColumnDescription = "购物车类型")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 type { get; set; }
+        public int type { get; set; }
 
 
 
