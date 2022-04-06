@@ -4,24 +4,37 @@ using Autofac.Extensions.DependencyInjection;
 using Essensoft.Paylink.Alipay;
 using Essensoft.Paylink.WeChatPay;
 using FuFuShop.Common.AppSettings;
+using FuFuShop.Common.Auth;
 using FuFuShop.Common.Auth.HttpContextUser;
 using FuFuShop.Common.AutoFac;
+using FuFuShop.Common.Caching;
+using FuFuShop.Common.Extensions;
 using FuFuShop.Common.Helper;
 using FuFuShop.Common.Loging;
 using FuFuShop.Filter;
 using FuFuShop.Model.ViewModels.Mapping;
+using FuFuShop.Tasks.Tasks;
 using FuFuShop.WeChat.Options;
 using FuFuShop.WeChat.Service.HttpClients;
 using FuFuShop.WeChat.Services.HttpClients;
+using Hangfire;
+using Hangfire.Dashboard.BasicAuthorization;
+using Hangfire.Redis;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SqlSugar;
 using SqlSugar.IOC;
-
-
+using StackExchange.Redis;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -119,31 +132,141 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IWeChatApiHttpClientFactory, WeChatApiHttpClientFactory>();
 
 
+#region Redis
+builder.Services.AddTransient<IRedisOperationRepository, RedisOperationRepository>();
+
+// 配置启动Redis服务，虽然可能影响项目启动速度，但是不能在运行的时候报错，所以是合理的
+builder.Services.AddSingleton<ConnectionMultiplexer>(sp =>
+{
+    //获取连接字符串
+    string redisConfiguration = AppSettingsConstVars.RedisConfigConnectionString;
+
+    var configuration = ConfigurationOptions.Parse(redisConfiguration, true);
+
+    configuration.ResolveDns = true;
+
+    return ConnectionMultiplexer.Connect(configuration);
+});
+#endregion
+
+#region   Authorization
+//读取配置文件
+var symmetricKeyAsBase64 = AppSettingsConstVars.JwtConfigSecretKey;
+var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
+var signingKey = new SymmetricSecurityKey(keyByteArray);
+var issuer = AppSettingsConstVars.JwtConfigIssuer;
+var audience = AppSettingsConstVars.JwtConfigAudience;
+
+var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+
+// 如果要数据库动态绑定，这里先留个空，后边处理器里动态赋值
+var permission = new List<PermissionItem>();
+
+// 角色与接口的权限要求参数
+var permissionRequirement = new PermissionRequirement(
+    "/api/denied",// 拒绝授权的跳转地址（目前无用）
+    permission,
+    ClaimTypes.Role,//基于角色的授权
+    issuer,//发行人
+    audience,//听众
+    signingCredentials,//签名凭据
+    expiration: TimeSpan.FromSeconds(60 * 60 * 24)//接口的过期时间
+    );
+
+
+// 复杂的策略授权
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(Permissions.Name, policy => policy.Requirements.Add(permissionRequirement));
+});
+
+
+// 令牌验证参数
+var tokenValidationParameters = new TokenValidationParameters
+{
+    ValidateIssuerSigningKey = true, //是否验证SecurityKey
+    IssuerSigningKey = signingKey, //拿到SecurityKey
+    ValidateIssuer = true, //是否验证Issuer
+    ValidIssuer = issuer,//发行人
+    ValidateAudience = true, //是否验证Audience
+    ValidAudience = audience,//订阅人
+    ValidateLifetime = true, //是否验证失效时间
+    ClockSkew = TimeSpan.FromSeconds(60),
+    RequireExpirationTime = true,
+};
+
+// core自带官方JWT认证，开启Bearer认证
+builder.Services.AddAuthentication(o =>
+{
+    o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    o.DefaultChallengeScheme = nameof(ApiResponseHandler);
+    o.DefaultForbidScheme = nameof(ApiResponseHandler);
+})
+ // 添加JwtBearer服务
+ .AddJwtBearer(o =>
+ {
+     o.TokenValidationParameters = tokenValidationParameters;
+     o.Events = new JwtBearerEvents
+     {
+         OnChallenge = context =>
+         {
+             context.Response.Headers.Add("Token-Error", context.ErrorDescription);
+             return Task.CompletedTask;
+         },
+         OnAuthenticationFailed = context =>
+         {
+             var token = context.Request.Headers["Authorization"].ObjectToString().Replace("Bearer ", "");
+             var jwtToken = (new JwtSecurityTokenHandler()).ReadJwtToken(token);
+
+             if (jwtToken.Issuer != issuer)
+             {
+                 context.Response.Headers.Add("Token-Error-Iss", "issuer is wrong!");
+             }
+
+             if (jwtToken.Audiences.FirstOrDefault() != audience)
+             {
+                 context.Response.Headers.Add("Token-Error-Aud", "Audience is wrong!");
+             }
+
+             // 如果过期，则把<是否过期>添加到，返回头信息中
+             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+             {
+                 context.Response.Headers.Add("Token-Expired", "true");
+             }
+             return Task.CompletedTask;
+         }
+     };
+ })
+ .AddScheme<AuthenticationSchemeOptions, ApiResponseHandler>(nameof(ApiResponseHandler), o => { });
+
+
+// 注入权限处理器
+builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+builder.Services.AddSingleton(permissionRequirement);
+#endregion
 #region     Hangfire
 
+//注册Hangfire定时任务
 
-//var configuration = ConfigurationOptions.Parse(AppSettingsConstVars.RedisConfigConnectionString, true);
-//_redis = ConnectionMultiplexer.Connect(configuration);
-//var db = _redis.GetDatabase();
+var configuration = ConfigurationOptions.Parse(AppSettingsConstVars.RedisConfigConnectionString, true);
+var db = ConnectionMultiplexer.Connect(configuration).GetDatabase();
 
-//services.AddHangfire(x => x.UseRedisStorage(_redis, new RedisStorageOptions()
-//{
-//    Db = db.Database, //建议根据
-//    SucceededListSize = 500,//后续列表中的最大可见后台作业，以防止它无限增长。
-//    DeletedListSize = 500,//删除列表中的最大可见后台作业，以防止其无限增长。
-//    InvisibilityTimeout = TimeSpan.FromMinutes(30),
-//}));
+builder.Services.AddHangfire(x => x.UseRedisStorage(ConnectionMultiplexer.Connect(configuration), new RedisStorageOptions()
+{
+    Db = db.Database, //建议根据
+    SucceededListSize = 500,//后续列表中的最大可见后台作业，以防止它无限增长。
+    DeletedListSize = 500,//删除列表中的最大可见后台作业，以防止其无限增长。
+    InvisibilityTimeout = TimeSpan.FromMinutes(30),
+}));
 
-
-//builder.Services.AddHangfireServer(options =>
-//{
-//    options.Queues = new[] { GlobalEnumVars.HangFireQueuesConfig.@default.ToString(), GlobalEnumVars.HangFireQueuesConfig.apis.ToString(), GlobalEnumVars.HangFireQueuesConfig.web.ToString(), GlobalEnumVars.HangFireQueuesConfig.recurring.ToString() };
-//    options.ServerTimeout = TimeSpan.FromMinutes(4);
-//    options.SchedulePollingInterval = TimeSpan.FromSeconds(15);//秒级任务需要配置短点，一般任务可以配置默认时间，默认15秒
-//    options.ShutdownTimeout = TimeSpan.FromMinutes(5); //超时时间
-//    options.WorkerCount = Math.Max(Environment.ProcessorCount, 20); //工作线程数，当前允许的最大线程，默认20
-//});
-
+builder.Services.AddHangfireServer(options =>
+{
+    options.Queues = new[] { GlobalEnumVars.HangFireQueuesConfig.@default.ToString(), GlobalEnumVars.HangFireQueuesConfig.apis.ToString(), GlobalEnumVars.HangFireQueuesConfig.web.ToString(), GlobalEnumVars.HangFireQueuesConfig.recurring.ToString() };
+    options.ServerTimeout = TimeSpan.FromMinutes(4);
+    options.SchedulePollingInterval = TimeSpan.FromSeconds(15);//秒级任务需要配置短点，一般任务可以配置默认时间，默认15秒
+    options.ShutdownTimeout = TimeSpan.FromMinutes(5); //超时时间
+    options.WorkerCount = Math.Max(Environment.ProcessorCount, 20); //工作线程数，当前允许的最大线程，默认20
+});
 #endregion
 
 
@@ -205,5 +328,46 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+#region Hangfire定时任务
+
+//授权
+var filter = new BasicAuthAuthorizationFilter(
+    new BasicAuthAuthorizationFilterOptions
+    {
+        SslRedirect = false,
+        // Require secure connection for dashboard
+        RequireSsl = false,
+        // Case sensitive login checking
+        LoginCaseSensitive = false,
+        // Users
+        Users = new[]
+        {
+                        new BasicAuthAuthorizationUser
+                        {
+                            Login = AppSettingsConstVars.HangFireLogin,
+                            PasswordClear = AppSettingsConstVars.HangFirePassWord
+                        }
+        }
+    });
+var options = new DashboardOptions
+{
+    AppPath = "/",//返回时跳转的地址
+    DisplayStorageConnectionString = false,//是否显示数据库连接信息
+    Authorization = new[]
+    {
+                    filter
+                },
+    IsReadOnlyFunc = Context =>
+    {
+        return false;//是否只读面板
+    }
+};
+
+app.UseHangfireDashboard("/job", options); //可以改变Dashboard的url
+HangfireDispose.HangfireService();
+
+#endregion
+
 
 app.Run();
