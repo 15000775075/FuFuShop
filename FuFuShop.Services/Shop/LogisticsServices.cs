@@ -1,8 +1,5 @@
-using Flurl.Http;
 using FuFuShop.Common.AppSettings;
-using FuFuShop.Common.Helper;
 using FuFuShop.Model.Entities.Shop;
-using FuFuShop.Model.ViewModels.Api;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
@@ -16,14 +13,17 @@ namespace FuFuShop.Services.Shop
     {
         private readonly ILogisticsRepository _dal;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ISettingServices _settingServices;
+        //  private readonly ISettingServices _settingServices;
 
-        public LogisticsServices(IUnitOfWork unitOfWork, ILogisticsRepository dal, ISettingServices settingServices)
+        public LogisticsServices(IUnitOfWork unitOfWork
+            , ILogisticsRepository dal
+            //,  ISettingServices settingServices
+            )
         {
             _dal = dal;
             BaseDal = dal;
             _unitOfWork = unitOfWork;
-            _settingServices = settingServices;
+            //   _settingServices = settingServices;
         }
 
 
@@ -46,183 +46,183 @@ namespace FuFuShop.Services.Shop
         }
 
 
-        /// <summary>
-        /// 通过接口更新所有快递公司信息
-        /// </summary>
-        public async Task<AdminUiCallBack> DoUpdateCompany()
-        {
-            var jm = new AdminUiCallBack();
+        ///// <summary>
+        ///// 通过接口更新所有快递公司信息
+        ///// </summary>
+        //public async Task<AdminUiCallBack> DoUpdateCompany()
+        //{
+        //    var jm = new AdminUiCallBack();
 
-            var allConfigs = await _settingServices.GetConfigDictionaries();
-            var showApiAppid = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShowApiAppid);
-            var showApiSecret = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShowApiSecret);
-            var shopMobile = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShopMobile);
+        //    var allConfigs = await _settingServices.GetConfigDictionaries();
+        //    var showApiAppid = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShowApiAppid);
+        //    var showApiSecret = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShowApiSecret);
+        //    var shopMobile = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShopMobile);
 
-            var showApiTimesTamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+        //    var showApiTimesTamp = DateTime.Now.ToString("yyyyMMddHHmmss");
 
-            var maxSize = 1500;
-            var signStr = "maxSize" + maxSize + "showapi_appid" + showApiAppid + "showapi_timestamp" + showApiTimesTamp + showApiSecret;
-            var md5Sign = CommonHelper.Md5For32(signStr).ToLower();
+        //    var maxSize = 1500;
+        //    var signStr = "maxSize" + maxSize + "showapi_appid" + showApiAppid + "showapi_timestamp" + showApiTimesTamp + showApiSecret;
+        //    var md5Sign = CommonHelper.Md5For32(signStr).ToLower();
 
-            var url = "https://route.showapi.com/64-20?expName=&maxSize=1500&page=&showapi_appid=" + showApiAppid +
-                      "&showapi_timestamp=" + showApiTimesTamp + "&showapi_sign=" + md5Sign;
-            var person = await url.GetJsonAsync<ShowApiGetExpressCompanyListResult>();
+        //    var url = "https://route.showapi.com/64-20?expName=&maxSize=1500&page=&showapi_appid=" + showApiAppid +
+        //              "&showapi_timestamp=" + showApiTimesTamp + "&showapi_sign=" + md5Sign;
+        //    var person = await url.GetJsonAsync<ShowApiGetExpressCompanyListResult>();
 
-            if (person.showapi_res_code == 0)
-            {
-                if (person.showapi_res_body != null && person.showapi_res_body.ret_code == 0 && person.showapi_res_body.expressList != null && person.showapi_res_body.expressList.Count > 0)
-                {
-                    var list = new List<Logistics>();
-
-
-                    var systemLogistics = SystemSettingDictionary.GetSystemLogistics();
-                    systemLogistics.ForEach(p =>
-                    {
-                        var logistics = new Logistics();
-                        logistics.logiCode = p.sKey;
-                        logistics.logiName = p.sDescription;
-                        logistics.imgUrl = "";
-                        logistics.phone = shopMobile;
-                        logistics.url = "";
-                        logistics.sort = -1;
-                        logistics.isDelete = false;
-
-                        list.Add(logistics);
-                    });
+        //    if (person.showapi_res_code == 0)
+        //    {
+        //        if (person.showapi_res_body != null && person.showapi_res_body.ret_code == 0 && person.showapi_res_body.expressList != null && person.showapi_res_body.expressList.Count > 0)
+        //        {
+        //            var list = new List<Logistics>();
 
 
-                    var count = 0;
-                    person.showapi_res_body.expressList.ForEach(p =>
-                    {
-                        var logistics = new Logistics();
-                        logistics.logiCode = p.simpleName;
-                        logistics.logiName = p.expName;
-                        logistics.imgUrl = p.imgUrl;
-                        logistics.phone = p.phone;
-                        logistics.url = p.url;
-                        logistics.sort = count * 5;
-                        logistics.isDelete = false;
+        //            var systemLogistics = SystemSettingDictionary.GetSystemLogistics();
+        //            systemLogistics.ForEach(p =>
+        //            {
+        //                var logistics = new Logistics();
+        //                logistics.logiCode = p.sKey;
+        //                logistics.logiName = p.sDescription;
+        //                logistics.imgUrl = "";
+        //                logistics.phone = shopMobile;
+        //                logistics.url = "";
+        //                logistics.sort = -1;
+        //                logistics.isDelete = false;
 
-                        list.Add(logistics);
-                        count++;
-                    });
-                    await _dal.DeleteAsync(p => p.id > 0);
-                    var bl = await _dal.InsertAsync(list) > 0;
-                    jm.code = bl ? 0 : 1;
-                    jm.msg = bl ? "数据刷新成功" : "数据刷新失败";
-                }
-                else
-                {
-                    jm.msg = "接口获取数据失败";
-                }
-            }
-            else
-            {
-                jm.msg = person.showapi_res_error;
-            }
-
-            return jm;
-        }
+        //                list.Add(logistics);
+        //            });
 
 
-        /// <summary>
-        /// 通过接口获取快递信息
-        /// </summary>
-        /// <param name="com">来源</param>
-        /// <param name="number">编号</param>
-        /// <param name="phone">手机号码</param>
-        /// <returns></returns>
-        public async Task<WebApiCallBack> ExpressPoll(string com, string number, string phone)
-        {
-            var jm = new WebApiCallBack();
+        //            var count = 0;
+        //            person.showapi_res_body.expressList.ForEach(p =>
+        //            {
+        //                var logistics = new Logistics();
+        //                logistics.logiCode = p.simpleName;
+        //                logistics.logiName = p.expName;
+        //                logistics.imgUrl = p.imgUrl;
+        //                logistics.phone = p.phone;
+        //                logistics.url = p.url;
+        //                logistics.sort = count * 5;
+        //                logistics.isDelete = false;
 
-            if (string.IsNullOrEmpty(com))
-            {
-                jm.msg = "请提交来源";
-                return jm;
-            }
-            else if (string.IsNullOrEmpty(number))
-            {
-                jm.msg = "请提交编号";
-                return jm;
-            }
-            else if (string.IsNullOrEmpty(phone))
-            {
-                jm.msg = "请提交手机号码";
-                return jm;
-            }
+        //                list.Add(logistics);
+        //                count++;
+        //            });
+        //            await _dal.DeleteAsync(p => p.id > 0);
+        //            var bl = await _dal.InsertAsync(list) > 0;
+        //            jm.code = bl ? 0 : 1;
+        //            jm.msg = bl ? "数据刷新成功" : "数据刷新失败";
+        //        }
+        //        else
+        //        {
+        //            jm.msg = "接口获取数据失败";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        jm.msg = person.showapi_res_error;
+        //    }
+
+        //    return jm;
+        //}
 
 
-            var allConfigs = await _settingServices.GetConfigDictionaries();
-            var showApiAppid = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShowApiAppid);
-            var showApiSecret = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShowApiSecret);
+        ///// <summary>
+        ///// 通过接口获取快递信息
+        ///// </summary>
+        ///// <param name="com">来源</param>
+        ///// <param name="number">编号</param>
+        ///// <param name="phone">手机号码</param>
+        ///// <returns></returns>
+        //public async Task<WebApiCallBack> ExpressPoll(string com, string number, string phone)
+        //{
+        //    var jm = new WebApiCallBack();
 
-            var showApiTimesTamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+        //    if (string.IsNullOrEmpty(com))
+        //    {
+        //        jm.msg = "请提交来源";
+        //        return jm;
+        //    }
+        //    else if (string.IsNullOrEmpty(number))
+        //    {
+        //        jm.msg = "请提交编号";
+        //        return jm;
+        //    }
+        //    else if (string.IsNullOrEmpty(phone))
+        //    {
+        //        jm.msg = "请提交手机号码";
+        //        return jm;
+        //    }
 
-            var signStr = "com" + com + "nu" + number + "phone" + phone + "showapi_appid" + showApiAppid + "showapi_timestamp" + showApiTimesTamp + showApiSecret;
-            var md5Sign = CommonHelper.Md5For32(signStr).ToLower();
 
-            var url = "https://route.showapi.com/64-19?com=" + com + "&nu=" + number + "&phone=" + phone + "&showapi_appid=" + showApiAppid +
-                      "&showapi_timestamp=" + showApiTimesTamp + "&showapi_sign=" + md5Sign;
-            var result = await url.GetJsonAsync<ShowApiGetExpressPollResult>();
+        //    var allConfigs = await _settingServices.GetConfigDictionaries();
+        //    var showApiAppid = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShowApiAppid);
+        //    var showApiSecret = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ShowApiSecret);
 
-            if (result.showapi_res_code != 0)
-            {
-                jm.status = false;
-                jm.msg = result.showapi_res_error;
-            }
-            else
-            {
-                switch (result.showapi_res_body.ret_code)
-                {
-                    case 0:
-                        jm.status = true;
-                        jm.msg = "查询成功";
-                        jm.data = result.showapi_res_body;
-                        break;
-                    case 1:
-                        jm.status = false;
-                        jm.msg = "输入参数错误";
-                        jm.data = result.showapi_res_body;
-                        break;
-                    case 2:
-                        jm.status = false;
-                        jm.msg = "查不到物流信息";
-                        jm.data = result.showapi_res_body;
-                        break;
-                    case 3:
-                        jm.status = false;
-                        jm.msg = "单号不符合规则";
-                        jm.data = result.showapi_res_body;
-                        break;
-                    case 4:
-                        jm.status = false;
-                        jm.msg = "快递公司编码不符合规则";
-                        jm.data = result.showapi_res_body;
-                        break;
-                    case 5:
-                        jm.status = false;
-                        jm.msg = "快递查询渠道异常";
-                        jm.data = result.showapi_res_body;
-                        break;
-                    case 6:
-                        jm.status = false;
-                        jm.msg = " auto时未查到单号对应的快递公司,请指定快递公司编码";
-                        jm.data = result.showapi_res_body;
-                        break;
-                    case 7:
-                        jm.status = false;
-                        jm.msg = "单号与手机号不匹配";
-                        jm.data = result.showapi_res_body;
-                        break;
-                    default:
-                        jm.status = false;
-                        jm.msg = "接口调用失败";
-                        jm.data = result.showapi_res_body;
-                        break;
-                }
-            }
-            return jm;
-        }
+        //    var showApiTimesTamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+
+        //    var signStr = "com" + com + "nu" + number + "phone" + phone + "showapi_appid" + showApiAppid + "showapi_timestamp" + showApiTimesTamp + showApiSecret;
+        //    var md5Sign = CommonHelper.Md5For32(signStr).ToLower();
+
+        //    var url = "https://route.showapi.com/64-19?com=" + com + "&nu=" + number + "&phone=" + phone + "&showapi_appid=" + showApiAppid +
+        //              "&showapi_timestamp=" + showApiTimesTamp + "&showapi_sign=" + md5Sign;
+        //    var result = await url.GetJsonAsync<ShowApiGetExpressPollResult>();
+
+        //    if (result.showapi_res_code != 0)
+        //    {
+        //        jm.status = false;
+        //        jm.msg = result.showapi_res_error;
+        //    }
+        //    else
+        //    {
+        //        switch (result.showapi_res_body.ret_code)
+        //        {
+        //            case 0:
+        //                jm.status = true;
+        //                jm.msg = "查询成功";
+        //                jm.data = result.showapi_res_body;
+        //                break;
+        //            case 1:
+        //                jm.status = false;
+        //                jm.msg = "输入参数错误";
+        //                jm.data = result.showapi_res_body;
+        //                break;
+        //            case 2:
+        //                jm.status = false;
+        //                jm.msg = "查不到物流信息";
+        //                jm.data = result.showapi_res_body;
+        //                break;
+        //            case 3:
+        //                jm.status = false;
+        //                jm.msg = "单号不符合规则";
+        //                jm.data = result.showapi_res_body;
+        //                break;
+        //            case 4:
+        //                jm.status = false;
+        //                jm.msg = "快递公司编码不符合规则";
+        //                jm.data = result.showapi_res_body;
+        //                break;
+        //            case 5:
+        //                jm.status = false;
+        //                jm.msg = "快递查询渠道异常";
+        //                jm.data = result.showapi_res_body;
+        //                break;
+        //            case 6:
+        //                jm.status = false;
+        //                jm.msg = " auto时未查到单号对应的快递公司,请指定快递公司编码";
+        //                jm.data = result.showapi_res_body;
+        //                break;
+        //            case 7:
+        //                jm.status = false;
+        //                jm.msg = "单号与手机号不匹配";
+        //                jm.data = result.showapi_res_body;
+        //                break;
+        //            default:
+        //                jm.status = false;
+        //                jm.msg = "接口调用失败";
+        //                jm.data = result.showapi_res_body;
+        //                break;
+        //        }
+        //    }
+        //    return jm;
+        //}
     }
 }

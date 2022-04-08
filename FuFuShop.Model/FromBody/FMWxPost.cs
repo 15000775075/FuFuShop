@@ -9,6 +9,8 @@
         ///     页面编码
         /// </summary>
         public string code { get; set; }
+
+        public FMWxSync userinfo { get; set; }
     }
 
     /// <summary>

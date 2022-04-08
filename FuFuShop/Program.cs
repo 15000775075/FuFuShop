@@ -27,11 +27,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SqlSugar;
 using SqlSugar.IOC;
 using StackExchange.Redis;
+using Swashbuckle.AspNetCore.Filters;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -46,8 +48,55 @@ builder.Services.AddSingleton(new LogLockHelper(builder.Environment.ContentRootP
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
+
+#region Swagger
+builder.Services.AddSwaggerGen((s) =>
+{
+    //遍历出全部的版本，做文档信息展示
+    typeof(CustomApiVersion.ApiVersions).GetEnumNames().ToList().ForEach(version =>
+    {
+        s.SwaggerDoc(version, new OpenApiInfo
+        {
+            Version = version,
+            Title = $"FuFuShop接口文档",
+            Description = $"FuFuShopHTTP API " + version,
+            Contact = new OpenApiContact { Name = "FuFuShopApi", Email = "", Url = new Uri("http://www.baidu.com") },
+        });
+        s.OrderActionsBy(o => o.RelativePath);
+    });
+
+    try
+    {
+        //生成API XML文档
+        var basePath = AppContext.BaseDirectory;
+        var xmlPath = Path.Combine(basePath, "doc.xml");
+        s.IncludeXmlComments(xmlPath);
+    }
+    catch (Exception ex)
+    {
+        NLogUtil.WriteFileLog(NLog.LogLevel.Error, LogType.Swagger, "Swagger", "Swagger生成失败，Doc.xml丢失，请检查并拷贝。", ex);
+    }
+
+    // 开启加权小锁
+    s.OperationFilter<AddResponseHeadersFilter>();
+    s.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
+
+    // 在header中添加token，传递到后台
+    s.OperationFilter<SecurityRequirementsOperationFilter>();
+
+    // 必须是 oauth2
+    s.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Description = "JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",
+        Name = "Authorization",//jwt默认的参数名称
+        In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
+        Type = SecuritySchemeType.ApiKey
+    });
+
+});
+
+#endregion
 
 #region   SqlSugar
 //注入 ORM
@@ -316,12 +365,19 @@ builder.Services.Replace(ServiceDescriptor.Transient<IControllerActivator, Servi
 #endregion
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger().UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    //根据版本名称倒序 遍历展示
+    typeof(CustomApiVersion.ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(
+        version =>
+        {
+            c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"Doc {version}");
+        });
+    //设置默认跳转到swagger-ui
+    c.RoutePrefix = "doc";
+    //c.RoutePrefix = string.Empty;
+});
+
 
 app.UseHttpsRedirection();
 

@@ -24,7 +24,6 @@ namespace FuFuShop.Services
         private readonly ILogServices _orderLogServices;
         private readonly ICartServices _cartServices;
         private readonly IGoodsServices _goodsServices;
-        private readonly ILogisticsServices _logisticsServices;
         private readonly IUserShipServices _userShipServices;
         private readonly IShipServices _shipServices;
 
@@ -34,7 +33,6 @@ namespace FuFuShop.Services
             , ILogServices orderLogServices,
             ICartServices cartServices,
              IGoodsServices goodsServices,
-              ILogisticsServices logisticsServices,
               IUserShipServices userShipServices,
                IShipServices shipServices)
         {
@@ -45,7 +43,6 @@ namespace FuFuShop.Services
             _orderLogServices = orderLogServices;
             _cartServices = cartServices;
             _goodsServices = goodsServices;
-            _logisticsServices = logisticsServices;
             _userShipServices = userShipServices;
             _shipServices = shipServices;
         }

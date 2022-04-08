@@ -26,8 +26,8 @@ namespace FuFuShop.Common.Auth
 
             var jm = new WebApiCallBack();
             jm.status = false;
-            jm.code = 14007;
-            jm.data = 14007;
+            jm.code = 401;
+            jm.data = 401;
             jm.msg = "很抱歉，授权失效，请重新登录!";
             await Response.WriteAsync(JsonConvert.SerializeObject(jm));
         }
@@ -40,8 +40,8 @@ namespace FuFuShop.Common.Auth
 
             var jm = new WebApiCallBack();
             jm.status = false;
-            jm.code = 14007;
-            jm.data = 14007;
+            jm.code = 401;
+            jm.data = 401;
             jm.msg = "很抱歉，授权失效，请重新登录!";
             await Response.WriteAsync(JsonConvert.SerializeObject(jm));
 
