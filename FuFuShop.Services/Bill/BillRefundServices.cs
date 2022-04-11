@@ -35,7 +35,7 @@ namespace FuFuShop.Services
             IAliPayServices aliPayServices,
             IWeChatPayServices weChatPayServices)
         {
-            this._dal = dal;
+            _dal = dal;
             base.BaseDal = dal;
             _unitOfWork = unitOfWork;
             _billPaymentsServices = billPaymentsServices;

@@ -10,6 +10,7 @@
 
 
 using COSXML;
+using COSXML.Auth;
 using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Caching.Manual;
 using FuFuShop.Model.ViewModels.Options;
@@ -48,7 +49,7 @@ namespace FuFuShop.Services
             var cache = ManualDataCache.Instance.Get<string>(ToolsVars.IllegalWordsCahceName);
             if (string.IsNullOrEmpty(cache))
             {
-                IFileProvider fileProvider = this._hostEnvironment.ContentRootFileProvider;
+                IFileProvider fileProvider = _hostEnvironment.ContentRootFileProvider;
                 IFileInfo fileInfo = fileProvider.GetFileInfo("illegalWord/IllegalKeywords.txt");
 
                 string fileContent = null;
@@ -78,7 +79,7 @@ namespace FuFuShop.Services
             var cache = ManualDataCache.Instance.Get<string>(ToolsVars.IllegalWordsCahceName);
             if (string.IsNullOrEmpty(cache))
             {
-                IFileProvider fileProvider = this._hostEnvironment.ContentRootFileProvider;
+                IFileProvider fileProvider = _hostEnvironment.ContentRootFileProvider;
                 IFileInfo fileInfo = fileProvider.GetFileInfo("illegalWord/IllegalKeywords.txt");
 
                 string fileContent = null;

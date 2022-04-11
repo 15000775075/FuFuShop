@@ -24,7 +24,7 @@ namespace FuFuShop.Services
         private readonly IUnitOfWork _unitOfWork;
         public FormSubmitDetailServices(IUnitOfWork unitOfWork, IFormSubmitDetailRepository dal)
         {
-            this._dal = dal;
+            _dal = dal;
             base.BaseDal = dal;
             _unitOfWork = unitOfWork;
         }

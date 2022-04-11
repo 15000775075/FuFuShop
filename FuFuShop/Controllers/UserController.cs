@@ -5,6 +5,7 @@ using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services;
+using FuFuShop.Services.Good;
 using FuFuShop.Services.User;
 using FuFuShop.Services.WeChat;
 using FuFuShop.WeChat.Enums;
@@ -38,6 +39,10 @@ namespace FuFuShop.Controllers
         private readonly IUserLogServices _userLogServices;
         private readonly IHttpContextUser _user;
         private readonly IOrderServices _orderServices;
+        private readonly IGoodsBrowsingServices _goodsBrowsingServices;
+        private readonly IGoodsCollectionServices _goodsCollectionServices;
+
+
         public UserController(
             IHttpContextUser user,
             IUserServices userServices,

@@ -10,7 +10,6 @@
 
 
 using FuFuShop.Model.Entities;
-using FuFuShop.Model.Entities;
 using FuFuShop.Model.Entities.Shop;
 using FuFuShop.Model.ViewModels.Basics;
 using FuFuShop.Repository.BaseRepository;

@@ -9,18 +9,20 @@
  ***********************************************************************/
 
 
-using FuFuShop.Model.Entities;
 using FuFuShop.Common.AppSettings;
+using FuFuShop.Common.Extensions;
 using FuFuShop.Common.Helper;
+using FuFuShop.Model.Entities;
 using FuFuShop.Model.Entities.Shop;
 using FuFuShop.Model.ViewModels.Basics;
 using FuFuShop.Model.ViewModels.UI;
-using FuFuShop.Services.User;
-using SqlSugar;
-using System.Linq.Expressions;
+using FuFuShop.Repository;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 using FuFuShop.Services.Shop;
+using FuFuShop.Services.User;
+using SqlSugar;
+using System.Linq.Expressions;
 
 namespace FuFuShop.Services
 {
@@ -37,7 +39,7 @@ namespace FuFuShop.Services
             , IUserServices userServices
             , ISettingServices settingServices)
         {
-            this._dal = dal;
+            _dal = dal;
             base.BaseDal = dal;
             _unitOfWork = unitOfWork;
             _userServices = userServices;

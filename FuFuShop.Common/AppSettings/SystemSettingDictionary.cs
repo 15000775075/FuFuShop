@@ -162,7 +162,7 @@ namespace FuFuShop.Common.AppSettings
             di.Add(SystemSettingConstVars.SmsUserId, new DictionaryKeyValues() { sKey = "用户ID", sValue = "" });
             di.Add(SystemSettingConstVars.SmsAccount, new DictionaryKeyValues() { sKey = "账号", sValue = "" });
             di.Add(SystemSettingConstVars.SmsPassword, new DictionaryKeyValues() { sKey = "密码", sValue = "" });
-            di.Add(SystemSettingConstVars.SmsApiUrl, new DictionaryKeyValues() { sKey = "Api地址", sValue = "http://sms..net:9999/sms.aspx" });
+            di.Add(SystemSettingConstVars.SmsApiUrl, new DictionaryKeyValues() { sKey = "Api地址", sValue = "http://sms.corecms.net:9999/sms.aspx" });
             di.Add(SystemSettingConstVars.SmsSignature, new DictionaryKeyValues() { sKey = "短信签名", sValue = "" });
 
             //附件存储

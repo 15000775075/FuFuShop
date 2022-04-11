@@ -8,7 +8,6 @@
  *        Description: 暂无
  ***********************************************************************/
 
-using FuFuShop.Model.Entities;
 using FuFuShop.Common.AppSettings;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.Basics;

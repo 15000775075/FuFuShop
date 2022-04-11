@@ -34,7 +34,7 @@ namespace FuFuShop.Services
         public GoodsCommentServices(IUnitOfWork unitOfWork, IGoodsCommentRepository dal,
             IServiceProvider serviceProvider, IToolsServices toolsServices)
         {
-            this._dal = dal;
+            _dal = dal;
             base.BaseDal = dal;
             _unitOfWork = unitOfWork;
             _serviceProvider = serviceProvider;
@@ -224,6 +224,7 @@ namespace FuFuShop.Services
             return await _dal.QueryPageAsync(predicate, orderByExpression, orderByType, pageIndex, pageSize, blUseNoLock);
         }
         #endregion
+
 
     }
 }

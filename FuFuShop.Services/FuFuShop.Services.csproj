@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FuFuShop.Common\FuFuShop.Common.csproj" />
-    <ProjectReference Include="..\FuFuShop.Model\FuFuShop.Model.csproj" />
     <ProjectReference Include="..\FuFuShop.Repository\FuFuShop.Repository.csproj" />
     <ProjectReference Include="..\FuFuShop.WeChat\FuFuShop.WeChat.csproj" />
   </ItemGroup>

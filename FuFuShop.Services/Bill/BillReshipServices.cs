@@ -26,7 +26,7 @@ namespace FuFuShop.Services
             , IBillReshipItemRepository billReshipItemRepository
             )
         {
-            this._dal = dal;
+            _dal = dal;
             base.BaseDal = dal;
             _unitOfWork = unitOfWork;
             _billReshipItemRepository = billReshipItemRepository;

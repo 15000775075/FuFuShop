@@ -59,7 +59,7 @@ namespace FuFuShop.Services
             , IOptions<WeChatOptions> weChatOptions
             )
         {
-            this._dal = dal;
+            _dal = dal;
             base.BaseDal = dal;
             _unitOfWork = unitOfWork;
 

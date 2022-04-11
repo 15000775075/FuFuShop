@@ -62,5 +62,15 @@ namespace FuFuShop.Services
         /// <returns></returns>
         Task<WebApiCallBack> Pay(string orderId, string paymentCode, BillPayments billPaymentInfo);
 
+
+
+        /// <summary>
+        ///     判断订单是否可以进行评论
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<WebApiCallBack> IsOrderComment(string orderId, int userId);
+
     }
 }

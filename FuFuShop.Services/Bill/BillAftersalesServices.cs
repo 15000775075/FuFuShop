@@ -39,17 +39,19 @@ namespace FuFuShop.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IServiceProvider _serviceProvider;
         private readonly IMessageCenterServices _messageCenterServices;
-        private readonly IUserPointLogServices _userPointLogServices;
         private readonly IRedisOperationRepository _redisOperationRepository;
 
-        public BillAftersalesServices(IUnitOfWork unitOfWork, IBillAftersalesRepository dal, IServiceProvider serviceProvider, IMessageCenterServices messageCenterServices, IUserPointLogServices userPointLogServices, IRedisOperationRepository redisOperationRepository)
+        public BillAftersalesServices(IUnitOfWork unitOfWork,
+            IBillAftersalesRepository dal,
+            IServiceProvider serviceProvider,
+            IMessageCenterServices messageCenterServices,
+            IRedisOperationRepository redisOperationRepository)
         {
-            this._dal = dal;
+            _dal = dal;
             base.BaseDal = dal;
             _unitOfWork = unitOfWork;
             _serviceProvider = serviceProvider;
             _messageCenterServices = messageCenterServices;
-            _userPointLogServices = userPointLogServices;
             _redisOperationRepository = redisOperationRepository;
         }
 
@@ -596,14 +598,6 @@ namespace FuFuShop.Services
                         {
                             orderInfo.payStatus = (int)GlobalEnumVars.OrderPayStatus.Refunded;
                             orderInfo.status = (int)GlobalEnumVars.OrderStatus.Complete;
-
-                            //返还积分
-                            if (orderInfo.point > 0)
-                            {
-                                await _userPointLogServices.SetPoint(orderInfo.userId, orderInfo.point, (int)GlobalEnumVars.UserPointSourceTypes.PointRefundReturn, "售后退款：" + orderInfo.orderId + "返还积分");
-                            }
-
-
                         }
                         else
                         {

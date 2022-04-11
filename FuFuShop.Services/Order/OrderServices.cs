@@ -47,7 +47,6 @@ namespace FuFuShop.Services
         private readonly IMessageCenterServices _messageCenterServices;
         private readonly IGoodsCommentServices _goodsCommentServices;
         private readonly ISysTaskLogServices _taskLogServices;
-        private readonly IPromotionRecordServices _promotionRecordServices;
         private readonly IRedisOperationRepository _redisOperationRepository;
 
         public OrderServices(IOrderRepository dal
@@ -75,7 +74,7 @@ namespace FuFuShop.Services
             , ISysTaskLogServices taskLogServices
             , IRedisOperationRepository redisOperationRepository)
         {
-            this._dal = dal;
+            _dal = dal;
             base.BaseDal = dal;
 
             _httpContextAccessor = httpContextAccessor;
@@ -101,7 +100,6 @@ namespace FuFuShop.Services
             _messageCenterServices = messageCenterServices;
             _goodsCommentServices = goodsCommentServices;
             _taskLogServices = taskLogServices;
-            _promotionRecordServices = promotionRecordServices;
             _redisOperationRepository = redisOperationRepository;
         }
 
@@ -928,6 +926,42 @@ namespace FuFuShop.Services
             order.addAftersalesStatus = addAftersalesStatus;
         }
 
+        #endregion
+        #region 判断订单是否可以进行评论
+        /// <summary>
+        /// 判断订单是否可以进行评论
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> IsOrderComment(string orderId, int userId)
+        {
+            var jm = new WebApiCallBack();
+
+            var order = await _dal.QueryByClauseAsync(p => p.orderId == orderId && p.userId == userId);
+            if (order != null)
+            {
+                if (order.payStatus > (int)GlobalEnumVars.OrderPayStatus.No && order.status == (int)GlobalEnumVars.OrderStatus.Normal && order.shipStatus > (int)GlobalEnumVars.OrderShipStatus.No && order.status == (int)GlobalEnumVars.OrderStatus.Normal && order.isComment == false)
+                {
+                    jm.status = true;
+                    jm.msg = "可以评价";
+                    jm.data = order;
+                }
+                else
+                {
+                    jm.status = false;
+                    jm.msg = "订单状态存在问题，不能评价";
+                    jm.data = order;
+                }
+            }
+            else
+            {
+                jm.status = false;
+                jm.msg = "不存在这个订单";
+            }
+
+            return jm;
+        }
         #endregion
     }
 }

@@ -39,7 +39,7 @@ namespace FuFuShop.Services
         private readonly IUnitOfWork _unitOfWork;
         public MessageCenterServices(IUnitOfWork unitOfWork, IMessageCenterRepository dal, IServiceProvider serviceProvider, ISysTaskLogServices taskLogServices, IRedisOperationRepository redisOperationRepository)
         {
-            this._dal = dal;
+            _dal = dal;
             _serviceProvider = serviceProvider;
             _redisOperationRepository = redisOperationRepository;
             base.BaseDal = dal;
@@ -66,6 +66,7 @@ namespace FuFuShop.Services
                 var settingServices = container.ServiceProvider.GetService<ISettingServices>();
                 var smsServices = container.ServiceProvider.GetService<ISmsServices>();
                 var allConfigs = await settingServices.GetConfigDictionaries();
+                var messageServices = container.ServiceProvider.GetService<IMessageServices>();
 
                 var config = await _dal.QueryByClauseAsync(p => p.code == code);
                 if (config == null)

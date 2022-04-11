@@ -28,7 +28,7 @@ namespace FuFuShop.Services
         private readonly IUnitOfWork _unitOfWork;
         public StoreServices(IUnitOfWork unitOfWork, IStoreRepository dal)
         {
-            this._dal = dal;
+            _dal = dal;
             base.BaseDal = dal;
             _unitOfWork = unitOfWork;
         }
