@@ -1,5 +1,5 @@
-using CoreCms.Net.Model.Entities;
 using FuFuShop.Common.Helper;
+using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.DTO;
 using FuFuShop.Repository.Good;

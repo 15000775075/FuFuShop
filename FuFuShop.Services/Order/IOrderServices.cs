@@ -42,5 +42,25 @@ namespace FuFuShop.Services
         /// <returns></returns>
         Task<WebApiCallBack> GetOrderInfoByOrderId(string id, int userId = 0, int aftersaleLevel = 0);
 
+
+
+        /// <summary>
+        ///     订单数量统计
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<int> OrderCount(int type = 0, int userId = 0);
+
+
+        /// <summary>
+        ///     订单支付
+        /// </summary>
+        /// <param name="orderId">订单编号</param>
+        /// <param name="paymentCode">支付方式</param>
+        /// <param name="billPaymentInfo">支付单据</param>
+        /// <returns></returns>
+        Task<WebApiCallBack> Pay(string orderId, string paymentCode, BillPayments billPaymentInfo);
+
     }
 }

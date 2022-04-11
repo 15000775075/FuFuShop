@@ -3,7 +3,7 @@
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace CoreCms.Net.Model.Entities
+namespace FuFuShop.Model.Entities
 {
     /// <summary>
     /// 支付单表

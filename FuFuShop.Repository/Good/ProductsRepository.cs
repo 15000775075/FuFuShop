@@ -1,4 +1,3 @@
-using CoreCms.Net.Model.Entities;
 using FuFuShop.Common.Auth.HttpContextUser;
 using FuFuShop.Common.Extensions;
 using FuFuShop.Model.Entities;

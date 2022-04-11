@@ -1,15 +1,21 @@
 using FuFuShop.Common.AppSettings;
+using FuFuShop.Common.Caching;
+using FuFuShop.Common.Extensions;
 using FuFuShop.Common.Helper;
 using FuFuShop.Model.Entities;
+using FuFuShop.Model.Entities.Shop;
 using FuFuShop.Model.ViewModels.DTO;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository;
 using FuFuShop.Services.BaseServices;
+using FuFuShop.Services.Bill;
 using FuFuShop.Services.Good;
 using FuFuShop.Services.Shop;
 using FuFuShop.Services.User;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Linq.Expressions;
 
 namespace FuFuShop.Services
 {
@@ -20,32 +26,85 @@ namespace FuFuShop.Services
     {
         private readonly IOrderRepository _dal;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IOrderItemServices _orderItemServices;
-        private readonly ILogServices _orderLogServices;
+        private readonly IShipServices _shipServices;
         private readonly ICartServices _cartServices;
         private readonly IGoodsServices _goodsServices;
+        private readonly IBillDeliveryServices _billDeliveryServices;
+        private readonly IAreaServices _areaServices;
+        private readonly ISettingServices _settingServices;
+        private readonly ILogisticsServices _logisticsServices;
+        private readonly IBillAftersalesServices _billAftersalesServices;
+        private readonly IOrderItemServices _orderItemServices;
+        private readonly IOrderLogServices _orderLogServices;
         private readonly IUserShipServices _userShipServices;
-        private readonly IShipServices _shipServices;
+        private readonly IStoreServices _storeServices;
+        private readonly IUserServices _userServices;
+        private readonly IBillPaymentsServices _billPaymentsServices;
+        private readonly IPaymentsServices _paymentsServices;
+        private readonly IBillRefundServices _billRefundServices;
+        private readonly IBillLadingServices _billLadingServices;
+        private readonly IBillReshipServices _billReshipServices;
+        private readonly IMessageCenterServices _messageCenterServices;
+        private readonly IGoodsCommentServices _goodsCommentServices;
+        private readonly ISysTaskLogServices _taskLogServices;
+        private readonly IPromotionRecordServices _promotionRecordServices;
+        private readonly IRedisOperationRepository _redisOperationRepository;
 
         public OrderServices(IOrderRepository dal
             , IHttpContextAccessor httpContextAccessor
+            , IShipServices shipServices
+            , ICartServices cartServices
+            , IGoodsServices goodsServices
+            , IBillDeliveryServices billDeliveryServices
+            , IAreaServices areaServices
+            , ISettingServices settingServices
+            , ILogisticsServices logisticsServices
+            , IBillAftersalesServices billAftersalesServices
             , IOrderItemServices orderItemServices
-            , ILogServices orderLogServices,
-            ICartServices cartServices,
-             IGoodsServices goodsServices,
-              IUserShipServices userShipServices,
-               IShipServices shipServices)
+            , IOrderLogServices orderLogServices
+            , IUserShipServices userShipServices
+            , IStoreServices storeServices
+            , IUserServices userServices
+            , IBillPaymentsServices billPaymentsServices
+            , IPaymentsServices paymentsServices
+            , IBillRefundServices billRefundServices
+            , IBillLadingServices billLadingServices
+            , IBillReshipServices billReshipServices
+            , IMessageCenterServices messageCenterServices
+            , IGoodsCommentServices goodsCommentServices
+            , ISysTaskLogServices taskLogServices
+            , IRedisOperationRepository redisOperationRepository)
         {
-            _dal = dal;
-            BaseDal = dal;
+            this._dal = dal;
+            base.BaseDal = dal;
+
             _httpContextAccessor = httpContextAccessor;
-            _orderItemServices = orderItemServices;
-            _orderLogServices = orderLogServices;
+            _shipServices = shipServices;
             _cartServices = cartServices;
             _goodsServices = goodsServices;
+
+            _billDeliveryServices = billDeliveryServices;
+            _areaServices = areaServices;
+            _settingServices = settingServices;
+            _logisticsServices = logisticsServices;
+            _billAftersalesServices = billAftersalesServices;
+            _orderItemServices = orderItemServices;
+            _orderLogServices = orderLogServices;
             _userShipServices = userShipServices;
-            _shipServices = shipServices;
+            _storeServices = storeServices;
+            _userServices = userServices;
+            _billPaymentsServices = billPaymentsServices;
+            _paymentsServices = paymentsServices;
+            _billRefundServices = billRefundServices;
+            _billLadingServices = billLadingServices;
+            _billReshipServices = billReshipServices;
+            _messageCenterServices = messageCenterServices;
+            _goodsCommentServices = goodsCommentServices;
+            _taskLogServices = taskLogServices;
+            _promotionRecordServices = promotionRecordServices;
+            _redisOperationRepository = redisOperationRepository;
         }
+
         #region 创建订单
 
         /// <summary>
@@ -357,9 +416,518 @@ namespace FuFuShop.Services
             return res;
         }
 
-        public Task<WebApiCallBack> GetOrderInfoByOrderId(string id, int userId = 0, int aftersaleLevel = 0)
+        #region 获取单个订单所有详情
+        /// <summary>
+        /// 根据订单编号获取单个订单所有详情
+        /// </summary>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> GetOrderInfoByOrderId(string id, int userId = 0, int aftersaleLevel = 0)
         {
-            throw new NotImplementedException();
+            var jm = new WebApiCallBack();
+
+            var order = new Order();
+            order = userId > 0
+                ? await _dal.QueryByClauseAsync(p => p.orderId == id && p.userId == userId)
+                : await _dal.QueryByClauseAsync(p => p.orderId == id);
+            if (order == null)
+            {
+                jm.msg = "获取订单失败";
+                return jm;
+            }
+            //订单详情(子货品数据)
+            order.items = await _orderItemServices.QueryListByClauseAsync(p => p.orderId == order.orderId);
+
+            if (order.items.Any())
+            {
+                order.items.ForEach(p =>
+                {
+                    if (!string.IsNullOrEmpty(p.promotionList))
+                    {
+                        var jobj = JObject.Parse(p.promotionList);
+                        if (jobj.Values().Any())
+                        {
+                            p.promotionObj = jobj.Values().FirstOrDefault();
+                        }
+                    }
+                });
+            }
+
+            //获取相关状态描述说明转换
+            order.statusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderStatus>(order.status);
+            order.payStatusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderPayStatus>(order.payStatus);
+            order.shipStatusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderShipStatus>(order.shipStatus);
+            order.sourceText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.Source>(order.source);
+            order.typeText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderType>(order.orderType);
+            order.confirmStatusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderConfirmStatus>(order.confirmStatus);
+            order.taxTypeText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderTaxType>(order.taxType);
+            order.paymentCodeText = EnumHelper.GetEnumDescriptionByKey<GlobalEnumVars.PaymentsTypes>(order.paymentCode);
+            //获取日志
+            order.orderLog = await _orderLogServices.QueryListByClauseAsync(p => p.orderId == order.orderId);
+
+            if (order.orderLog.Any())
+            {
+                order.orderLog.ForEach(p =>
+                {
+                    p.typeText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderLogTypes>(p.type);
+                });
+            }
+
+            //用户信息
+            order.user = await _userServices.QueryByIdAsync(order.userId);
+            if (order.user != null)
+            {
+                order.user.passWord = "";
+            }
+            //支付单
+            order.paymentItem = await _billPaymentsServices.QueryListByClauseAsync(p => p.sourceId == order.orderId);
+            //退款单
+            order.refundItem = await _billRefundServices.QueryListByClauseAsync(p => p.sourceId == order.orderId);
+            //提货单
+            order.ladingItem = await _billLadingServices.QueryListByClauseAsync(p => p.orderId == order.orderId);
+            //退货单
+            order.returnItem = await _billReshipServices.QueryListByClauseAsync(p => p.orderId == order.orderId);
+            //售后单
+            order.aftersalesItem = await _billAftersalesServices.QueryListByClauseAsync(p => p.orderId == order.orderId);
+            //发货单
+            order.delivery = await _billDeliveryServices.QueryListByClauseAsync(p => p.orderId == order.orderId);
+            if (order.delivery != null && order.delivery.Any())
+            {
+                foreach (var item in order.delivery)
+                {
+                    var outFirstAsync = await _logisticsServices.QueryByClauseAsync(p => p.logiCode == item.logiCode);
+                    item.logiName = outFirstAsync != null ? outFirstAsync.logiName : item.logiCode;
+                }
+            }
+            //获取提货门店
+            if (order.storeId != 0)
+            {
+                order.store = await _storeServices.QueryByIdAsync(order.storeId);
+                if (order.store != null)
+                {
+                    var areaBack = await _areaServices.GetAreaFullName(order.store.areaId);
+                    order.store.allAddress = areaBack.status ? areaBack.data + order.store.address : order.store.address;
+                }
+            }
+            //获取配送方式
+            if (order.logisticsId > 0)
+            {
+                order.logistics = await _shipServices.QueryByIdAsync(order.logisticsId);
+            }
+            //获取订单状态及中文描述
+            order.globalStatus = GetGlobalStatus(order);
+
+            order.globalStatusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderAllStatusType>(order.globalStatus);
+            //收货地区三级地址
+            var shipAreaBack = await _areaServices.GetAreaFullName(order.shipAreaId);
+
+            order.shipAreaName = shipAreaBack.status ? shipAreaBack.data.ToString() : "";
+
+            //获取支付方式
+            var pm = await _paymentsServices.QueryByClauseAsync(p => p.code == order.paymentCode);
+            order.paymentName = pm != null ? pm.name : "未知支付方式";
+            //优惠券
+            //if (!string.IsNullOrEmpty(order.coupon))
+            //{
+            //    order.couponObj = await _couponServices.QueryWithAboutAsync(p => p.usedId == order.orderId);
+            //}
+            //  order.couponObj = await _couponServices.QueryWithAboutAsync(p => p.usedId == order.orderId);
+
+            var allConfigs = await _settingServices.GetConfigDictionaries();
+            //获取该状态截止时间
+            switch (order.globalStatus)
+            {
+                case (int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_PAYMENT: ////待付款
+                    var cancelTime = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.OrderCancelTime).ObjectToInt(1) * 86400;
+                    var dt = order.createTime.AddSeconds(cancelTime);
+                    order.remainingTime = dt;
+                    order.remaining = CommonHelper.GetRemainingTime(dt);
+                    break;
+                case (int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_RECEIPT: //待收货
+                    var autoSignTime = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.OrderAutoSignTime).ObjectToInt(1) * 86400;
+                    var dtautoSignTime = order.createTime.AddSeconds(autoSignTime);
+                    order.remainingTime = dtautoSignTime;
+                    order.remaining = CommonHelper.GetRemainingTime(dtautoSignTime);
+                    break;
+                case (int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_EVALUATE:  //待评价
+                    var autoEvalTime = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.OrderAutoEvalTime).ObjectToInt(1) * 86400;
+                    var dtautoEvalTime = order.createTime.AddSeconds(autoEvalTime);
+                    order.remainingTime = dtautoEvalTime;
+                    order.remaining = CommonHelper.GetRemainingTime(dtautoEvalTime);
+                    break;
+
+                default:
+                    order.remaining = string.Empty;
+                    order.remainingTime = null;
+                    break;
+
+            }
+            //支付单
+            if (order.paymentItem != null && order.paymentItem.Any())
+            {
+                foreach (var item in order.paymentItem)
+                {
+                    item.paymentCodeName = EnumHelper.GetEnumDescriptionByKey<GlobalEnumVars.PaymentsTypes>(item.paymentCode);
+                    item.statusName = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillPaymentsStatus>(item.status);
+                }
+            }
+            //退款单
+            if (order.refundItem != null && order.refundItem.Any())
+            {
+                foreach (var item in order.refundItem)
+                {
+                    item.paymentCodeName = EnumHelper.GetEnumDescriptionByKey<GlobalEnumVars.PaymentsTypes>(item.paymentCode);
+                    item.statusName = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillRefundStatus>(item.status);
+                }
+            }
+            //发货单
+            if (order.delivery != null && order.delivery.Any())
+            {
+                foreach (var item in order.delivery)
+                {
+                    var logisticsModel = await _logisticsServices.GetLogiInfo(item.logiCode);
+                    if (logisticsModel.status)
+                    {
+                        var logisticsData = logisticsModel.data as Logistics;
+                        item.logiName = logisticsData.logiName;
+                    }
+                    var areaModel = await _areaServices.GetAreaFullName(item.shipAreaId);
+                    if (areaModel.status)
+                    {
+                        item.shipAreaIdName = areaModel.data as string;
+                    }
+                }
+            }
+            //提货单
+            if (order.ladingItem != null && order.ladingItem.Any())
+            {
+                foreach (var item in order.ladingItem)
+                {
+                    var storeModel = await _storeServices.QueryByIdAsync(item.storeId);
+                    item.storeName = storeModel != null ? storeModel.storeName : "";
+                    item.statusName = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillLadingStatus>(item.status ? 2 : 1);
+
+                    if (item.clerkId != 0)
+                    {
+                        var userModel = await _userServices.QueryByIdAsync(item.clerkId);
+                        if (userModel != null)
+                        {
+                            item.clerkIdName = !string.IsNullOrEmpty(userModel.nickName) ? userModel.nickName : userModel.mobile;
+                        }
+                    }
+                }
+            }
+            //退货单
+            if (order.returnItem != null && order.returnItem.Any())
+            {
+                foreach (var item in order.returnItem)
+                {
+                    var logisticsModel = await _logisticsServices.GetLogiInfo(item.logiCode);
+                    if (logisticsModel.status)
+                    {
+                        var logisticsData = logisticsModel.data as Logistics;
+                        item.logiName = logisticsData.logiName;
+                    }
+                    item.statusName = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.BillReshipStatus>(item.status);
+                }
+            }
+            //售后单取当前活动的收货单
+            if (order.aftersalesItem != null && order.aftersalesItem.Any())
+            {
+                foreach (var item in order.aftersalesItem)
+                {
+                    order.billAftersalesId = item.aftersalesId;
+                    //如果售后单里面有待审核的活动售后单，那就直接拿这条
+                    if (item.status == (int)GlobalEnumVars.BillAftersalesStatus.WaitAudit) break;
+                }
+            }
+            //把退款金额和退货商品查出来
+            AfterSalesVal(order, aftersaleLevel);
+            //促销信息
+            if (!string.IsNullOrEmpty(order.promotionList))
+            {
+                order.promotionObj = JsonConvert.DeserializeObject(order.promotionList);
+            }
+
+
+            jm.status = true;
+            jm.data = order;
+            jm.msg = GlobalConstVars.GetDataSuccess;
+
+            return jm;
         }
+
+        #endregion
+
+
+
+        /// <summary>
+        /// 订单数量统计
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<int> OrderCount(int type = 0, int userId = 0)
+        {
+            var count = 0;
+            var where = GetReverseStatus(type);
+            if (userId > 0)
+            {
+                where = where.And(p => p.userId == userId);
+            }
+
+            count = await _dal.GetCountAsync(where);
+            return count;
+
+        }
+
+
+        #region 获取订单状态反查
+        /// <summary>
+        /// 获取订单状态反查
+        /// </summary>
+        /// <param name="status">状态</param>
+        /// <returns></returns>
+        public Expression<Func<Order, bool>> GetReverseStatus(int status)
+        {
+            var where = PredicateBuilder.True<Order>();
+            switch (status)
+            {
+                case (int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_PAYMENT: //待付款
+                    where = where.And(p => p.status == (int)GlobalEnumVars.OrderStatus.Normal);
+                    where = where.And(p => p.payStatus == (int)GlobalEnumVars.OrderPayStatus.No);
+                    where = where.And(p => p.isdel == false);
+                    break;
+                case (int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_DELIVERY: //待发货
+                    where = where.And(p => p.status == (int)GlobalEnumVars.OrderStatus.Normal);
+                    where = where.And(p => p.payStatus != (int)GlobalEnumVars.OrderPayStatus.No);
+                    where = where.And(p => p.shipStatus == (int)GlobalEnumVars.OrderShipStatus.No || p.shipStatus == (int)GlobalEnumVars.OrderShipStatus.PartialYes);
+                    where = where.And(p => p.isdel == false);
+                    break;
+                case (int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_RECEIPT: //待收货
+                    where = where.And(p => p.status == (int)GlobalEnumVars.OrderStatus.Normal);
+                    where = where.And(p => p.payStatus != (int)GlobalEnumVars.OrderPayStatus.No);
+                    where = where.And(p => p.shipStatus == (int)GlobalEnumVars.OrderShipStatus.Yes || p.shipStatus == (int)GlobalEnumVars.OrderShipStatus.PartialYes);
+                    where = where.And(p => p.confirmStatus == (int)GlobalEnumVars.OrderConfirmStatus.ReceiptNotConfirmed);
+                    where = where.And(p => p.isdel == false);
+                    break;
+                case (int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_EVALUATE: //待评价
+                    where = where.And(p => p.status == (int)GlobalEnumVars.OrderStatus.Normal);
+                    where = where.And(p => p.payStatus != (int)GlobalEnumVars.OrderPayStatus.No);
+                    where = where.And(p => p.shipStatus != (int)GlobalEnumVars.OrderShipStatus.No);
+                    where = where.And(p => p.confirmStatus == (int)GlobalEnumVars.OrderConfirmStatus.ConfirmReceipt);
+                    where = where.And(p => p.isComment == false);
+                    where = where.And(p => p.isdel == false);
+                    break;
+                case (int)GlobalEnumVars.OrderAllStatusType.ALL_COMPLETED_EVALUATE: //已评价
+                    where = where.And(p => p.status == (int)GlobalEnumVars.OrderStatus.Normal);
+                    where = where.And(p => p.payStatus != (int)GlobalEnumVars.OrderPayStatus.No);
+                    where = where.And(p => p.shipStatus != (int)GlobalEnumVars.OrderShipStatus.No);
+                    where = where.And(p => p.confirmStatus == (int)GlobalEnumVars.OrderConfirmStatus.ConfirmReceipt);
+                    where = where.And(p => p.isComment == true);
+                    where = where.And(p => p.isdel == false);
+                    break;
+                case (int)GlobalEnumVars.OrderAllStatusType.ALL_CANCEL: //已取消
+                    where = where.And(p => p.status == (int)GlobalEnumVars.OrderStatus.Cancel);
+                    where = where.And(p => p.isdel == false);
+                    break;
+                case (int)GlobalEnumVars.OrderAllStatusType.ALL_COMPLETED: //已完成
+                    where = where.And(p => p.status == (int)GlobalEnumVars.OrderStatus.Complete);
+                    where = where.And(p => p.isdel == false);
+                    break;
+                default:
+                    where = where.And(p => p.isdel == false);
+                    break;
+            }
+            return where;
+        }
+
+        #endregion
+
+        #region 订单支付
+
+        /// <summary>
+        /// 订单支付
+        /// </summary>
+        /// <param name="orderId">订单编号</param>
+        /// <param name="paymentCode">支付方式</param>
+        /// <param name="billPaymentInfo">支付单据</param>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> Pay(string orderId, string paymentCode, BillPayments billPaymentInfo)
+        {
+            var jm = new WebApiCallBack() { msg = "订单支付失败" };
+
+            //获取订单
+            var order = await _dal.QueryByClauseAsync(p => p.orderId == orderId && p.status == (int)GlobalEnumVars.OrderStatus.Normal);
+            if (order == null)
+            {
+                return jm;
+            }
+            if (order.payStatus == (int)GlobalEnumVars.OrderPayStatus.Yes || order.payStatus == (int)GlobalEnumVars.OrderPayStatus.PartialNo || order.payStatus == (int)GlobalEnumVars.OrderPayStatus.Refunded)
+            {
+                jm.msg = "订单" + orderId + "支付失败，订单已经支付";
+                jm.data = order;
+            }
+            else
+            {
+                //赋值，用于传递完整数据到事件处理中
+                order.payedAmount = order.orderAmount;
+                order.paymentTime = DateTime.Now;
+                order.updateTime = DateTime.Now;
+                order.paymentCode = paymentCode;
+                order.payStatus = (int)GlobalEnumVars.OrderPayStatus.Yes;
+
+                var isUpdate = await _dal.UpdateAsync(
+                    p => new Order()
+                    {
+                        paymentCode = paymentCode,
+                        payStatus = (int)GlobalEnumVars.OrderPayStatus.Yes,
+                        paymentTime = order.paymentTime,
+                        payedAmount = order.orderAmount,
+                        updateTime = order.updateTime
+                    }, p => p.orderId == order.orderId);
+                jm.data = isUpdate;
+
+                if (isUpdate)
+                {
+                    order.payStatus = (int)GlobalEnumVars.OrderPayStatus.Yes;
+                    jm.status = true;
+                    jm.msg = "订单支付成功";
+
+
+                    //如果是门店自提，应该自动跳过发货，生成提货单信息，使用提货单核销。
+                    if (order.receiptType == (int)GlobalEnumVars.OrderReceiptType.SelfDelivery)
+                    {
+                        var allConfigs = await _settingServices.GetConfigDictionaries();
+                        var storeOrderAutomaticDelivery = CommonHelper
+                            .GetConfigDictionary(allConfigs, SystemSettingConstVars.StoreOrderAutomaticDelivery)
+                            .ObjectToInt(1);
+                        if (storeOrderAutomaticDelivery == 1)
+                        {
+                            //订单自动发货
+                            await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.OrderAutomaticDelivery, JsonConvert.SerializeObject(order));
+                        }
+                    }
+
+                    //发送支付成功信息,增加发送内容
+                    await _messageCenterServices.SendMessage(order.userId, GlobalEnumVars.PlatformMessageTypes.OrderPayed.ToString(), JObject.FromObject(order));
+                    await _messageCenterServices.SendMessage(order.userId, GlobalEnumVars.PlatformMessageTypes.SellerOrderNotice.ToString(), JObject.FromObject(order));
+
+                    //用户升级处理
+                    await _redisOperationRepository.ListLeftPushAsync(RedisMessageQueueKey.UserUpGrade, JsonConvert.SerializeObject(order));
+
+                }
+            }
+            //订单记录
+            var orderLog = new OrderLog
+            {
+                orderId = order.orderId,
+                userId = order.userId,
+                type = (int)GlobalEnumVars.OrderLogTypes.LOG_TYPE_PAY,
+                msg = jm.msg,
+                data = JsonConvert.SerializeObject(jm),
+                createTime = DateTime.Now
+            };
+            await _orderLogServices.InsertAsync(orderLog);
+
+            return jm;
+        }
+        #endregion
+
+        #region 获取订单全局状态
+        /// <summary>
+        /// 获取订单全局状态
+        /// </summary>
+        /// <param name="orderInfo">订单数据</param>
+        /// <returns></returns>
+        public static int GetGlobalStatus(Order orderInfo)
+        {
+            var status = 0;
+            if (orderInfo.status == (int)GlobalEnumVars.OrderStatus.Complete)
+            {
+                status = (int)GlobalEnumVars.OrderAllStatusType.ALL_COMPLETED; //已完成
+            }
+            else if (orderInfo.status == (int)GlobalEnumVars.OrderStatus.Cancel)
+            {
+                status = (int)GlobalEnumVars.OrderAllStatusType.ALL_CANCEL; //已取消
+            }
+            else if (orderInfo.status == (int)GlobalEnumVars.OrderStatus.Normal)
+            {
+                if (orderInfo.payStatus == (int)GlobalEnumVars.OrderPayStatus.No)
+                {
+                    status = (int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_PAYMENT;//待付款
+                }
+                else
+                {
+                    if (orderInfo.shipStatus == (int)GlobalEnumVars.OrderShipStatus.No || orderInfo.shipStatus == (int)GlobalEnumVars.OrderShipStatus.PartialYes)
+                    {
+                        status = (int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_DELIVERY;//待发货
+
+                    }
+                    else if ((orderInfo.shipStatus == (int)GlobalEnumVars.OrderShipStatus.Yes || orderInfo.shipStatus == (int)GlobalEnumVars.OrderShipStatus.PartialYes) && orderInfo.confirmStatus == (int)GlobalEnumVars.OrderConfirmStatus.ReceiptNotConfirmed)
+                    {
+                        status = (int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_RECEIPT;//待收货
+
+                    }
+                    else if (orderInfo.shipStatus != (int)GlobalEnumVars.OrderShipStatus.No && orderInfo.confirmStatus == (int)GlobalEnumVars.OrderConfirmStatus.ConfirmReceipt && orderInfo.isComment == false)
+                    {
+                        status = (int)GlobalEnumVars.OrderAllStatusType.ALL_PENDING_EVALUATE;//待评价
+                    }
+                    else if (orderInfo.shipStatus != (int)GlobalEnumVars.OrderShipStatus.No && orderInfo.confirmStatus == (int)GlobalEnumVars.OrderConfirmStatus.ConfirmReceipt && orderInfo.isComment == true)
+                    {
+                        status = (int)GlobalEnumVars.OrderAllStatusType.ALL_COMPLETED_EVALUATE;//已评价
+
+                    }
+                }
+            }
+            return status;
+        }
+        #endregion
+
+        #region 把退款的金额和退货的商品数量保存起来
+        /// <summary>
+        /// 把退款的金额和退货的商品数量保存起来
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="aftersaleLevel">取售后单的时候，售后单的等级，0：待审核的和审核通过的售后单，1未审核的，2审核通过的</param>
+        public void AfterSalesVal(Order order, int aftersaleLevel)
+        {
+            var addAftersalesStatus = false;
+            var res = _billAftersalesServices.OrderToAftersales(order.orderId, aftersaleLevel);
+            var resData = res.data as OrderToAftersalesDto;
+            //已经退过款的金额
+            order.refunded = resData.refundMoney;
+            //算退货商品数量
+            foreach (var item in order.items)
+            {
+                if (resData.reshipGoods.ContainsKey(item.id))
+                {
+                    item.reshipNums = resData.reshipGoods[item.id].reshipNums;
+                    item.reshipedNums = resData.reshipGoods[item.id].reshipedNums;
+
+                    //商品总数量 - 已发货数量 - 未发货的退货数量（总退货数量减掉已发货的退货数量）
+                    if (!addAftersalesStatus && (item.nums - item.reshipNums) > 0)//如果没退完，就可以再次发起售后
+                    {
+                        addAftersalesStatus = true;
+                    }
+                }
+                else
+                {
+                    item.reshipNums = 0;  //退货商品
+                    item.reshipedNums = 0;//已发货的退货商品
+                    if (!addAftersalesStatus) //没退货，就能发起售后
+                    {
+                        addAftersalesStatus = true;
+                    }
+                }
+            }
+            //商品没退完或没退，可以发起售后，但是订单状态不对的话，也不能发起售后
+            if (order.payStatus == (int)GlobalEnumVars.OrderPayStatus.No || order.status != (int)GlobalEnumVars.OrderStatus.Normal)
+            {
+                addAftersalesStatus = false;
+            }
+            order.addAftersalesStatus = addAftersalesStatus;
+        }
+
+        #endregion
     }
 }

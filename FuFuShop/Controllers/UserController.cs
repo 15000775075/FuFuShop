@@ -75,7 +75,6 @@ namespace FuFuShop.Controllers
             var request = new SnsJsCode2SessionRequest();
             request.JsCode = entity.code;
             request.AccessToken = accessToken;
-
             var response = await client.ExecuteSnsJsCode2SessionAsync(request, HttpContext.RequestAborted);
             if (response.ErrorCode == (int)WeChatReturnCode.ReturnCode.请求成功)
             {
@@ -84,8 +83,6 @@ namespace FuFuShop.Controllers
                     var userWeChatInfo = await _userWeChatInfoServices.QueryByClauseAsync(p => p.openid == response.OpenId);
                     if (userWeChatInfo == null)
                     {
-
-
                         FuFuShopUser fuFuShopUser = new FuFuShopUser();
                         fuFuShopUser.userName = entity.userinfo.nickName != null ? entity.userinfo.nickName : "微信用户";
                         fuFuShopUser.mobile = "";
@@ -193,12 +190,12 @@ namespace FuFuShop.Controllers
                 jm.code = 14007;
                 return jm;
             }
-            ////订单数量
-            //var orderCount = await _orderServices.OrderCount(0, user.id);
-            ////足迹
-            //var footPrintCount = await _goodsBrowsingServices.GetCountAsync(p => p.userId == user.id);
-            ////收藏
-            //var collectionCount = await _goodsCollectionServices.GetCountAsync(p => p.userId == user.id);
+            //订单数量
+            var orderCount = await _orderServices.OrderCount(0, user.id);
+            //足迹
+            var footPrintCount = await _goodsBrowsingServices.GetCountAsync(p => p.userId == user.id);
+            //收藏
+            var collectionCount = await _goodsCollectionServices.GetCountAsync(p => p.userId == user.id);
 
 
             jm.data = new

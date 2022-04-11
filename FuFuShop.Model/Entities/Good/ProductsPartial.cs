@@ -3,7 +3,7 @@ using FuFuShop.Model.ViewModels.DTO;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace CoreCms.Net.Model.Entities
+namespace FuFuShop.Model.Entities
 {
     /// <summary>
     ///     货品
@@ -102,7 +102,7 @@ namespace CoreCms.Net.Model.Entities
         /// </summary>
         //[Display(Name = "是否参与拼团规则")]
         //[SugarColumn(IsIgnore = true)]
-        //public CoreCmsPinTuanRule pinTuanRule { get; set; }
+        //public PinTuanRule pinTuanRule { get; set; }
 
         /// <summary>
         ///     一级佣金

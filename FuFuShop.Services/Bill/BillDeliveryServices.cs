@@ -1,4 +1,4 @@
-using CoreCms.Net.Model.Entities;
+using FuFuShop.Model.Entities;
 using FuFuShop.Repository.Bill;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;

@@ -1,7 +1,7 @@
 
 using SqlSugar;
 
-namespace CoreCms.Net.Model.Entities
+namespace FuFuShop.Model.Entities
 {
     /// <summary>
     /// 发货单表

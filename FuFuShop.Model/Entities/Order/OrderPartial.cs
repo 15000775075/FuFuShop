@@ -1,3 +1,4 @@
+using FuFuShop.Model.Entities.Shop;
 using SqlSugar;
 
 namespace FuFuShop.Model.Entities
@@ -19,53 +20,53 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(IsIgnore = true)]
         public FuFuShopUser user { get; set; }
 
-        ///// <summary>
-        /////     支付单关系
-        ///// </summary>
-        //[SugarColumn(IsIgnore = true)]
-        //public List<BillPayments> paymentItem { get; set; }
+        /// <summary>
+        ///     支付单关系
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<BillPayments> paymentItem { get; set; }
 
-        ///// <summary>
-        /////     退款单
-        ///// </summary>
-        //[SugarColumn(IsIgnore = true)]
-        //public List<BillRefund> refundItem { get; set; }
+        /// <summary>
+        ///     退款单
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<BillRefund> refundItem { get; set; }
 
-        ///// <summary>
-        /////     提货单
-        ///// </summary>
-        //[SugarColumn(IsIgnore = true)]
-        //public List<BillLading> ladingItem { get; set; }
+        /// <summary>
+        ///     提货单
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<BillLading> ladingItem { get; set; }
 
-        ///// <summary>
-        /////     退货单
-        ///// </summary>
-        //[SugarColumn(IsIgnore = true)]
-        //public List<BillReship> returnItem { get; set; }
+        /// <summary>
+        ///     退货单
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<BillReship> returnItem { get; set; }
 
-        ///// <summary>
-        /////     售后单
-        ///// </summary>
-        //[SugarColumn(IsIgnore = true)]
-        //public List<BillAftersales> aftersalesItem { get; set; }
+        /// <summary>
+        ///     售后单
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<BillAftersales> aftersalesItem { get; set; }
 
-        ///// <summary>
-        /////     发货单
-        ///// </summary>
-        //[SugarColumn(IsIgnore = true)]
-        //public List<BillDelivery> delivery { get; set; }
+        /// <summary>
+        ///     发货单
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<BillDelivery> delivery { get; set; }
 
-        ///// <summary>
-        /////     门店
-        ///// </summary>
-        //[SugarColumn(IsIgnore = true)]
-        //public Store store { get; set; }
+        /// <summary>
+        ///     门店
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public Store store { get; set; }
 
-        ///// <summary>
-        /////     配送方式
-        ///// </summary>
-        //[SugarColumn(IsIgnore = true)]
-        //public Ship logistics { get; set; }
+        /// <summary>
+        ///     配送方式
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public Ship logistics { get; set; }
 
         /// <summary>
         ///     获取订单全局状态
@@ -92,11 +93,6 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(IsIgnore = true)]
         public string paymentName { get; set; }
 
-        /// <summary>
-        ///     优惠券列表
-        /// </summary>
-        //[SugarColumn(IsIgnore = true)]
-        //  public List<Coupon> couponObj { get; set; } = new();
 
         /// <summary>
         ///     促销信息
@@ -140,7 +136,6 @@ namespace FuFuShop.Model.Entities
         /// </summary>
         [SugarColumn(IsIgnore = true)]
         public bool addAftersalesStatus { get; set; } = false;
-
 
         /// <summary>
         ///     操作日志

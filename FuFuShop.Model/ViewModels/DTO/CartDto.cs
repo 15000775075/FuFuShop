@@ -1,5 +1,4 @@
-﻿using CoreCms.Net.Model.Entities;
-using FuFuShop.Model.Entities;
+﻿using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.UI;
 
 namespace FuFuShop.Model.ViewModels.DTO

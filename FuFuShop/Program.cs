@@ -323,7 +323,7 @@ builder.Services.AddHangfireServer(options =>
 builder.Services.AddMvc(options =>
 {
     //实体验证
-    options.Filters.Add<GlobalExceptionsFilter>();
+    //options.Filters.Add<GlobalExceptionsFilter>();
     //异常处理
     // options.Filters.Add<GlobalExceptionsFilterForClent>();
     //Swagger剔除不需要加入api展示的列表
@@ -380,6 +380,8 @@ app.UseSwagger().UseSwaggerUI(c =>
 
 
 app.UseHttpsRedirection();
+// 先开启认证
+app.UseAuthentication();
 
 app.UseAuthorization();
 

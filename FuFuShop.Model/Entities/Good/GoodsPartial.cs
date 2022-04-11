@@ -1,4 +1,3 @@
-using CoreCms.Net.Model.Entities;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
@@ -84,7 +83,7 @@ namespace FuFuShop.Model.Entities
         ///     标签列表
         /// </summary>
         // [SugarColumn(IsIgnore = true)]
-        //public List<CoreCmsLabel> labels { get; set; } = new();
+        //public List<Label> labels { get; set; } = new();
 
         /// <summary>
         ///     所属团购秒杀

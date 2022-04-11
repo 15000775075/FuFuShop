@@ -1,4 +1,6 @@
 ﻿
+using FuFuShop.Model.Entities;
+
 namespace FuFuShop.Model.ViewModels.DTO
 {
     /// <summary>
@@ -10,6 +12,6 @@ namespace FuFuShop.Model.ViewModels.DTO
 
         public Dictionary<int, reshipGoods> reshipGoods { get; set; } = null;
 
-        // public List<BillAftersales> billAftersales { get; set; } = new();
+        public List<BillAftersales> billAftersales { get; set; } = new();
     }
 }

@@ -8,7 +8,7 @@ namespace FuFuShop.Services
     /// <summary>
     ///     订单记录表 接口实现
     /// </summary>
-    public class OrderLogServices : BaseServices<OrderLog>, ILogServices
+    public class OrderLogServices : BaseServices<OrderLog>, IOrderLogServices
     {
         private readonly IOrderLogRepository _dal;
         private readonly IUnitOfWork _unitOfWork;
