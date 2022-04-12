@@ -44,7 +44,7 @@ namespace FuFuShop.Controllers
             _mapper = mapper;
             _user = user;
             _goodsCategoryServices = goodsCategoryServices;
-            _goodsServices = goodsServices; 
+            _goodsServices = goodsServices;
             _brandServices = brandServices;
             _productsServices = productsServices;
             _goodsCommentServices = goodsCommentServices;
@@ -203,7 +203,7 @@ namespace FuFuShop.Controllers
             }
 
             //获取品牌
-               var brands = await _brandServices.QueryListByClauseAsync(p => p.isShow == true, p => p.sort, OrderByType.Desc);
+            var brands = await _brandServices.QueryListByClauseAsync(p => p.isShow == true, p => p.sort, OrderByType.Desc);
 
 
             //返回数据

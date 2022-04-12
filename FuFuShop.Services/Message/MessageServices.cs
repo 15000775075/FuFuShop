@@ -1,9 +1,9 @@
 
-using FuFuShop.Repository;
 using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Helper;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.UI;
+using FuFuShop.Repository;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 using Newtonsoft.Json;

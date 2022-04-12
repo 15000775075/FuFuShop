@@ -1,14 +1,8 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FuFuShop.Common.Auth.HttpContextUser;
+﻿using FuFuShop.Common.Auth.HttpContextUser;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 
@@ -22,7 +16,7 @@ namespace FuFuShop.Controllers
     public class AdvertController : ControllerBase
     {
 
-        private IHttpContextUser _user;
+        private readonly IHttpContextUser _user;
         private readonly IAdvertPositionServices _advertPositionServices;
         private readonly IAdvertisementServices _advertisementServices;
 

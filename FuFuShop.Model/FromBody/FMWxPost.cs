@@ -11,7 +11,6 @@
         public string code { get; set; }
 
         public FMWxSync userinfo { get; set; }
-        public string name { get; set; }
     }
 
     /// <summary>

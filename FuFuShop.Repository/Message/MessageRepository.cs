@@ -1,6 +1,3 @@
-
-
-using FuFuShop.Repository;
 using FuFuShop.Model.Entities;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;

@@ -1,8 +1,7 @@
 
+using FuFuShop.Model.Entities;
 using FuFuShop.Repository;
 using FuFuShop.Repository.UnitOfWork;
-using FuFuShop.Services;
-using FuFuShop.Model.Entities;
 using FuFuShop.Services.BaseServices;
 
 namespace FuFuShop.Services
