@@ -1,12 +1,4 @@
-/***********************************************************************
- *            Project: 
- *        ProjectName: 核心内容管理系统                                
- *                Web: https://www..net                      
- *             Author: 大灰灰                                          
- *              Email: jianweie@163.com
- *         CreateTime: 2021-06-08 22:14:58
- *        Description: 暂无
-***********************************************************************/
+
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
