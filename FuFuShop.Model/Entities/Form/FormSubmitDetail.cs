@@ -15,7 +15,7 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     /// 提交表单保存大文本值表
     /// </summary>
-    [SugarTable("FormSubmitDetail", TableDescription = "提交表单保存大文本值表")]
+    [SugarTable("FuFuShop_FormSubmitDetail", TableDescription = "提交表单保存大文本值表")]
     public partial class FormSubmitDetail
     {
         /// <summary>

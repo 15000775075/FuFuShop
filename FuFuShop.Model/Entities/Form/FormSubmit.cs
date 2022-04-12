@@ -15,7 +15,7 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     /// 用户对表的提交记录
     /// </summary>
-    [SugarTable("FormSubmit", TableDescription = "用户对表的提交记录")]
+    [SugarTable("FuFuShop_FormSubmit", TableDescription = "用户对表的提交记录")]
     public partial class FormSubmit
     {
         /// <summary>

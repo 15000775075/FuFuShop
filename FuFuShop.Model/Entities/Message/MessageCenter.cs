@@ -15,7 +15,7 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     /// 消息配置表
     /// </summary>
-    [SugarTable("MessageCenter", TableDescription = "消息配置表")]
+    [SugarTable("FuFuShop_MessageCenter", TableDescription = "消息配置表")]
     public partial class MessageCenter
     {
         /// <summary>

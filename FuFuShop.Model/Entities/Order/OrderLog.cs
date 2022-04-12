@@ -7,7 +7,7 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     /// 订单记录表
     /// </summary>
-    [SugarTable("OrderLog", TableDescription = "订单记录表")]
+    [SugarTable("FuFuShop_OrderLog", TableDescription = "订单记录表")]
     public partial class OrderLog
     {
         /// <summary>

@@ -15,7 +15,7 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     /// 店铺店员关联表
     /// </summary>
-    [SugarTable("Clerk", TableDescription = "店铺店员关联表")]
+    [SugarTable("FuFuShop_Clerk", TableDescription = "店铺店员关联表")]
     public partial class Clerk
     {
         /// <summary>

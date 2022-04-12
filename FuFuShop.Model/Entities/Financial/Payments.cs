@@ -7,7 +7,7 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     /// 支付方式表
     /// </summary>
-    [SugarTable("Payments", TableDescription = "支付方式表")]
+    [SugarTable("FuFuShop_Payments", TableDescription = "支付方式表")]
     public partial class Payments
     {
         /// <summary>

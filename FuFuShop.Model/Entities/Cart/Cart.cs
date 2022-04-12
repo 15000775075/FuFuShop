@@ -6,7 +6,7 @@ namespace FuFuShop.Model.Entities.Cart
     /// <summary>
     /// 购物车表
     /// </summary>
-    [SugarTable("Cart", TableDescription = "购物车表")]
+    [SugarTable("FuFuShop_Cart", TableDescription = "购物车表")]
     public partial class Cart
     {
         /// <summary>

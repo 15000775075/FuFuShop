@@ -7,7 +7,7 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     /// 退货单明细表
     /// </summary>
-    [SugarTable("BillReshipItem", TableDescription = "退货单明细表")]
+    [SugarTable("FuFuShop_BillReshipItem", TableDescription = "退货单明细表")]
     public partial class BillReshipItem
     {
         /// <summary>

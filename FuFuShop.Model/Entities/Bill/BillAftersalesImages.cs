@@ -7,7 +7,7 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     /// 商品图片关联表
     /// </summary>
-    [SugarTable("BillAftersalesImages", TableDescription = "商品图片关联表")]
+    [SugarTable("FuFuShop_BillAftersalesImages", TableDescription = "商品图片关联表")]
     public partial class BillAftersalesImages
     {
         /// <summary>
