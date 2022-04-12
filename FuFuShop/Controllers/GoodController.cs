@@ -5,6 +5,7 @@ using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.DTO;
 using FuFuShop.Model.ViewModels.UI;
+using FuFuShop.Services;
 using FuFuShop.Services.Good;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -23,6 +24,9 @@ namespace FuFuShop.Controllers
         private readonly IHttpContextUser _user;
         private readonly IGoodsCategoryServices _goodsCategoryServices;
         private readonly IGoodsServices _goodsServices;
+        private readonly IBrandServices _brandServices;
+        private readonly IProductsServices _productsServices;
+        private readonly IGoodsCommentServices _goodsCommentServices;
 
 
         /// <summary>
@@ -31,13 +35,19 @@ namespace FuFuShop.Controllers
         public GoodController(IMapper mapper
             , IHttpContextUser user
             , IGoodsCategoryServices goodsCategoryServices,
-            IGoodsServices goodsServices
+            IGoodsServices goodsServices,
+            IBrandServices brandServices,
+            IProductsServices productsServices,
+            IGoodsCommentServices goodsCommentServices
         )
         {
             _mapper = mapper;
             _user = user;
             _goodsCategoryServices = goodsCategoryServices;
-            _goodsServices = goodsServices;
+            _goodsServices = goodsServices; 
+            _brandServices = brandServices;
+            _productsServices = productsServices;
+            _goodsCommentServices = goodsCommentServices;
 
         }
 
@@ -192,6 +202,9 @@ namespace FuFuShop.Controllers
                 }
             }
 
+            //获取品牌
+               var brands = await _brandServices.QueryListByClauseAsync(p => p.isShow == true, p => p.sort, OrderByType.Desc);
+
 
             //返回数据
             jm.status = true;
@@ -205,6 +218,7 @@ namespace FuFuShop.Controllers
                 entity.limit,
                 entity.where,
                 entity.order,
+                brands
             };
             jm.msg = "数据调用成功!";
 
@@ -264,5 +278,77 @@ namespace FuFuShop.Controllers
             };
             return jm;
         }
+
+
+        #region 获取单个货品信息======================================================================
+        /// <summary>
+        /// 获取单个货品信息
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<WebApiCallBack> GetProductInfo([FromBody] FMGetProductInfo entity)
+        {
+            var jm = new WebApiCallBack();
+
+            var userId = 0;
+            if (_user != null)
+            {
+                userId = _user.ID;
+            }
+
+            bool bl = entity.type == "pinTuan" || entity.type == "group";
+
+            var getProductInfo = await _productsServices.GetProductInfo(entity.id, bl, userId, entity.type, entity.groupId);
+            if (getProductInfo == null)
+            {
+                jm.msg = "获取单个货品失败";
+                return jm;
+            }
+
+            jm.status = true;
+            jm.msg = "获取单个货品成功";
+            jm.data = getProductInfo;
+
+            return jm;
+        }
+
+        #endregion
+
+        #region 获取商品评价列表分页数据======================================================================
+        /// <summary>
+        /// 获取商品评价列表分页数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<WebApiCallBack> GetGoodsComment([FromBody] FMPageByIntId entity)
+        {
+            var jm = new WebApiCallBack();
+
+            //获取数据
+            var list = await _goodsCommentServices.QueryPageAsync(p => p.goodsId == entity.id && p.isDisplay == true, p => p.createTime, OrderByType.Desc, entity.page, entity.limit);
+
+            if (list.Any())
+            {
+                foreach (var item in list)
+                {
+                    item.imagesArr = !string.IsNullOrEmpty(item.images) ? item.images.Split(",") : null;
+                }
+            }
+
+            jm.status = true;
+            jm.msg = "获取评论成功";
+            jm.data = new
+            {
+                list,
+                commentsCount = list.TotalCount,
+                totalPages = list.TotalPages
+            };
+
+            return jm;
+        }
+        #endregion
+
     }
 }

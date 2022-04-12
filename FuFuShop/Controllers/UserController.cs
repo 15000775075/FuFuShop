@@ -51,7 +51,9 @@ namespace FuFuShop.Controllers
             IHttpContextAccessor httpContextAccessor,
             IUserLogServices userLogServices,
             PermissionRequirement permissionRequirement,
-            IOrderServices orderServices)
+            IOrderServices orderServices,
+            IGoodsBrowsingServices goodsBrowsingServices,
+            IGoodsCollectionServices goodsCollectionServices)
         {
             _user = user;
             _userLogServices = userLogServices;
@@ -61,6 +63,8 @@ namespace FuFuShop.Controllers
             _httpContextAccessor = httpContextAccessor;
             _permissionRequirement = permissionRequirement;
             _orderServices = orderServices;
+            _goodsBrowsingServices = goodsBrowsingServices;
+            _goodsCollectionServices = goodsCollectionServices;
 
         }
 
@@ -220,10 +224,9 @@ namespace FuFuShop.Controllers
                 user.status,
                 user.parentId,
                 user.passWord,
-                // userCouponCount,
-                // orderCount,
-                // footPrintCount,
-                // collectionCount
+                orderCount,
+                footPrintCount,
+                collectionCount
             };
             return jm;
         }
