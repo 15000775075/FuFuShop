@@ -23,7 +23,7 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "序列")]
         [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
         /// <summary>
         /// 名称
         /// </summary>
@@ -31,7 +31,7 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "名称")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(120, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String name { get; set; }
+        public string name { get; set; }
         /// <summary>
         /// 位置编码
         /// </summary>
@@ -39,7 +39,7 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "位置编码")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(32, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String code { get; set; }
+        public string code { get; set; }
         /// <summary>
         /// 添加时间
         /// </summary>
@@ -65,6 +65,6 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "排序")]
         [SugarColumn(ColumnDescription = "排序")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 sort { get; set; }
+        public int sort { get; set; }
     }
 }

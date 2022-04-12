@@ -23,70 +23,70 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "序列")]
         [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
         /// <summary>
         /// 门店名称
         /// </summary>
         [Display(Name = "门店名称")]
         [SugarColumn(ColumnDescription = "门店名称", IsNullable = true)]
         [StringLength(125, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String storeName { get; set; }
+        public string storeName { get; set; }
         /// <summary>
         /// 门店电话/手机号
         /// </summary>
         [Display(Name = "门店电话/手机号")]
         [SugarColumn(ColumnDescription = "门店电话/手机号", IsNullable = true)]
         [StringLength(13, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String mobile { get; set; }
+        public string mobile { get; set; }
         /// <summary>
         /// 门店联系人
         /// </summary>
         [Display(Name = "门店联系人")]
         [SugarColumn(ColumnDescription = "门店联系人", IsNullable = true)]
         [StringLength(32, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String linkMan { get; set; }
+        public string linkMan { get; set; }
         /// <summary>
         /// 门店logo
         /// </summary>
         [Display(Name = "门店logo")]
         [SugarColumn(ColumnDescription = "门店logo", IsNullable = true)]
         [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String logoImage { get; set; }
+        public string logoImage { get; set; }
         /// <summary>
         /// 门店地区id
         /// </summary>
         [Display(Name = "门店地区id")]
         [SugarColumn(ColumnDescription = "门店地区id")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 areaId { get; set; }
+        public int areaId { get; set; }
         /// <summary>
         /// 门店详细地址
         /// </summary>
         [Display(Name = "门店详细地址")]
         [SugarColumn(ColumnDescription = "门店详细地址", IsNullable = true)]
         [StringLength(200, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String address { get; set; }
+        public string address { get; set; }
         /// <summary>
         /// 坐标位置
         /// </summary>
         [Display(Name = "坐标位置")]
         [SugarColumn(ColumnDescription = "坐标位置", IsNullable = true)]
         [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String coordinate { get; set; }
+        public string coordinate { get; set; }
         /// <summary>
         /// 纬度
         /// </summary>
         [Display(Name = "纬度")]
         [SugarColumn(ColumnDescription = "纬度", IsNullable = true)]
         [StringLength(40, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String latitude { get; set; }
+        public string latitude { get; set; }
         /// <summary>
         /// 经度
         /// </summary>
         [Display(Name = "经度")]
         [SugarColumn(ColumnDescription = "经度", IsNullable = true)]
         [StringLength(40, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String longitude { get; set; }
+        public string longitude { get; set; }
         /// <summary>
         /// 是否默认
         /// </summary>

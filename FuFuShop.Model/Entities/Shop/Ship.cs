@@ -23,7 +23,7 @@ namespace FuFuShop.Model.Entities.Shop
         [Display(Name = "序列")]
         [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
         /// <summary>
         /// 配送方式名称
         /// </summary>
@@ -31,7 +31,7 @@ namespace FuFuShop.Model.Entities.Shop
         [SugarColumn(ColumnDescription = "配送方式名称")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String name { get; set; }
+        public string name { get; set; }
         /// <summary>
         /// 是否货到付款
         /// </summary>
@@ -45,14 +45,14 @@ namespace FuFuShop.Model.Entities.Shop
         [Display(Name = "首重")]
         [SugarColumn(ColumnDescription = "首重")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 firstUnit { get; set; }
+        public int firstUnit { get; set; }
         /// <summary>
         /// 续重
         /// </summary>
         [Display(Name = "续重")]
         [SugarColumn(ColumnDescription = "续重")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 continueUnit { get; set; }
+        public int continueUnit { get; set; }
         /// <summary>
         /// 是否按地区设置配送费用
         /// </summary>
@@ -66,7 +66,7 @@ namespace FuFuShop.Model.Entities.Shop
         [Display(Name = "地区类型")]
         [SugarColumn(ColumnDescription = "地区类型")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 areaType { get; set; }
+        public int areaType { get; set; }
         /// <summary>
         /// 首重费用
         /// </summary>
@@ -86,21 +86,21 @@ namespace FuFuShop.Model.Entities.Shop
         /// </summary>
         [Display(Name = "配送费用计算表达式")]
         [SugarColumn(ColumnDescription = "配送费用计算表达式", IsNullable = true)]
-        public System.String exp { get; set; }
+        public string exp { get; set; }
         /// <summary>
         /// 物流公司名称
         /// </summary>
         [Display(Name = "物流公司名称")]
         [SugarColumn(ColumnDescription = "物流公司名称", IsNullable = true)]
         [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String logiName { get; set; }
+        public string logiName { get; set; }
         /// <summary>
         /// 物流公司编码
         /// </summary>
         [Display(Name = "物流公司编码")]
         [SugarColumn(ColumnDescription = "物流公司编码", IsNullable = true)]
         [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String logiCode { get; set; }
+        public string logiCode { get; set; }
         /// <summary>
         /// 是否默认
         /// </summary>
@@ -114,14 +114,14 @@ namespace FuFuShop.Model.Entities.Shop
         [Display(Name = "配送方式排序")]
         [SugarColumn(ColumnDescription = "配送方式排序")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 sort { get; set; }
+        public int sort { get; set; }
         /// <summary>
         /// 状态1正常2停用
         /// </summary>
         [Display(Name = "状态1正常2停用")]
         [SugarColumn(ColumnDescription = "状态1正常2停用")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 status { get; set; }
+        public int status { get; set; }
         /// <summary>
         /// 是否包邮
         /// </summary>
@@ -134,7 +134,7 @@ namespace FuFuShop.Model.Entities.Shop
         /// </summary>
         [Display(Name = "地区配送费用")]
         [SugarColumn(ColumnDescription = "地区配送费用", IsNullable = true)]
-        public System.String areaFee { get; set; }
+        public string areaFee { get; set; }
         /// <summary>
         /// 商品总额满多少免运费
         /// </summary>

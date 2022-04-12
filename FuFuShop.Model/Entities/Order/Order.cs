@@ -28,7 +28,7 @@ namespace FuFuShop.Model.Entities
         [StringLength(maximumLength: 20, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String orderId { get; set; }
+        public string orderId { get; set; }
 
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 payStatus { get; set; }
+        public int payStatus { get; set; }
 
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 shipStatus { get; set; }
+        public int shipStatus { get; set; }
 
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 status { get; set; }
+        public int status { get; set; }
 
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 orderType { get; set; }
+        public int orderType { get; set; }
 
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 receiptType { get; set; }
+        public int receiptType { get; set; }
 
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace FuFuShop.Model.Entities
         [StringLength(maximumLength: 20, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String paymentCode { get; set; }
+        public string paymentCode { get; set; }
 
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 logisticsId { get; set; }
+        public int logisticsId { get; set; }
 
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace FuFuShop.Model.Entities
         [StringLength(maximumLength: 50, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String logisticsName { get; set; }
+        public string logisticsName { get; set; }
 
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 userId { get; set; }
+        public int userId { get; set; }
 
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 sellerId { get; set; }
+        public int sellerId { get; set; }
 
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 confirmStatus { get; set; }
+        public int confirmStatus { get; set; }
 
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 storeId { get; set; }
+        public int storeId { get; set; }
 
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 shipAreaId { get; set; }
+        public int shipAreaId { get; set; }
 
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace FuFuShop.Model.Entities
         [StringLength(maximumLength: 200, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String shipAddress { get; set; }
+        public string shipAddress { get; set; }
 
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace FuFuShop.Model.Entities
         [StringLength(maximumLength: 50, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String shipName { get; set; }
+        public string shipName { get; set; }
 
 
         /// <summary>
@@ -292,7 +292,7 @@ namespace FuFuShop.Model.Entities
         [StringLength(maximumLength: 50, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String shipMobile { get; set; }
+        public string shipMobile { get; set; }
 
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 taxType { get; set; }
+        public int taxType { get; set; }
 
 
         /// <summary>
@@ -328,7 +328,7 @@ namespace FuFuShop.Model.Entities
         [StringLength(maximumLength: 50, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String taxCode { get; set; }
+        public string taxCode { get; set; }
 
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace FuFuShop.Model.Entities
         [StringLength(maximumLength: 50, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String taxTitle { get; set; }
+        public string taxTitle { get; set; }
 
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace FuFuShop.Model.Entities
 
 
 
-        public System.Int32 point { get; set; }
+        public int point { get; set; }
 
 
         /// <summary>
@@ -407,7 +407,7 @@ namespace FuFuShop.Model.Entities
         /// </summary>
         [Display(Name = "优惠券信息")]
 
-        public System.String coupon { get; set; }
+        public string coupon { get; set; }
 
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace FuFuShop.Model.Entities
         [StringLength(maximumLength: 255, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String promotionList { get; set; }
+        public string promotionList { get; set; }
 
 
         /// <summary>
@@ -431,7 +431,7 @@ namespace FuFuShop.Model.Entities
         [StringLength(maximumLength: 255, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String memo { get; set; }
+        public string memo { get; set; }
 
 
         /// <summary>
@@ -443,7 +443,7 @@ namespace FuFuShop.Model.Entities
         [StringLength(maximumLength: 50, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String ip { get; set; }
+        public string ip { get; set; }
 
 
         /// <summary>
@@ -455,7 +455,7 @@ namespace FuFuShop.Model.Entities
         [StringLength(maximumLength: 510, ErrorMessage = "{0}不能超过{1}字")]
 
 
-        public System.String mark { get; set; }
+        public string mark { get; set; }
 
 
         /// <summary>
@@ -464,7 +464,7 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "订单来源")]
 
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 source { get; set; }
+        public int source { get; set; }
 
         /// <summary>
         /// 是否评论
@@ -493,7 +493,7 @@ namespace FuFuShop.Model.Entities
 
         [Required(ErrorMessage = "请输入{0}")]
 
-        public System.Int32 objectId { get; set; }
+        public int objectId { get; set; }
 
 
         /// <summary>

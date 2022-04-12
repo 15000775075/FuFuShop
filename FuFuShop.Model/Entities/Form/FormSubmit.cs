@@ -23,28 +23,28 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "序列")]
         [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
         /// <summary>
         /// 表单id
         /// </summary>
         [Display(Name = "表单id")]
         [SugarColumn(ColumnDescription = "表单id")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 formId { get; set; }
+        public int formId { get; set; }
         /// <summary>
         /// 表单名称
         /// </summary>
         [Display(Name = "表单名称")]
         [SugarColumn(ColumnDescription = "表单名称", IsNullable = true)]
         [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String formName { get; set; }
+        public string formName { get; set; }
         /// <summary>
         /// 会员id
         /// </summary>
         [Display(Name = "会员id")]
         [SugarColumn(ColumnDescription = "会员id")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 userId { get; set; }
+        public int userId { get; set; }
         /// <summary>
         /// 总金额
         /// </summary>
@@ -72,14 +72,14 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "表单反馈")]
         [SugarColumn(ColumnDescription = "表单反馈", IsNullable = true)]
         [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String feedback { get; set; }
+        public string feedback { get; set; }
         /// <summary>
         /// 提交人ip
         /// </summary>
         [Display(Name = "提交人ip")]
         [SugarColumn(ColumnDescription = "提交人ip", IsNullable = true)]
         [StringLength(20, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String ip { get; set; }
+        public string ip { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>

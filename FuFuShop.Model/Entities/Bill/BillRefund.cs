@@ -24,7 +24,7 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "退款单ID", IsPrimaryKey = true)]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(20, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String refundId { get; set; }
+        public string refundId { get; set; }
         /// <summary>
         /// 售后单id
         /// </summary>
@@ -32,7 +32,7 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "售后单id")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(20, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String aftersalesId { get; set; }
+        public string aftersalesId { get; set; }
         /// <summary>
         /// 退款金额
         /// </summary>
@@ -46,7 +46,7 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "用户ID 关联user.id")]
         [SugarColumn(ColumnDescription = "用户ID 关联user.id")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 userId { get; set; }
+        public int userId { get; set; }
         /// <summary>
         /// 资源id，根据type不同而关联不同的表
         /// </summary>
@@ -54,41 +54,41 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "资源id，根据type不同而关联不同的表")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(20, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String sourceId { get; set; }
+        public string sourceId { get; set; }
         /// <summary>
         /// 资源类型1=订单,2充值单
         /// </summary>
         [Display(Name = "资源类型1=订单,2充值单")]
         [SugarColumn(ColumnDescription = "资源类型1=订单,2充值单")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 type { get; set; }
+        public int type { get; set; }
         /// <summary>
         /// 退款支付类型编码 默认原路返回 关联支付单表支付编码
         /// </summary>
         [Display(Name = "退款支付类型编码 默认原路返回 关联支付单表支付编码")]
         [SugarColumn(ColumnDescription = "退款支付类型编码 默认原路返回 关联支付单表支付编码", IsNullable = true)]
         [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String paymentCode { get; set; }
+        public string paymentCode { get; set; }
         /// <summary>
         /// 第三方平台交易流水号
         /// </summary>
         [Display(Name = "第三方平台交易流水号")]
         [SugarColumn(ColumnDescription = "第三方平台交易流水号", IsNullable = true)]
         [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String tradeNo { get; set; }
+        public string tradeNo { get; set; }
         /// <summary>
         /// 状态
         /// </summary>
         [Display(Name = "状态")]
         [SugarColumn(ColumnDescription = "状态")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 status { get; set; }
+        public int status { get; set; }
         /// <summary>
         /// 退款失败原因
         /// </summary>
         [Display(Name = "退款失败原因")]
         [SugarColumn(ColumnDescription = "退款失败原因", IsNullable = true)]
-        public System.String memo { get; set; }
+        public string memo { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>

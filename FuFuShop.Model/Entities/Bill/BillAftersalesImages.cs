@@ -24,7 +24,7 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "售后单id")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(20, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String aftersalesId { get; set; }
+        public string aftersalesId { get; set; }
         /// <summary>
         /// 图片地址
         /// </summary>
@@ -32,13 +32,13 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "图片地址")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String imageUrl { get; set; }
+        public string imageUrl { get; set; }
         /// <summary>
         /// 排序
         /// </summary>
         [Display(Name = "排序")]
         [SugarColumn(ColumnDescription = "排序")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 sortId { get; set; }
+        public int sortId { get; set; }
     }
 }

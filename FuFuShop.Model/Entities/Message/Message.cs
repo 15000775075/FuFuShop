@@ -23,14 +23,14 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "序列")]
         [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
         /// <summary>
         /// 用户id
         /// </summary>
         [Display(Name = "用户id")]
         [SugarColumn(ColumnDescription = "用户id")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 userId { get; set; }
+        public int userId { get; set; }
         /// <summary>
         /// 消息编码
         /// </summary>
@@ -38,19 +38,19 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "消息编码")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String code { get; set; }
+        public string code { get; set; }
         /// <summary>
         /// 参数
         /// </summary>
         [Display(Name = "参数")]
         [SugarColumn(ColumnDescription = "参数", IsNullable = true)]
-        public System.String parameters { get; set; }
+        public string parameters { get; set; }
         /// <summary>
         /// 内容
         /// </summary>
         [Display(Name = "内容")]
         [SugarColumn(ColumnDescription = "内容", IsNullable = true)]
-        public System.String contentBody { get; set; }
+        public string contentBody { get; set; }
         /// <summary>
         /// 是否查看
         /// </summary>

@@ -24,7 +24,7 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "提货单号", IsPrimaryKey = true)]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(20, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String id { get; set; }
+        public string id { get; set; }
         /// <summary>
         /// 订单号
         /// </summary>
@@ -32,35 +32,35 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "订单号")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(20, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String orderId { get; set; }
+        public string orderId { get; set; }
         /// <summary>
         /// 提货门店ID
         /// </summary>
         [Display(Name = "提货门店ID")]
         [SugarColumn(ColumnDescription = "提货门店ID")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 storeId { get; set; }
+        public int storeId { get; set; }
         /// <summary>
         /// 提货人姓名
         /// </summary>
         [Display(Name = "提货人姓名")]
         [SugarColumn(ColumnDescription = "提货人姓名", IsNullable = true)]
         [StringLength(30, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String name { get; set; }
+        public string name { get; set; }
         /// <summary>
         /// 提货手机号
         /// </summary>
         [Display(Name = "提货手机号")]
         [SugarColumn(ColumnDescription = "提货手机号", IsNullable = true)]
         [StringLength(15, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String mobile { get; set; }
+        public string mobile { get; set; }
         /// <summary>
         /// 处理店员ID
         /// </summary>
         [Display(Name = "处理店员ID")]
         [SugarColumn(ColumnDescription = "处理店员ID")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 clerkId { get; set; }
+        public int clerkId { get; set; }
         /// <summary>
         /// 提货时间
         /// </summary>

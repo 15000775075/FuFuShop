@@ -23,21 +23,21 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "序列")]
         [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
         /// <summary>
         /// 店铺ID
         /// </summary>
         [Display(Name = "店铺ID")]
         [SugarColumn(ColumnDescription = "店铺ID")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 storeId { get; set; }
+        public int storeId { get; set; }
         /// <summary>
         /// 用户ID
         /// </summary>
         [Display(Name = "用户ID")]
         [SugarColumn(ColumnDescription = "用户ID")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 userId { get; set; }
+        public int userId { get; set; }
         /// <summary>
         /// 是否删除
         /// </summary>

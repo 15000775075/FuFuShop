@@ -13,14 +13,14 @@ namespace FuFuShop.Model.Entities
         /// 关联门店名称
         /// </summary>
         [SugarColumn(IsIgnore = true)]
-        public System.String storeName { get; set; }
+        public string storeName { get; set; }
 
 
         /// <summary>
         /// 状态中文描述
         /// </summary>
         [SugarColumn(IsIgnore = true)]
-        public System.String statusName { get; set; }
+        public string statusName { get; set; }
 
 
 
@@ -28,7 +28,7 @@ namespace FuFuShop.Model.Entities
         /// 店员昵称
         /// </summary>
         [SugarColumn(IsIgnore = true)]
-        public System.String clerkIdName { get; set; }
+        public string clerkIdName { get; set; }
 
 
         /// <summary>

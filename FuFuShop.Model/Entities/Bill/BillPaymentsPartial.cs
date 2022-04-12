@@ -12,27 +12,27 @@ namespace FuFuShop.Model.Entities
         /// 支付代码描述
         /// </summary>
         [SugarColumn(IsIgnore = true)]
-        public System.String paymentCodeName { get; set; }
+        public string paymentCodeName { get; set; }
 
         /// <summary>
         /// 状态中文描述
         /// </summary>
         [SugarColumn(IsIgnore = true)]
-        public System.String statusName { get; set; }
+        public string statusName { get; set; }
 
 
         /// <summary>
         /// 支付标题
         /// </summary>
         [SugarColumn(IsIgnore = true)]
-        public System.String payTitle { get; set; }
+        public string payTitle { get; set; }
 
 
         /// <summary>
         /// 用户昵称
         /// </summary>
         [SugarColumn(IsIgnore = true)]
-        public System.String userNickName { get; set; }
+        public string userNickName { get; set; }
 
     }
 }

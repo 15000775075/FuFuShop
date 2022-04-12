@@ -28,13 +28,15 @@ namespace FuFuShop.Controllers
         /// </summary>
         public OrderController(IHttpContextUser user
         , IOrderServices orderServices
-        , IAreaServices areaServices
+        , IAreaServices areaServices,
+            ILogisticsServices logisticsServices
 
 )
         {
             _user = user;
             _orderServices = orderServices;
             _areaServices = areaServices;
+            _logisticsServices = logisticsServices;
 
         }
 

@@ -23,7 +23,7 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "序列")]
         [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
         /// <summary>
         /// 售后单id
         /// </summary>
@@ -31,49 +31,49 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "售后单id")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(32, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String aftersalesId { get; set; }
+        public string aftersalesId { get; set; }
         /// <summary>
         /// 订单明细ID 关联order_items.id
         /// </summary>
         [Display(Name = "订单明细ID 关联order_items.id")]
         [SugarColumn(ColumnDescription = "订单明细ID 关联order_items.id")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 orderItemsId { get; set; }
+        public int orderItemsId { get; set; }
         /// <summary>
         /// 商品ID 关联goods.id
         /// </summary>
         [Display(Name = "商品ID 关联goods.id")]
         [SugarColumn(ColumnDescription = "商品ID 关联goods.id")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 goodsId { get; set; }
+        public int goodsId { get; set; }
         /// <summary>
         /// 货品ID 关联products.id
         /// </summary>
         [Display(Name = "货品ID 关联products.id")]
         [SugarColumn(ColumnDescription = "货品ID 关联products.id")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 productId { get; set; }
+        public int productId { get; set; }
         /// <summary>
         /// 货品编码
         /// </summary>
         [Display(Name = "货品编码")]
         [SugarColumn(ColumnDescription = "货品编码", IsNullable = true)]
         [StringLength(30, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String sn { get; set; }
+        public string sn { get; set; }
         /// <summary>
         /// 商品编码
         /// </summary>
         [Display(Name = "商品编码")]
         [SugarColumn(ColumnDescription = "商品编码", IsNullable = true)]
         [StringLength(30, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String bn { get; set; }
+        public string bn { get; set; }
         /// <summary>
         /// 商品名称
         /// </summary>
         [Display(Name = "商品名称")]
         [SugarColumn(ColumnDescription = "商品名称", IsNullable = true)]
         [StringLength(200, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String name { get; set; }
+        public string name { get; set; }
         /// <summary>
         /// 图片
         /// </summary>
@@ -81,20 +81,20 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "图片")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String imageUrl { get; set; }
+        public string imageUrl { get; set; }
         /// <summary>
         /// 数量
         /// </summary>
         [Display(Name = "数量")]
         [SugarColumn(ColumnDescription = "数量")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 nums { get; set; }
+        public int nums { get; set; }
         /// <summary>
         /// 货品明细序列号存储
         /// </summary>
         [Display(Name = "货品明细序列号存储")]
         [SugarColumn(ColumnDescription = "货品明细序列号存储", IsNullable = true)]
-        public System.String addon { get; set; }
+        public string addon { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>

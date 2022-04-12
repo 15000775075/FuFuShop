@@ -23,14 +23,14 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "序列")]
         [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
         /// <summary>
         /// 位置序列
         /// </summary>
         [Display(Name = "位置序列")]
         [SugarColumn(ColumnDescription = "位置序列")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 positionId { get; set; }
+        public int positionId { get; set; }
         /// <summary>
         /// 广告名称
         /// </summary>
@@ -38,7 +38,7 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "广告名称")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String name { get; set; }
+        public string name { get; set; }
         /// <summary>
         /// 广告图片id
         /// </summary>
@@ -46,7 +46,7 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "广告图片id")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String imageUrl { get; set; }
+        public string imageUrl { get; set; }
         /// <summary>
         /// 属性值
         /// </summary>
@@ -54,21 +54,21 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "属性值")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String val { get; set; }
+        public string val { get; set; }
         /// <summary>
         /// 属性值说明
         /// </summary>
         [Display(Name = "属性值说明")]
         [SugarColumn(ColumnDescription = "属性值说明", IsNullable = true)]
         [StringLength(255, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String valDes { get; set; }
+        public string valDes { get; set; }
         /// <summary>
         /// 排序
         /// </summary>
         [Display(Name = "排序")]
         [SugarColumn(ColumnDescription = "排序")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 sort { get; set; }
+        public int sort { get; set; }
         /// <summary>
         /// 添加时间
         /// </summary>
@@ -87,13 +87,13 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "广告位置编码")]
         [SugarColumn(ColumnDescription = "广告位置编码", IsNullable = true)]
         [StringLength(32, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String code { get; set; }
+        public string code { get; set; }
         /// <summary>
         /// 类型
         /// </summary>
         [Display(Name = "类型")]
         [SugarColumn(ColumnDescription = "类型")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 type { get; set; }
+        public int type { get; set; }
     }
 }

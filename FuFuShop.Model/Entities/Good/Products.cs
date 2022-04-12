@@ -23,28 +23,28 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "货品序列")]
         [SugarColumn(ColumnDescription = "货品序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
         /// <summary>
         /// 商品序列
         /// </summary>
         [Display(Name = "商品序列")]
         [SugarColumn(ColumnDescription = "商品序列")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 goodsId { get; set; }
+        public int goodsId { get; set; }
         /// <summary>
         /// 商品条码
         /// </summary>
         [Display(Name = "商品条码")]
         [SugarColumn(ColumnDescription = "商品条码", IsNullable = true)]
         [StringLength(128, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String barcode { get; set; }
+        public string barcode { get; set; }
         /// <summary>
         /// 货品编码
         /// </summary>
         [Display(Name = "货品编码")]
         [SugarColumn(ColumnDescription = "货品编码", IsNullable = true)]
         [StringLength(30, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String sn { get; set; }
+        public string sn { get; set; }
         /// <summary>
         /// 货品价格
         /// </summary>
@@ -86,20 +86,20 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "库存")]
         [SugarColumn(ColumnDescription = "库存")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 stock { get; set; }
+        public int stock { get; set; }
         /// <summary>
         /// 冻结库存
         /// </summary>
         [Display(Name = "冻结库存")]
         [SugarColumn(ColumnDescription = "冻结库存")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 freezeStock { get; set; }
+        public int freezeStock { get; set; }
         /// <summary>
         /// 规格值
         /// </summary>
         [Display(Name = "规格值")]
         [SugarColumn(ColumnDescription = "规格值", IsNullable = true)]
-        public System.String spesDesc { get; set; }
+        public string spesDesc { get; set; }
         /// <summary>
         /// 是否默认货品
         /// </summary>
@@ -112,7 +112,7 @@ namespace FuFuShop.Model.Entities
         /// </summary>
         [Display(Name = "规格图片")]
         [SugarColumn(ColumnDescription = "规格图片", IsNullable = true)]
-        public System.String images { get; set; }
+        public string images { get; set; }
         /// <summary>
         /// 是否删除
         /// </summary>

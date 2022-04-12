@@ -23,21 +23,21 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "ID")]
         [SugarColumn(ColumnDescription = "ID", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
         /// <summary>
         /// 商品id 关联goods.id
         /// </summary>
         [Display(Name = "商品id 关联goods.id")]
         [SugarColumn(ColumnDescription = "商品id 关联goods.id")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 goodsId { get; set; }
+        public int goodsId { get; set; }
         /// <summary>
         /// 用户id
         /// </summary>
         [Display(Name = "用户id")]
         [SugarColumn(ColumnDescription = "用户id")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 userId { get; set; }
+        public int userId { get; set; }
         /// <summary>
         /// 商品名称
         /// </summary>
@@ -45,7 +45,7 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(ColumnDescription = "商品名称")]
         [Required(ErrorMessage = "请输入{0}")]
         [StringLength(200, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String goodsName { get; set; }
+        public string goodsName { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>

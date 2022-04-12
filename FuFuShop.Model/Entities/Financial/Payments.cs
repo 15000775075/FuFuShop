@@ -23,21 +23,21 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "序列")]
         [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 id { get; set; }
+        public int id { get; set; }
         /// <summary>
         /// 支付类型名称
         /// </summary>
         [Display(Name = "支付类型名称")]
         [SugarColumn(ColumnDescription = "支付类型名称", IsNullable = true)]
         [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String name { get; set; }
+        public string name { get; set; }
         /// <summary>
         /// 支付类型编码
         /// </summary>
         [Display(Name = "支付类型编码")]
         [SugarColumn(ColumnDescription = "支付类型编码", IsNullable = true)]
         [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String code { get; set; }
+        public string code { get; set; }
         /// <summary>
         /// 是否线上支付
         /// </summary>
@@ -50,21 +50,21 @@ namespace FuFuShop.Model.Entities
         /// </summary>
         [Display(Name = "参数")]
         [SugarColumn(ColumnDescription = "参数", IsNullable = true)]
-        public System.String parameters { get; set; }
+        public string parameters { get; set; }
         /// <summary>
         /// 排序
         /// </summary>
         [Display(Name = "排序")]
         [SugarColumn(ColumnDescription = "排序")]
         [Required(ErrorMessage = "请输入{0}")]
-        public System.Int32 sort { get; set; }
+        public int sort { get; set; }
         /// <summary>
         /// 方式描述
         /// </summary>
         [Display(Name = "方式描述")]
         [SugarColumn(ColumnDescription = "方式描述", IsNullable = true)]
         [StringLength(200, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String memo { get; set; }
+        public string memo { get; set; }
         /// <summary>
         /// 是否启用
         /// </summary>
