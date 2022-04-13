@@ -70,7 +70,7 @@ builder.Services.AddSwaggerGen((s) =>
     {
         //Éú³ÉAPI XMLÎÄµµ
         var basePath = AppContext.BaseDirectory;
-        var xmlPath = Path.Combine(basePath, "doc.xml");
+        var xmlPath = Path.Combine(basePath, "FuFuShop.xml");
         s.IncludeXmlComments(xmlPath);
     }
     catch (Exception ex)

@@ -363,5 +363,16 @@ namespace FuFuShop.Services
             return jm;
         }
 
+        #region 获取购物车用户数据总数
+        /// <summary>
+        ///     获取购物车用户数据总数
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> GetCountAsync(int userId)
+        {
+            return await _dal.GetCountAsync(userId);
+        }
+
+        #endregion
     }
 }

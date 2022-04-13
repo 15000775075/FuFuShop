@@ -72,5 +72,35 @@ namespace FuFuShop.Services
         /// <returns></returns>
         Task<WebApiCallBack> IsOrderComment(string orderId, int userId);
 
+        /// <summary>
+        ///     获取订单不同状态的数量
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="ids"></param>
+        /// <param name="isAfterSale"></param>
+        /// <returns></returns>
+        Task<WebApiCallBack> GetOrderStatusNum(int userId, int[] ids, bool isAfterSale = false);
+
+        /// <summary>
+        ///     获取订单列表微信小程序
+        /// </summary>
+        /// <returns></returns>
+        Task<WebApiCallBack> GetOrderList(int status = -1, int userId = 0, int page = 1, int limit = 5);
+
+
+        /// <summary>
+        ///     取消订单
+        /// </summary>
+        /// <returns></returns>
+        Task<WebApiCallBack> CancelOrder(string[] ids, int userId = 0);
+
+        /// <summary>
+        ///     确认签收订单
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<WebApiCallBack> ConfirmOrder(string orderId, int userId = 0);
+
     }
 }

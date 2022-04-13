@@ -1,0 +1,328 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FuFuShop</name>
+    </assembly>
+    <members>
+        <member name="T:FuFuShop.Controllers.AdvertController">
+            <summary>
+            广告api控制器
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.AdvertController.#ctor(FuFuShop.Common.Auth.HttpContextUser.IHttpContextUser,FuFuShop.Services.IAdvertPositionServices,FuFuShop.Services.IAdvertisementServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="user"></param>
+            <param name="articleServices"></param>
+            <param name="advertPositionServices"></param>
+            <param name="advertisementServices"></param>
+        </member>
+        <member name="M:FuFuShop.Controllers.AdvertController.GetAdvertList(FuFuShop.Model.FromBody.FMPageByIntId)">
+            <summary>
+            获取广告列表
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.AdvertController.GetPositionList(FuFuShop.Model.FromBody.WxAdvert)">
+            <summary>
+            获取广告位置信息
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FuFuShop.Controllers.CartController">
+            <summary>
+            购物车操作
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.CartController.#ctor(FuFuShop.Common.Auth.HttpContextUser.IHttpContextUser,FuFuShop.Services.ICartServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.CartController.AddCart(FuFuShop.Model.FromBody.FMCartAdd)">
+            <summary>
+            添加单个货品到购物车
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.CartController.GetList(FuFuShop.Model.FromBody.FMCartGetList)">
+            <summary>
+            获取购物车列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.CartController.DoDelete(FuFuShop.Model.FromBody.FMIntId)">
+            <summary>
+            获取购物车列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.CartController.SetCartNum(FuFuShop.Model.ViewModels.DTO.FMSetCartNum)">
+            <summary>
+            设置购物车商品数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:FuFuShop.Controllers.GoodController">
+            <summary>
+            商品相关接口处理
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.GoodController.#ctor(AutoMapper.IMapper,FuFuShop.Common.Auth.HttpContextUser.IHttpContextUser,FuFuShop.Services.Good.IGoodsCategoryServices,FuFuShop.Services.Good.IGoodsServices,FuFuShop.Services.IBrandServices,FuFuShop.Services.Good.IProductsServices,FuFuShop.Services.IGoodsCommentServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.GoodController.GetAllCategories">
+            <summary>
+            获取所有商品分类栏目数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.GoodController.GetGoodsPageList(FuFuShop.Model.FromBody.FMPageByWhereOrder)">
+            <summary>
+            根据查询条件获取分页数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.GoodController.GetDetial(FuFuShop.Model.FromBody.FMIntId)">
+            <summary>
+            获取商品详情
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.GoodController.GetGoodsRecommendList(FuFuShop.Model.FromBody.FMIntId)">
+            <summary>
+            获取随机推荐商品
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.GoodController.GetProductInfo(FuFuShop.Model.FromBody.FMGetProductInfo)">
+            <summary>
+            获取单个货品信息
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.GoodController.GetGoodsComment(FuFuShop.Model.FromBody.FMPageByIntId)">
+            <summary>
+            获取商品评价列表分页数据
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FuFuShop.Controllers.OrderController">
+            <summary>
+            订单调用接口数据
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.OrderController.#ctor(FuFuShop.Common.Auth.HttpContextUser.IHttpContextUser,FuFuShop.Services.IOrderServices,FuFuShop.Services.Shop.IAreaServices,FuFuShop.Services.Shop.ILogisticsServices)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.OrderController.CreateOrder(FuFuShop.Model.ViewModels.DTO.CreateOrder)">
+            <summary>
+            创建订单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.OrderController.OrderDetails(FuFuShop.Model.FromBody.FMStringId)">
+            <summary>
+            订单预览
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:FuFuShop.Controllers.AliPayController">
+            <summary>
+            支付宝异步通知
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.AliPayController.#ctor(Essensoft.Paylink.Alipay.IAlipayNotifyClient,Microsoft.Extensions.Options.IOptions{Essensoft.Paylink.Alipay.AlipayOptions})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="client"></param>
+            <param name="optionsAccessor"></param>
+        </member>
+        <member name="M:FuFuShop.Controllers.AliPayController.Gateway">
+            <summary>
+            应用网关
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.AliPayController.Precreate">
+            <summary>
+            扫码支付异步通知
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.AliPayController.AppPay">
+            <summary>
+            APP支付异步通知
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.AliPayController.PagePay">
+            <summary>
+            电脑网站支付异步通知
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.AliPayController.WapPay">
+            <summary>
+            手机网站支付异步通知
+            </summary>
+        </member>
+        <member name="T:FuFuShop.Controllers.WeChatPayController">
+            <summary>
+                微信支付异步通知
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.WeChatPayController.#ctor(Essensoft.Paylink.WeChatPay.V2.IWeChatPayNotifyClient,Microsoft.Extensions.Options.IOptions{Essensoft.Paylink.WeChatPay.WeChatPayOptions},FuFuShop.Services.IBillPaymentsServices,FuFuShop.Services.IBillRefundServices,FuFuShop.Common.Caching.IRedisOperationRepository)">
+            <summary>
+                构造函数
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.WeChatPayController.Unifiedorder">
+            <summary>
+                统一下单支付结果通知
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.WeChatPayController.Refund">
+            <summary>
+                退款结果通知
+            </summary>
+        </member>
+        <member name="T:FuFuShop.Controllers.UserController">
+            <summary>
+            用户操作事件
+            </summary>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.OnLogin(FuFuShop.Model.FromBody.FMWxPost)">
+            <summary>
+            wx.login登陆成功之后发送的请求
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.GetUserInfo">
+            <summary>
+            获取用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.GoodsCollectionCreateOrDelete(FuFuShop.Model.FromBody.FMIntId)">
+            <summary>
+            商品取消/添加收藏
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.GetUserDefaultShip">
+            <summary>
+            获取用户获取用户默认收货地址
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.SetDefShip(FuFuShop.Model.FromBody.FMIntId)">
+            <summary>
+            设置默认地址
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.GetUserShip">
+            <summary>
+            获取用户的收货地址列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.SaveUserShip(FuFuShop.Model.ViewModels.DTO.SaveUserShipPost)">
+            <summary>
+            保存用户地址
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.GetShipDetail(FuFuShop.Model.FromBody.FMIntId)">
+            <summary>
+            获取用户单个地址详情
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.RemoveShip(FuFuShop.Model.FromBody.FMIntId)">
+            <summary>
+            收货地址删除
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.Pay(FuFuShop.Model.ViewModels.DTO.PayPost)">
+            <summary>
+            支付
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.OrderEvaluate(FuFuShop.Model.ViewModels.DTO.OrderEvaluatePost)">
+            <summary>
+            订单评价
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.GoodsCollectionList(FuFuShop.Model.FromBody.FMPageByIntId)">
+            <summary>
+            取得商品收藏记录（关注）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.GoodsCollection(FuFuShop.Model.FromBody.FMIntId)">
+            <summary>
+            添加商品收藏（关注）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.Goodsbrowsing(FuFuShop.Model.FromBody.FMPageByIntId)">
+            <summary>
+            取得商品浏览足迹
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.AddGoodsBrowsing(FuFuShop.Model.FromBody.FMIntId)">
+            <summary>
+            添加商品浏览足迹
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuFuShop.Controllers.UserController.DelGoodsBrowsing(FuFuShop.Model.FromBody.FMIntId)">
+            <summary>
+            删除商品浏览足迹
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:FuFuShop.Filter.CustomApiVersion">
+            <summary>
+            自定义版本
+            </summary>
+        </member>
+        <member name="T:FuFuShop.Filter.CustomApiVersion.ApiVersions">
+            <summary>
+            Api接口版本 自定义
+            </summary>
+        </member>
+        <member name="F:FuFuShop.Filter.CustomApiVersion.ApiVersions.V1">
+            <summary>
+            V1 版本
+            </summary>
+        </member>
+        <member name="F:FuFuShop.Filter.CustomApiVersion.ApiVersions.V2">
+            <summary>
+            V2 版本
+            </summary>
+        </member>
+        <member name="T:FuFuShop.Filter.GlobalExceptionsFilter">
+            <summary>
+            接口全局异常错误日志
+            </summary>
+        </member>
+    </members>
+</doc>

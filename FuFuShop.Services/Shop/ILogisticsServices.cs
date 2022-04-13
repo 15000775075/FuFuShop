@@ -21,7 +21,7 @@ namespace FuFuShop.Services.Shop
         /// <summary>
         ///     通过接口
         /// </summary>
-      //  Task<AdminUiCallBack> DoUpdateCompany();
+        Task<AdminUiCallBack> DoUpdateCompany();
 
 
         /// <summary>
@@ -31,6 +31,6 @@ namespace FuFuShop.Services.Shop
         /// <param name="number">编号</param>
         /// <param name="phone">手机号码</param>
         /// <returns></returns>
-      //  Task<WebApiCallBack> ExpressPoll(string com, string number, string phone);
+        Task<WebApiCallBack> ExpressPoll(string com, string number, string phone);
     }
 }

@@ -6,7 +6,7 @@ namespace FuFuShop.Model.Entities.User
     /// <summary>
     ///     用户地址表
     /// </summary>
-    public partial class CmsUserShip
+    public partial class UserShip
     {
         /// <summary>
         ///     区域名称

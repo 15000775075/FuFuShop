@@ -15,6 +15,7 @@ using FuFuShop.Services.User;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SqlSugar;
 using System.Linq.Expressions;
 
 namespace FuFuShop.Services
@@ -963,5 +964,208 @@ namespace FuFuShop.Services
             return jm;
         }
         #endregion
+        #region 获取订单不同状态的数量
+        /// <summary>
+        /// 获取订单不同状态的数量
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="ids"></param>
+        /// <param name="isAfterSale"></param>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> GetOrderStatusNum(int userId, int[] ids, bool isAfterSale = false)
+        {
+            var jm = new WebApiCallBack();
+
+            var data = new Dictionary<string, int>();
+            foreach (var id in ids)
+            {
+                var count = await OrderCount(id, userId);
+                data.Add(id.ToString(), count);
+            }
+            if (isAfterSale)
+            {
+                var number = await _billAftersalesServices.GetUserAfterSalesNum(userId,
+                    (int)GlobalEnumVars.BillAftersalesStatus.WaitAudit);
+                data.Add("isAfterSale", number);
+            }
+            else
+            {
+                data.Add("isAfterSale", 0);
+            }
+            jm.status = true;
+            jm.data = data;
+
+            return jm;
+        }
+        #endregion
+
+        #region 获取订单列表微信小程序
+        /// <summary>
+        /// 获取订单列表微信小程序
+        /// </summary>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> GetOrderList(int status = -1, int userId = 0, int page = 1, int limit = 5)
+        {
+            var jm = new WebApiCallBack { status = true };
+
+            var where = PredicateBuilder.True<Order>();
+
+            if (status > -1)
+            {
+                where = GetReverseStatus(status);
+            }
+            if (userId > 0)
+            {
+                where = where.And(p => p.userId == userId);
+            }
+            var list = await _dal.QueryPageAsync(where, p => p.createTime, OrderByType.Desc, page, limit);
+
+            if (list.Any())
+            {
+                foreach (var order in list)
+                {
+                    //获取相关状态描述说明转换
+                    order.statusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderStatus>(order.status);
+                    order.payStatusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderPayStatus>(order.payStatus);
+                    order.shipStatusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderShipStatus>(order.shipStatus);
+                    order.sourceText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.Source>(order.source);
+                    order.typeText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderType>(order.orderType);
+                    order.confirmStatusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderConfirmStatus>(order.confirmStatus);
+                    order.taxTypeText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderTaxType>(order.taxType);
+                    order.paymentCodeText = EnumHelper.GetEnumDescriptionByKey<GlobalEnumVars.PaymentsTypes>(order.paymentCode);
+                }
+            }
+            jm.data = new
+            {
+                list,
+                count = list.TotalCount,
+                page,
+                limit,
+                status
+            };
+
+            return jm;
+        }
+        #endregion
+        #region 取消订单
+        /// <summary>
+        /// 取消订单
+        /// </summary>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> CancelOrder(string[] ids, int userId = 0)
+        {
+            var jm = new WebApiCallBack();
+
+            var where = PredicateBuilder.True<Order>();
+            where = where.And(p => ids.Contains(p.orderId));
+            where = where.And(p => p.payStatus == (int)GlobalEnumVars.OrderPayStatus.No);
+            where = where.And(p => p.status == (int)GlobalEnumVars.OrderStatus.Normal);
+            where = where.And(p => p.shipStatus == (int)GlobalEnumVars.OrderShipStatus.No);
+
+            var msg = "后台订单取消操作";
+            if (userId > 0)
+            {
+                where = where.And(p => p.userId == userId);
+                msg = "订单取消操作";
+            }
+            var orderInfo = await _dal.QueryListByClauseAsync(where);
+            if (orderInfo != null && orderInfo.Any())
+            {
+                //更改状态和库存
+                foreach (var item in orderInfo)
+                {
+                    //订单记录
+                    var orderLog = new OrderLog
+                    {
+                        orderId = item.orderId,
+                        userId = item.userId,
+                        type = (int)GlobalEnumVars.OrderLogTypes.LOG_TYPE_CANCEL,
+                        msg = msg,
+                        data = JsonConvert.SerializeObject(orderInfo),
+                        createTime = DateTime.Now
+                    };
+                    await _orderLogServices.InsertAsync(orderLog);
+                }
+                //状态修改
+                await _dal.UpdateAsync(
+                    p => new Order()
+                    {
+                        status = (int)GlobalEnumVars.OrderStatus.Cancel,
+                        updateTime = DateTime.Now
+                    }, p => ids.Contains(p.orderId));
+
+                var orderItems = await _orderItemServices.QueryListByClauseAsync(p => ids.Contains(p.orderId));
+                //更改库存
+                foreach (var item in orderItems)
+                {
+                    _goodsServices.ChangeStock(item.productId, GlobalEnumVars.OrderChangeStockType.cancel.ToString(), item.nums);
+                }
+                jm.status = true;
+                jm.msg = "订单取消成功";
+            }
+            else
+            {
+                jm.msg = "订单取消失败";
+            }
+
+            return jm;
+        }
+        #endregion
+
+        #region 确认签收订单
+        /// <summary>
+        /// 确认签收订单
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> ConfirmOrder(string orderId, int userId = 0)
+        {
+            var jm = new WebApiCallBack();
+
+            var where = PredicateBuilder.True<Order>();
+            where = where.And(p => p.orderId == orderId);
+            if (userId > 0)
+            {
+                where = where.And(p => p.userId == userId);
+            }
+            where = where.And(p => p.payStatus != (int)GlobalEnumVars.OrderPayStatus.No);
+            where = where.And(p => p.shipStatus != (int)GlobalEnumVars.OrderShipStatus.No);
+            where = where.And(p => p.status == (int)GlobalEnumVars.OrderStatus.Normal);
+            where = where.And(p => p.confirmStatus != (int)GlobalEnumVars.OrderConfirmStatus.ConfirmReceipt);
+
+            var bl = await _dal.UpdateAsync(
+                p => new Order()
+                {
+                    confirmStatus = (int)GlobalEnumVars.OrderConfirmStatus.ConfirmReceipt,
+                    confirmTime = DateTime.Now
+                }, where);
+            if (!bl)
+            {
+                jm.msg = "确认收货失败";
+                return jm;
+            }
+            //修改发货单,如果有为确认收货的发货单，那么给他们回传上去确认收货时间
+
+            //订单记录
+            var orderLog = new OrderLog
+            {
+                orderId = orderId,
+                userId = userId,
+                type = (int)GlobalEnumVars.OrderLogTypes.LOG_TYPE_SIGN,
+                msg = "确认收货成功",
+                data = JsonConvert.SerializeObject(jm),
+                createTime = DateTime.Now
+            };
+            await _orderLogServices.InsertAsync(orderLog);
+
+            jm.status = true;
+            jm.msg = "确认收货成功";
+
+
+
+            return jm;
+        }
+        #endregion
+
     }
 }

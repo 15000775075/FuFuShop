@@ -75,7 +75,11 @@ namespace FuFuShop.Services
             int deliveryType = (int)GlobalEnumVars.OrderReceiptType.Logistics, int objectId = 0);
 
 
-
+        /// <summary>
+        ///     获取购物车用户数据总数
+        /// </summary>
+        /// <returns></returns>
+        Task<int> GetCountAsync(int userId);
 
     }
 }

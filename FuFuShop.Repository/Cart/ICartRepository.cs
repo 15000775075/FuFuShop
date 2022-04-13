@@ -8,5 +8,10 @@ namespace FuFuShop.Repository
     /// </summary>
     public interface ICartRepository : IBaseRepository<Cart>
     {
+        /// <summary>
+        ///     获取购物车用户数据总数
+        /// </summary>
+        /// <returns></returns>
+        Task<int> GetCountAsync(int userId);
     }
 }
