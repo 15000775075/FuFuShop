@@ -9,14 +9,26 @@
  ***********************************************************************/
 
 using FuFuShop.Model.Entities;
+using FuFuShop.Repository;
+using FuFuShop.Repository.UnitOfWork;
+using FuFuShop.Services;
 using FuFuShop.Services.BaseServices;
 
-namespace FuFuShop.Services
+namespace CoreCms.Net.Services
 {
     /// <summary>
-    ///     定时任务日志 服务工厂接口
+    ///     用户角色关联表 接口实现
     /// </summary>
-    public interface ISysTaskLogServices : IBaseServices<SysTaskLog>
+    public class SysUserRoleServices : BaseServices<SysUserRole>, ISysUserRoleServices
     {
+        private readonly ISysUserRoleRepository _dal;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public SysUserRoleServices(IUnitOfWork unitOfWork, ISysUserRoleRepository dal)
+        {
+            _dal = dal;
+            BaseDal = dal;
+            _unitOfWork = unitOfWork;
+        }
     }
 }

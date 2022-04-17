@@ -19,9 +19,9 @@ namespace FuFuShop.Controllers
     public class PaymentsController : ControllerBase
     {
 
-        private IHttpContextUser _user;
-        private IBillPaymentsServices _billPaymentsServices;
-        private IPaymentsServices _paymentsServices;
+        private readonly IHttpContextUser _user;
+        private readonly IBillPaymentsServices _billPaymentsServices;
+        private readonly IPaymentsServices _paymentsServices;
 
         /// <summary>
         /// 构造函数

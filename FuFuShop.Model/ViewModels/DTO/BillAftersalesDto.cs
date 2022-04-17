@@ -1,6 +1,5 @@
 ﻿
 using FuFuShop.Model.Entities;
-
 namespace FuFuShop.Model.ViewModels.DTO
 {
     /// <summary>

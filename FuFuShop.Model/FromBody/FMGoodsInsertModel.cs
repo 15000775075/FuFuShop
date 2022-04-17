@@ -1,5 +1,4 @@
 ﻿using FuFuShop.Model.Entities;
-
 namespace FuFuShop.Model.FromBody
 {
     /// <summary>

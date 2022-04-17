@@ -8,15 +8,29 @@
  *        Description: 暂无
  ***********************************************************************/
 
-using FuFuShop.Model.Entities;
-using FuFuShop.Services.BaseServices;
+using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
-namespace FuFuShop.Services
+namespace FuFuShop.Model.Entities
 {
     /// <summary>
-    ///     定时任务日志 服务工厂接口
+    ///     用户权限和菜单关系表扩展
     /// </summary>
-    public interface ISysTaskLogServices : IBaseServices<SysTaskLog>
+    public partial class SysRoleMenu
     {
+        /// <summary>
+        ///     菜单
+        /// </summary>
+        [Display(Name = "菜单")]
+        [SugarColumn(IsIgnore = true)]
+        public SysMenu menu { get; set; }
+
+
+        /// <summary>
+        ///     权限
+        /// </summary>
+        [Display(Name = "权限")]
+        [SugarColumn(IsIgnore = true)]
+        public SysRole role { get; set; }
     }
 }

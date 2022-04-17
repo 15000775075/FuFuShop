@@ -9,14 +9,13 @@
  ***********************************************************************/
 
 using FuFuShop.Model.Entities;
-using FuFuShop.Services.BaseServices;
-
-namespace FuFuShop.Services
+using FuFuShop.Repository.BaseRepository;
+namespace FuFuShop.Repository
 {
     /// <summary>
-    ///     定时任务日志 服务工厂接口
+    ///     角色表 工厂接口
     /// </summary>
-    public interface ISysTaskLogServices : IBaseServices<SysTaskLog>
+    public interface ISysRoleRepository : IBaseRepository<SysRole>
     {
     }
 }

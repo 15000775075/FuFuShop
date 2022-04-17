@@ -20,7 +20,7 @@ namespace FuFuShop.Services
 
         public ServiceDescriptionServices(IUnitOfWork unitOfWork, IServiceDescriptionRepository dal)
         {
-            this._dal = dal;
+            _dal = dal;
             base.BaseDal = dal;
             _unitOfWork = unitOfWork;
         }

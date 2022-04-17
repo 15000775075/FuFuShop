@@ -9,14 +9,19 @@
  ***********************************************************************/
 
 using FuFuShop.Model.Entities;
-using FuFuShop.Services.BaseServices;
+using FuFuShop.Repository;
+using FuFuShop.Repository.BaseRepository;
+using FuFuShop.Repository.UnitOfWork;
 
-namespace FuFuShop.Services
+namespace CoreCms.Net.Repository
 {
     /// <summary>
-    ///     定时任务日志 服务工厂接口
+    ///     登录日志表 接口实现
     /// </summary>
-    public interface ISysTaskLogServices : IBaseServices<SysTaskLog>
+    public class SysLoginRecordRepository : BaseRepository<SysLoginRecord>, ISysLoginRecordRepository
     {
+        public SysLoginRecordRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
+        {
+        }
     }
 }

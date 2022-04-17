@@ -13,9 +13,9 @@ using FuFuShop.Repository.BaseRepository;
 namespace FuFuShop.Repository
 {
     /// <summary>
-    ///     定时任务日志 工厂接口
+    ///     Nlog记录表 工厂接口
     /// </summary>
-    public interface ISysTaskLogRepository : IBaseRepository<SysTaskLog>
+    public interface ISysNLogRecordsRepository : IBaseRepository<SysNLogRecords>
     {
         #region 重写增删改查操作===========================================================
 
@@ -24,7 +24,7 @@ namespace FuFuShop.Repository
         ///// </summary>
         ///// <param name="entity"></param>
         ///// <returns></returns>
-        //new Task<AdminUiCallBack> InsertAsync(SysTaskLog entity);
+        //new Task<AdminUiCallBack> InsertAsync(SysNLogRecords entity);
 
 
         ///// <summary>
@@ -32,7 +32,7 @@ namespace FuFuShop.Repository
         ///// </summary>
         ///// <param name="entity"></param>
         ///// <returns></returns>
-        //new Task<AdminUiCallBack> UpdateAsync(SysTaskLog entity);
+        //new Task<AdminUiCallBack> UpdateAsync(SysNLogRecords entity);
 
 
         ///// <summary>
@@ -40,7 +40,7 @@ namespace FuFuShop.Repository
         ///// </summary>
         ///// <param name="entity"></param>
         ///// <returns></returns>
-        //new Task<AdminUiCallBack> UpdateAsync(List<SysTaskLog> entity);
+        //new Task<AdminUiCallBack> UpdateAsync(List<SysNLogRecords> entity);
 
 
         ///// <summary>

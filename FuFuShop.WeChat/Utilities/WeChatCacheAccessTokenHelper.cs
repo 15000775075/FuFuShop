@@ -1,7 +1,6 @@
 ﻿using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Caching.Manual;
 using FuFuShop.Model.Entities;
-
 namespace FuFuShop.WeChat.Utilities
 {
     /// <summary>

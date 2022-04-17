@@ -13,52 +13,51 @@ using System.ComponentModel.DataAnnotations;
 namespace FuFuShop.Model.Entities
 {
     /// <summary>
-    /// 定时任务日志
+    /// 用户角色关联表
     /// </summary>
-    [SugarTable("SysTaskLog", TableDescription = "定时任务日志")]
-    public partial class SysTaskLog
+    [SugarTable("SysUserRole", TableDescription = "用户角色关联表")]
+    public partial class SysUserRole
     {
         /// <summary>
-        /// 定时任务日志
+        /// 用户角色关联表
         /// </summary>
-        public SysTaskLog()
+        public SysUserRole()
         {
         }
 
         /// <summary>
-        /// 序列
+        /// 主键
         /// </summary>
-        [Display(Name = "序列")]
-        [SugarColumn(ColumnDescription = "序列", IsPrimaryKey = true, IsIdentity = true)]
+        [Display(Name = "主键")]
+        [SugarColumn(ColumnDescription = "主键", IsPrimaryKey = true, IsIdentity = true)]
         [Required(ErrorMessage = "请输入{0}")]
         public System.Int32 id { get; set; }
         /// <summary>
-        /// 任务名称
+        /// 用户id
         /// </summary>
-        [Display(Name = "任务名称")]
-        [SugarColumn(ColumnDescription = "任务名称")]
+        [Display(Name = "用户id")]
+        [SugarColumn(ColumnDescription = "用户id")]
         [Required(ErrorMessage = "请输入{0}")]
-        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String name { get; set; }
+        public System.Int32 userId { get; set; }
         /// <summary>
-        /// 完成时间
+        /// 角色id
         /// </summary>
-        [Display(Name = "完成时间")]
-        [SugarColumn(ColumnDescription = "完成时间")]
+        [Display(Name = "角色id")]
+        [SugarColumn(ColumnDescription = "角色id")]
+        [Required(ErrorMessage = "请输入{0}")]
+        public System.Int32 roleId { get; set; }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        [Display(Name = "创建时间")]
+        [SugarColumn(ColumnDescription = "创建时间")]
         [Required(ErrorMessage = "请输入{0}")]
         public System.DateTime createTime { get; set; }
         /// <summary>
-        /// 是否完成
+        /// 修改时间
         /// </summary>
-        [Display(Name = "是否完成")]
-        [SugarColumn(ColumnDescription = "是否完成")]
-        [Required(ErrorMessage = "请输入{0}")]
-        public System.Boolean isSuccess { get; set; }
-        /// <summary>
-        /// 其他数据
-        /// </summary>
-        [Display(Name = "其他数据")]
-        [SugarColumn(ColumnDescription = "其他数据", IsNullable = true)]
-        public System.String parameters { get; set; }
+        [Display(Name = "修改时间")]
+        [SugarColumn(ColumnDescription = "修改时间", IsNullable = true)]
+        public System.DateTime? updateTime { get; set; }
     }
 }

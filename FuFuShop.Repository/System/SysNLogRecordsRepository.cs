@@ -9,14 +9,18 @@
  ***********************************************************************/
 
 using FuFuShop.Model.Entities;
-using FuFuShop.Services.BaseServices;
-
-namespace FuFuShop.Services
+using FuFuShop.Repository;
+using FuFuShop.Repository.UnitOfWork;
+using FuFuShop.Repository.BaseRepository;
+namespace CoreCms.Net.Repository
 {
     /// <summary>
-    ///     定时任务日志 服务工厂接口
+    ///     Nlog记录表 接口实现
     /// </summary>
-    public interface ISysTaskLogServices : IBaseServices<SysTaskLog>
+    public class SysNLogRecordsRepository : BaseRepository<SysNLogRecords>, ISysNLogRecordsRepository
     {
+        public SysNLogRecordsRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
+        {
+        }
     }
 }
