@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuFuShop.Common", "FuFuShop
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuFuShop.WeChat", "FuFuShop.WeChat\FuFuShop.WeChat.csproj", "{B90B3481-B65C-4007-A676-CFF1685EB048}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuFuShop.Tasks", "FuFuShop.Tasks\FuFuShop.Tasks.csproj", "{587C3577-56E1-479A-90AC-0B004A27C481}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuFuShop.Tasks", "FuFuShop.Tasks\FuFuShop.Tasks.csproj", "{587C3577-56E1-479A-90AC-0B004A27C481}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuFuShop.Admin", "FuFuShop.Admin\FuFuShop.Admin.csproj", "{45A7A585-C06B-413D-A756-5881AF7333C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{587C3577-56E1-479A-90AC-0B004A27C481}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{587C3577-56E1-479A-90AC-0B004A27C481}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{587C3577-56E1-479A-90AC-0B004A27C481}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45A7A585-C06B-413D-A756-5881AF7333C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45A7A585-C06B-413D-A756-5881AF7333C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45A7A585-C06B-413D-A756-5881AF7333C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45A7A585-C06B-413D-A756-5881AF7333C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
