@@ -1,5 +1,6 @@
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.Basics;
+using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 using SqlSugar;
 using System.Linq.Expressions;
@@ -42,7 +43,13 @@ namespace FuFuShop.Repository.Good
             int pageSize = 20, bool blUseNoLock = false);
 
 
-
+        /// <summary>
+        ///     修改单个货品库存并记入库存管理日志内
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="stock"></param>
+        /// <returns></returns>
+        Task<AdminUiCallBack> EditStock(int productId, int stock);
 
 
         /// <summary>

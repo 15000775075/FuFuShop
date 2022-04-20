@@ -1,4 +1,5 @@
 using FuFuShop.Model.Entities;
+using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 
 namespace FuFuShop.Repository.User
@@ -31,17 +32,17 @@ namespace FuFuShop.Repository.User
         //    Expression<Func<User, object>> orderByExpression, OrderByType orderByType, int pageIndex = 1,
         //    int pageSize = 20);
 
-        ///// <summary>
-        /////     按天统计新会员
-        ///// </summary>
-        ///// <returns></returns>
-        //Task<List<StatisticsOut>> Statistics(int day);
+        /// <summary>
+        ///     按天统计新会员
+        /// </summary>
+        /// <returns></returns>
+        Task<List<StatisticsOut>> Statistics(int day);
 
 
-        ///// <summary>
-        /////     按天统计当天下单活跃会员
-        ///// </summary>
-        ///// <returns></returns>
-        //Task<List<StatisticsOut>> StatisticsOrder(int day);
+        /// <summary>
+        ///     按天统计当天下单活跃会员
+        /// </summary>
+        /// <returns></returns>
+        Task<List<StatisticsOut>> StatisticsOrder(int day);
     }
 }

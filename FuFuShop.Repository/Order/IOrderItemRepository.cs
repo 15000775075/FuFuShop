@@ -9,5 +9,12 @@ namespace FuFuShop.Repository
     public interface IOrderItemRepository : IBaseRepository<OrderItem>
     {
 
+        /// <summary>
+        ///     算订单的商品退了多少个(未发货的退货数量，已发货的退货不算)
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="sn"></param>
+        /// <returns></returns>
+        int GetaftersalesNums(string orderId, string sn);
     }
 }

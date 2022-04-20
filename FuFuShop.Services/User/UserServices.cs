@@ -1,4 +1,5 @@
 using FuFuShop.Model.Entities;
+using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Repository.User;
 using FuFuShop.Services.BaseServices;
@@ -36,7 +37,24 @@ namespace FuFuShop.Services.User
 
 
 
+        /// <summary>
+        /// 按天统计新会员
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<StatisticsOut>> Statistics(int day)
+        {
+            return await _dal.Statistics(day);
+        }
 
+        /// <summary>
+        /// 按天统计当天下单活跃会员
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<StatisticsOut>> StatisticsOrder(int day)
+        {
+
+            return await _dal.StatisticsOrder(day);
+        }
 
 
     }

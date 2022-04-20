@@ -1,7 +1,9 @@
+using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Auth.HttpContextUser;
 using FuFuShop.Common.Extensions;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.Basics;
+using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 using SqlSugar;
@@ -17,13 +19,16 @@ namespace FuFuShop.Repository.Good
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextUser _user;
+        private readonly IStockRepository _stockRepository;
 
-
-        public ProductsRepository(IUnitOfWork unitOfWork,
-            IHttpContextUser user) : base(unitOfWork)
+        public ProductsRepository(
+            IUnitOfWork unitOfWork,
+            IHttpContextUser user,
+            IStockRepository stockRepository) : base(unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _user = user;
+            _stockRepository = stockRepository;
         }
 
         #region 判断货品上下架状态
@@ -205,6 +210,117 @@ namespace FuFuShop.Repository.Good
         }
 
         #endregion
+
+
+        #region 修改单个货品库存并记入库存管理日志内
+
+        /// <summary>
+        /// 修改单个货品库存并记入库存管理日志内
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="stockNumber"></param>
+        /// <returns></returns>
+        public async Task<AdminUiCallBack> EditStock(int productId, int stockNumber)
+        {
+            var jm = new AdminUiCallBack();
+
+            var product = await DbClient.Queryable<Products, Goods>((p, good) => new JoinQueryInfos(
+                    JoinType.Left, p.goodsId == good.id))
+                .Select((p, good) => new Products
+                {
+                    id = p.id,
+                    goodsId = p.goodsId,
+                    barcode = p.barcode,
+                    sn = p.sn,
+                    price = p.price,
+                    costprice = p.costprice,
+                    mktprice = p.mktprice,
+                    marketable = p.marketable,
+                    weight = p.weight,
+                    stock = p.stock,
+                    freezeStock = p.freezeStock,
+                    spesDesc = p.spesDesc,
+                    isDefalut = p.isDefalut,
+                    images = p.images,
+                    isDel = p.isDel,
+                    name = good.name,
+                    bn = good.bn,
+                    isMarketable = good.isMarketable,
+                    unit = good.unit
+                })
+                .MergeTable()
+                .Where(p => p.id == productId)
+                .FirstAsync();
+            if (product == null)
+            {
+                jm.msg = "货品数据查询失败";
+                return jm;
+            }
+
+
+            var nums = stockNumber - product.stock;
+            var msg = string.Empty;
+            if (nums == 0)
+            {
+                jm.code = 0;
+                jm.msg = "库存未修改";
+                return jm;
+            }
+            else if (nums < 0)
+            {
+                jm.code = 0;
+                msg = "库存盘点：库存减少" + Math.Abs(nums);
+            }
+            else
+            {
+                msg = "库存盘点：库存增加" + nums;
+            }
+
+            var stockModel = new Stock();
+            stockModel.id = await _stockRepository.CreateCode(GlobalEnumVars.StockType.CheckGoods.ToString());
+            stockModel.memo = msg;
+            stockModel.type = (int)GlobalEnumVars.StockType.CheckGoods;
+            stockModel.manager = _user.ID;
+            stockModel.createTime = DateTime.Now;
+
+            var stockLogModel = new StockLog();
+            stockLogModel.stockId = stockModel.id;
+            stockLogModel.productId = product.id;
+            stockLogModel.goodsId = product.goodsId;
+            stockLogModel.nums = nums;
+            stockLogModel.goodsName = product.name;
+            stockLogModel.sn = product.sn;
+            stockLogModel.bn = product.bn;
+            stockLogModel.spesDesc = product.spesDesc;
+
+            try
+            {
+                _unitOfWork.BeginTran();
+
+                await DbClient.Updateable<Products>().SetColumns(p => new Products() { stock = stockNumber }).Where(p => p.id == product.id).ExecuteCommandAsync();
+
+                await DbClient.Insertable(stockModel).ExecuteCommandAsync();
+                await DbClient.Insertable(stockLogModel).ExecuteCommandAsync();
+
+                jm.code = 0;
+                jm.msg = "库存修改成功";
+
+                _unitOfWork.CommitTran();
+            }
+            catch (Exception e)
+            {
+                jm.code = 1;
+                jm.msg = "库存修改异常";
+                jm.otherData = e;
+                _unitOfWork.RollbackTran();
+            }
+            return jm;
+        }
+
+
+        #endregion
+
+
 
     }
 }

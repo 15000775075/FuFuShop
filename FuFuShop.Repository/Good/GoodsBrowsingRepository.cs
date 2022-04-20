@@ -44,7 +44,7 @@ namespace FuFuShop.Repository
                     createTime = gb.createTime,
                     isdel = gb.isdel,
                     goodImage = goods.image
-                    //isCollection = SqlFunc.Subqueryable<CoreCmsGoodsCollection>().Where(p => p.userId == gb.userId && p.goodsId == gb.goodsId).Any()
+                    //isCollection = SqlFunc.Subqueryable<GoodsCollection>().Where(p => p.userId == gb.userId && p.goodsId == gb.goodsId).Any()
                 })
                 .With(SqlWith.NoLock)
                 .MergeTable()

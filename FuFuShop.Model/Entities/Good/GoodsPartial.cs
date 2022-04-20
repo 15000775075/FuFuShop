@@ -64,6 +64,13 @@ namespace FuFuShop.Model.Entities
         /// </summary>
         [SugarColumn(IsIgnore = true)]
         public string[] album { get; set; }
+
+        /// <summary>
+        ///     品牌数据
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public Brand brand { get; set; }
+
         /// <summary>
         ///     关联参数
         /// </summary>
@@ -80,10 +87,35 @@ namespace FuFuShop.Model.Entities
 
 
         /// <summary>
+        ///     拼团价格
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public decimal pinTuanPrice { get; set; } = 0;
+
+
+        /// <summary>
+        ///     拼团记录数量
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public int pinTuanRecordNums { get; set; } = 0;
+
+        /// <summary>
+        ///     拼团总单数
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public int buyPinTuanCount { get; set; } = 0;
+
+        /// <summary>
+        ///     团购秒杀促销总单数
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public int buyPromotionCount { get; set; } = 0;
+
+        /// <summary>
         ///     标签列表
         /// </summary>
-        // [SugarColumn(IsIgnore = true)]
-        //public List<Label> labels { get; set; } = new();
+        [SugarColumn(IsIgnore = true)]
+        public List<Label> labels { get; set; } = new();
 
         /// <summary>
         ///     所属团购秒杀

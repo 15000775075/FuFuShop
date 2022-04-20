@@ -1,8 +1,11 @@
 using FuFuShop.Model.Entities;
+using FuFuShop.Model.FromBody;
+using FuFuShop.Model.ViewModels.Basics;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 using SqlSugar;
+using System.Linq.Expressions;
 
 namespace FuFuShop.Repository.Good
 {
@@ -232,6 +235,36 @@ namespace FuFuShop.Repository.Good
             res.msg = bl ? "库存更新成功" : "库存不足";
 
             return res;
+        }
+
+        public Task<AdminUiCallBack> InsertAsync(FMGoodsInsertModel entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AdminUiCallBack> UpdateAsync(FMGoodsInsertModel entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<AdminUiCallBack> IGoodsRepository.DeleteByIdsAsync(int[] ids)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<decimal> GetWeight(int productsId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IPageList<Goods>> QueryAgentGoodsPageAsync(Expression<Func<Goods, bool>> predicate, string orderBy = "", int pageIndex = 1, int pageSize = 20, bool blUseNoLock = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<EnumEntity>> QueryEnumEntityAsync()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

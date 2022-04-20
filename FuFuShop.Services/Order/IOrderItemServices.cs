@@ -8,6 +8,12 @@ namespace FuFuShop.Services
     /// </summary>
     public interface IOrderItemServices : IBaseServices<OrderItem>
     {
-
+        /// <summary>
+        ///     发货数量
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="item">发货明细</param>
+        /// <returns></returns>
+        Task<bool> ship(string orderId, Dictionary<int, int> item);
     }
 }

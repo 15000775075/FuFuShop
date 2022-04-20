@@ -1,4 +1,6 @@
-﻿namespace FuFuShop.Model.ViewModels.DTO
+﻿using FuFuShop.Model.Entities.Shop;
+
+namespace FuFuShop.Model.ViewModels.DTO
 {
     public class AreasDto
     {
@@ -19,7 +21,7 @@
     /// </summary>
     public class AreasDtoForAdminEdit
     {
-        //public Area info { get; set; } = new();
-        //public List<Area> list { get; set; } = new();
+        public Area info { get; set; } = new();
+        public List<Area> list { get; set; } = new();
     }
 }

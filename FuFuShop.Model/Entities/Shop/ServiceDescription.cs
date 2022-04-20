@@ -1,7 +1,7 @@
 /***********************************************************************
- *            Project: CoreCms
+ *            Project: 
  *        ProjectName: 核心内容管理系统                                
- *                Web: https://www.corecms.net                      
+ *                Web: https://www..net                      
  *             Author: 大灰灰                                          
  *              Email: jianweie@163.com
  *         CreateTime: 2021-06-08 22:14:58
@@ -15,7 +15,7 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     /// 商城服务说明
     /// </summary>
-    [SugarTable("CoreCmsServiceDescription", TableDescription = "商城服务说明")]
+    [SugarTable("ServiceDescription", TableDescription = "商城服务说明")]
     public partial class ServiceDescription
     {
         /// <summary>

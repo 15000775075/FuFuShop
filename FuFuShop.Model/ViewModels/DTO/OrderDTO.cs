@@ -1,4 +1,6 @@
 ﻿
+using FuFuShop.Model.Entities;
+using FuFuShop.Model.Entities.Shop;
 using Newtonsoft.Json.Linq;
 
 namespace FuFuShop.Model.ViewModels.DTO
@@ -366,10 +368,10 @@ namespace FuFuShop.Model.ViewModels.DTO
         public string shipName { get; set; }
         public string shipMobile { get; set; }
         public int logisticsId { get; set; } = 0;
-        // public Ship ship { get; set; } = null;
+        public Ship ship { get; set; } = null;
         public string logisticsName { get; set; }
-        // public List<OrderItem> items { get; set; }
-        // public List<Order> orders { get; set; }
+        public List<OrderItem> items { get; set; }
+        public List<Order> orders { get; set; }
     }
 
     /// <summary>
@@ -387,10 +389,10 @@ namespace FuFuShop.Model.ViewModels.DTO
         public string shipName { get; set; }
         public string shipMobile { get; set; }
         public int logisticsId { get; set; } = 0;
-        //  public Ship ship { get; set; } = null;
+        public Ship ship { get; set; } = null;
         public string logisticsName { get; set; }
-        // public List<OrderItem> items { get; set; }
-        // public Order orderInfo { get; set; }
+        public List<OrderItem> items { get; set; }
+        public Order orderInfo { get; set; }
     }
 
 

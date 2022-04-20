@@ -1,7 +1,7 @@
 /***********************************************************************
- *            Project: CoreCms
+ *            Project: 
  *        ProjectName: 核心内容管理系统                                
- *                Web: https://www.corecms.net                      
+ *                Web: https://www..net                      
  *             Author: 大灰灰                                          
  *              Email: jianweie@163.com                                
  *         CreateTime: 2021/1/31 21:45:10
@@ -9,11 +9,10 @@
  ***********************************************************************/
 
 using FuFuShop.Model.Entities;
-using FuFuShop.Repository;
+using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 using SqlSugar;
-using FuFuShop.Repository.BaseRepository;
-namespace CoreCms.Net.Repository
+namespace FuFuShop.Repository
 {
     /// <summary>
     ///     角色菜单关联表 接口实现

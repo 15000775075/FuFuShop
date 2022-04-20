@@ -1,3 +1,4 @@
+using FuFuShop.Common.Extensions;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
@@ -145,44 +146,44 @@ namespace FuFuShop.Repository.User
             return list;
         }
 
-        ///// <summary>
-        ///// 按天统计当天下单活跃会员
-        ///// </summary>
-        ///// <returns></returns>
-        //public async Task<List<StatisticsOut>> StatisticsOrder(int day)
-        //{
+        /// <summary>
+        /// 按天统计当天下单活跃会员
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<StatisticsOut>> StatisticsOrder(int day)
+        {
 
-        //    var outs = new List<StatisticsOut>();
+            var outs = new List<StatisticsOut>();
 
-        //    for (int i = 0; i < day; i++)
-        //    {
-        //        var dt = DateTime.Now;
-        //        var where = PredicateBuilder.True<Order>();
-        //        var currDay = DateTime.Now.ToString("yyyy-MM-dd");
-        //        if (i == 0)
-        //        {
-        //            where = where.And(p => p.createTime < DateTime.Now);
-        //            currDay = DateTime.Now.ToString("yyyy-MM-dd");
-        //        }
-        //        else
-        //        {
-        //            var iDt = DateTime.Now.AddDays(-i);
-        //            var dtEnd = new DateTime(iDt.Year, iDt.Month, iDt.Day, 23, 59, 59);
-        //            where = where.And(p => p.createTime < dtEnd);
-        //            currDay = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd");
-        //        }
-        //        var iDt2 = DateTime.Now.AddDays(-i);
-        //        var dtStart = new DateTime(iDt2.Year, iDt2.Month, iDt2.Day, 00, 00, 00);
-        //        where = where.And(p => p.createTime >= dtStart);
+            for (int i = 0; i < day; i++)
+            {
+                var dt = DateTime.Now;
+                var where = PredicateBuilder.True<Order>();
+                var currDay = DateTime.Now.ToString("yyyy-MM-dd");
+                if (i == 0)
+                {
+                    where = where.And(p => p.createTime < DateTime.Now);
+                    currDay = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    var iDt = DateTime.Now.AddDays(-i);
+                    var dtEnd = new DateTime(iDt.Year, iDt.Month, iDt.Day, 23, 59, 59);
+                    where = where.And(p => p.createTime < dtEnd);
+                    currDay = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd");
+                }
+                var iDt2 = DateTime.Now.AddDays(-i);
+                var dtStart = new DateTime(iDt2.Year, iDt2.Month, iDt2.Day, 00, 00, 00);
+                where = where.And(p => p.createTime >= dtStart);
 
-        //        var item = new StatisticsOut();
-        //        item.nums = await DbClient.Queryable<Order>().Where(where).GroupBy(p => p.userId).Select(p => p.userId).CountAsync();
-        //        item.day = currDay;
-        //        outs.Add(item);
-        //    }
+                var item = new StatisticsOut();
+                item.nums = await DbClient.Queryable<Order>().Where(where).GroupBy(p => p.userId).Select(p => p.userId).CountAsync();
+                item.day = currDay;
+                outs.Add(item);
+            }
 
-        //    return outs;
-        //}
+            return outs;
+        }
 
     }
 }
