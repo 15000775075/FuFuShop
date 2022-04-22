@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Auth.HttpContextUser;
 using FuFuShop.Common.Extensions;
 using FuFuShop.Model.Entities;
@@ -27,7 +28,7 @@ namespace FuFuShop.Controllers
         private readonly IBrandServices _brandServices;
         private readonly IProductsServices _productsServices;
         private readonly IGoodsCommentServices _goodsCommentServices;
-
+        private readonly IGoodsParamsServices _goodsParamsServices;
 
         /// <summary>
         /// 构造函数
@@ -38,7 +39,8 @@ namespace FuFuShop.Controllers
             IGoodsServices goodsServices,
             IBrandServices brandServices,
             IProductsServices productsServices,
-            IGoodsCommentServices goodsCommentServices
+            IGoodsCommentServices goodsCommentServices ,
+             IGoodsParamsServices goodsParamsServices
         )
         {
             _mapper = mapper;
@@ -48,6 +50,7 @@ namespace FuFuShop.Controllers
             _brandServices = brandServices;
             _productsServices = productsServices;
             _goodsCommentServices = goodsCommentServices;
+            _goodsParamsServices = goodsParamsServices;
 
         }
 
@@ -349,6 +352,58 @@ namespace FuFuShop.Controllers
             return jm;
         }
         #endregion
+        #region 获取商品参数======================================================================
+        /// <summary>
+        /// 获取单个商品参数
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<WebApiCallBack> GetGoodsParams([FromBody] FMIntId entity)
+        {
+            var jm = new WebApiCallBack();
+
+            //获取数据
+            var goods = await _goodsServices.QueryByIdAsync(entity.id);
+            if (goods == null)
+            {
+                jm.msg = GlobalConstVars.DataisNo;
+                return jm;
+            }
+            var list = new List<WxNameValueDto>();
+            var goodsParams = await _goodsParamsServices.QueryAsync();
+
+            if (!string.IsNullOrEmpty(goods.parameters))
+            {
+                var arrItem = goods.parameters.Split("|");
+                foreach (var item in arrItem)
+                {
+                    if (!item.Contains(":")) continue;
+
+                    var childArr = item.Split(":");
+                    if (childArr.Length == 2)
+                    {
+                        var paramsId = Convert.ToInt32(childArr[0]);
+                        var paramsModel = goodsParams.First(p => p.id == paramsId);
+                        if (paramsModel != null)
+                        {
+                            list.Add(new WxNameValueDto()
+                            {
+                                name = paramsModel.name,
+                                value = childArr[1]
+                            });
+                        }
+                    }
+                }
+            }
+            jm.status = true;
+            jm.msg = "获取商品参数成功";
+            jm.data = list;
+
+            return jm;
+        }
+        #endregion
+
 
     }
 }

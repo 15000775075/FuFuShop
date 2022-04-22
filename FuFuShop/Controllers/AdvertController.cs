@@ -41,7 +41,7 @@ namespace FuFuShop.Controllers
         /// <summary>
         /// 获取广告列表
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entity">FMPageByIntId</param>
         /// <returns></returns>
         [HttpPost]
         public async Task<WebApiCallBack> GetAdvertList([FromBody] FMPageByIntId entity)
