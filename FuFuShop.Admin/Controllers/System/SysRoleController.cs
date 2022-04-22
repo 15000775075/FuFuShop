@@ -13,44 +13,50 @@ using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Extensions;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
+using FuFuShop.Model.ViewModels.DTO;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.HSSF.UserModel;
 using SqlSugar;
 using System.ComponentModel;
 using System.Linq.Expressions;
 
-namespace FuFuShop.Admin.Controllers
+namespace FuFuShop.Admin.Controllers.System
 {
     /// <summary>
-    ///     用户角色关联表
+    ///     角色表
     /// </summary>
-    [Description("用户角色关联表")]
+    [Description("角色表")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class SysUserRoleController : ControllerBase
+    public class SysRoleController : ControllerBase
     {
-        private readonly ISysUserRoleServices _sysUserRoleServices;
+        private readonly ISysMenuServices _sysMenuServices;
+        private readonly ISysRoleMenuServices _sysRoleMenuServices;
+        private readonly ISysRoleServices _sysRoleServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         /// <summary>
         ///     构造函数
         /// </summary>
-        public SysUserRoleController(IWebHostEnvironment webHostEnvironment
-            , ISysUserRoleServices sysUserRoleServices
+        public SysRoleController(IWebHostEnvironment webHostEnvironment
+            , ISysRoleServices sysRoleServices
+            , ISysMenuServices sysMenuServices
+            , ISysRoleMenuServices sysRoleMenuServices
         )
         {
             _webHostEnvironment = webHostEnvironment;
-            _sysUserRoleServices = sysUserRoleServices;
+            _sysRoleServices = sysRoleServices;
+            _sysMenuServices = sysMenuServices;
+            _sysRoleMenuServices = sysRoleMenuServices;
         }
 
         #region 获取列表============================================================
 
-        // POST: Api/SysUserRole/GetPageList
+        // POST: Api/SysRole/GetPageList
         /// <summary>
         ///     获取列表
         /// </summary>
@@ -62,20 +68,26 @@ namespace FuFuShop.Admin.Controllers
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
             var pageSize = Request.Form["limit"].FirstOrDefault().ObjectToInt(30);
-            var where = PredicateBuilder.True<SysUserRole>();
+            var where = PredicateBuilder.True<SysRole>();
             //获取排序字段
             var orderField = Request.Form["orderField"].FirstOrDefault();
-            Expression<Func<SysUserRole, object>> orderEx;
+            Expression<Func<SysRole, object>> orderEx;
             switch (orderField)
             {
                 case "id":
                     orderEx = p => p.id;
                     break;
-                case "userId":
-                    orderEx = p => p.userId;
+                case "roleName":
+                    orderEx = p => p.roleName;
                     break;
-                case "roleId":
-                    orderEx = p => p.roleId;
+                case "roleCode":
+                    orderEx = p => p.roleCode;
+                    break;
+                case "comments":
+                    orderEx = p => p.comments;
+                    break;
+                case "deleted":
+                    orderEx = p => p.deleted;
                     break;
                 case "createTime":
                     orderEx = p => p.createTime;
@@ -98,15 +110,24 @@ namespace FuFuShop.Admin.Controllers
             };
             //查询筛选
 
-            //主键 int
+            //角色id int
             var id = Request.Form["id"].FirstOrDefault().ObjectToInt(0);
             if (id > 0) @where = @where.And(p => p.id == id);
-            //用户id int
-            var userId = Request.Form["userId"].FirstOrDefault().ObjectToInt(0);
-            if (userId > 0) @where = @where.And(p => p.userId == userId);
-            //角色id int
-            var roleId = Request.Form["roleId"].FirstOrDefault().ObjectToInt(0);
-            if (roleId > 0) @where = @where.And(p => p.roleId == roleId);
+            //角色名称 nvarchar
+            var roleName = Request.Form["roleName"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(roleName)) @where = @where.And(p => p.roleName.Contains(roleName));
+            //角色标识 nvarchar
+            var roleCode = Request.Form["roleCode"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(roleCode)) @where = @where.And(p => p.roleCode.Contains(roleCode));
+            //备注 nvarchar
+            var comments = Request.Form["comments"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(comments)) @where = @where.And(p => p.comments.Contains(comments));
+            //是否删除,0否,1是 bit
+            var deleted = Request.Form["deleted"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(deleted) && deleted.ToLowerInvariant() == "true")
+                @where = @where.And(p => p.deleted);
+            else if (!string.IsNullOrEmpty(deleted) && deleted.ToLowerInvariant() == "false")
+                @where = @where.And(p => p.deleted == false);
             //创建时间 datetime
             var createTime = Request.Form["createTime"].FirstOrDefault();
             if (!string.IsNullOrEmpty(createTime))
@@ -146,7 +167,7 @@ namespace FuFuShop.Admin.Controllers
             }
 
             //获取数据
-            var list = await _sysUserRoleServices.QueryPageAsync(where, orderEx, orderBy, pageCurrent, pageSize);
+            var list = await _sysRoleServices.QueryPageAsync(where, orderEx, orderBy, pageCurrent, pageSize);
             //返回数据
             jm.data = list;
             jm.code = 0;
@@ -159,7 +180,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 首页数据============================================================
 
-        // POST: Api/SysUserRole/GetIndex
+        // POST: Api/SysRole/GetIndex
         /// <summary>
         ///     首页数据
         /// </summary>
@@ -177,7 +198,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 创建数据============================================================
 
-        // POST: Api/SysUserRole/GetCreate
+        // POST: Api/SysRole/GetCreate
         /// <summary>
         ///     创建数据
         /// </summary>
@@ -195,7 +216,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 创建提交============================================================
 
-        // POST: Api/SysUserRole/DoCreate
+        // POST: Api/SysRole/DoCreate
         /// <summary>
         ///     创建提交
         /// </summary>
@@ -203,11 +224,13 @@ namespace FuFuShop.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("创建提交")]
-        public async Task<AdminUiCallBack> DoCreate([FromBody] SysUserRole entity)
+        public async Task<AdminUiCallBack> DoCreate([FromBody] SysRole entity)
         {
             var jm = new AdminUiCallBack();
 
-            var bl = await _sysUserRoleServices.InsertAsync(entity) > 0;
+            entity.createTime = DateTime.Now;
+
+            var bl = await _sysRoleServices.InsertAsync(entity) > 0;
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.CreateSuccess : GlobalConstVars.CreateFailure;
 
@@ -218,7 +241,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 编辑数据============================================================
 
-        // POST: Api/SysUserRole/GetEdit
+        // POST: Api/SysRole/GetEdit
         /// <summary>
         ///     编辑数据
         /// </summary>
@@ -230,7 +253,7 @@ namespace FuFuShop.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
 
-            var model = await _sysUserRoleServices.QueryByIdAsync(entity.id);
+            var model = await _sysRoleServices.QueryByIdAsync(entity.id);
             if (model == null)
             {
                 jm.msg = "不存在此信息";
@@ -240,7 +263,6 @@ namespace FuFuShop.Admin.Controllers
             jm.code = 0;
             jm.data = model;
 
-
             return jm;
         }
 
@@ -248,7 +270,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 编辑提交============================================================
 
-        // POST: Api/SysUserRole/Edit
+        // POST: Api/SysRole/Edit
         /// <summary>
         ///     编辑提交
         /// </summary>
@@ -256,11 +278,11 @@ namespace FuFuShop.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑提交")]
-        public async Task<AdminUiCallBack> DoEdit([FromBody] SysUserRole entity)
+        public async Task<AdminUiCallBack> DoEdit([FromBody] SysRole entity)
         {
             var jm = new AdminUiCallBack();
 
-            var oldModel = await _sysUserRoleServices.QueryByIdAsync(entity.id);
+            var oldModel = await _sysRoleServices.QueryByIdAsync(entity.id);
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
@@ -268,14 +290,13 @@ namespace FuFuShop.Admin.Controllers
             }
 
             //事物处理过程开始
-            oldModel.id = entity.id;
-            oldModel.userId = entity.userId;
-            oldModel.roleId = entity.roleId;
-            oldModel.createTime = entity.createTime;
-            oldModel.updateTime = entity.updateTime;
+            oldModel.roleName = entity.roleName;
+            oldModel.roleCode = entity.roleCode;
+            oldModel.comments = entity.comments;
+            oldModel.updateTime = DateTime.Now;
 
             //事物处理过程结束
-            var bl = await _sysUserRoleServices.UpdateAsync(oldModel);
+            var bl = await _sysRoleServices.UpdateAsync(oldModel);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
@@ -286,7 +307,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 删除数据============================================================
 
-        // POST: Api/SysUserRole/DoDelete/10
+        // POST: Api/SysRole/DoDelete/10
         /// <summary>
         ///     单选删除
         /// </summary>
@@ -298,25 +319,24 @@ namespace FuFuShop.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
 
-            var model = await _sysUserRoleServices.QueryByIdAsync(entity.id);
+            var model = await _sysRoleServices.QueryByIdAsync(entity.id);
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
                 return jm;
             }
 
-            var bl = await _sysUserRoleServices.DeleteByIdAsync(entity.id);
+            var bl = await _sysRoleServices.DeleteByIdAsync(entity.id);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
             return jm;
-
         }
 
         #endregion
 
         #region 批量删除============================================================
 
-        // POST: Api/SysUserRole/DoBatchDelete/10,11,20
+        // POST: Api/SysRole/DoBatchDelete/10,11,20
         /// <summary>
         ///     批量删除
         /// </summary>
@@ -328,7 +348,7 @@ namespace FuFuShop.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
 
-            var bl = await _sysUserRoleServices.DeleteByIdsAsync(entity.id);
+            var bl = await _sysRoleServices.DeleteByIdsAsync(entity.id);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
 
@@ -337,21 +357,21 @@ namespace FuFuShop.Admin.Controllers
 
         #endregion
 
-        #region 预览数据============================================================
+        #region 获取权限设置============================================================
 
-        // POST: Api/SysUserRole/GetDetails/10
+        // POST: Api/SysRole/GetRoleSet
         /// <summary>
-        ///     预览数据
+        ///     获取权限设置
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        [Description("预览数据")]
-        public async Task<AdminUiCallBack> GetDetails([FromBody] FMIntId entity)
+        [Description("获取权限设置")]
+        public async Task<AdminUiCallBack> GetRoleSet([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
-            var model = await _sysUserRoleServices.QueryByIdAsync(entity.id);
+            var model = await _sysRoleServices.QueryByIdAsync(entity.id);
             if (model == null)
             {
                 jm.msg = "不存在此信息";
@@ -366,150 +386,108 @@ namespace FuFuShop.Admin.Controllers
 
         #endregion
 
-        #region 选择导出============================================================
+        #region 获取菜单=====================================================================
 
-        // POST: Api/SysUserRole/SelectExportExcel/10
+        // POST: Api/SysRole/GetSysMenu
         /// <summary>
-        ///     选择导出
+        ///     获取菜单
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        [Description("选择导出")]
-        public async Task<AdminUiCallBack> SelectExportExcel([FromBody] FMArrayIntIds entity)
+        [Description("获取菜单")]
+        public async Task<AdminUiCallBack> GetSysMenu([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
-            //创建Excel文件的对象
-            var book = new HSSFWorkbook();
-            //添加一个sheet
-            var sheet1 = book.CreateSheet("Sheet1");
-            //获取list数据
-            var listmodel =
-                await _sysUserRoleServices.QueryListByClauseAsync(p => entity.id.Contains(p.id), p => p.id,
-                    OrderByType.Asc);
-            //给sheet1添加第一行的头部标题
-            var row1 = sheet1.CreateRow(0);
-            row1.CreateCell(0).SetCellValue("主键");
-            row1.CreateCell(1).SetCellValue("用户id");
-            row1.CreateCell(2).SetCellValue("角色id");
-            row1.CreateCell(3).SetCellValue("创建时间");
-            row1.CreateCell(4).SetCellValue("修改时间");
-
-            //将数据逐步写入sheet1各个行
-            for (var i = 0; i < listmodel.Count; i++)
+            var model = await _sysMenuServices.QueryListByClauseAsync(p => p.deleted == false && p.hide == false,
+                p => p.sortNumber, OrderByType.Asc);
+            if (model == null)
             {
-                var rowtemp = sheet1.CreateRow(i + 1);
-                rowtemp.CreateCell(0).SetCellValue(listmodel[i].id.ToString());
-                rowtemp.CreateCell(1).SetCellValue(listmodel[i].userId.ToString());
-                rowtemp.CreateCell(2).SetCellValue(listmodel[i].roleId.ToString());
-                rowtemp.CreateCell(3).SetCellValue(listmodel[i].createTime.ToString());
-                rowtemp.CreateCell(4).SetCellValue(listmodel[i].updateTime.ToString());
+                jm.msg = "不存在此信息";
+                return jm;
             }
 
-            // 导出excel
-            var webRootPath = _webHostEnvironment.WebRootPath;
-            var tpath = "/files/" + DateTime.Now.ToString("yyyy-MM-dd") + "/";
-            var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-SysUserRole导出(选择结果).xls";
-            var filePath = webRootPath + tpath;
-            var di = new DirectoryInfo(filePath);
-            if (!di.Exists) di.Create();
-            var fileHssf = new FileStream(filePath + fileName, FileMode.Create);
-            book.Write(fileHssf);
-            fileHssf.Close();
-
+            var roleMenus = await _sysRoleMenuServices.QueryListByClauseAsync(p => p.roleId == entity.id);
+            var list = new List<SysMenuTreeDto>();
+            if (model.Any())
+                model.ForEach(p =>
+                {
+                    list.Add(new SysMenuTreeDto
+                    {
+                        authority = p.authority,
+                        @checked = roleMenus.Exists(m => m.menuId == p.id),
+                        children = null,
+                        component = p.component,
+                        createTime = p.createTime,
+                        deleted = p.deleted,
+                        hide = p.hide,
+                        iconColor = p.iconColor,
+                        menuName = p.menuName,
+                        menuIcon = p.menuIcon,
+                        menuType = p.menuType,
+                        id = p.id,
+                        open = true,
+                        parentId = p.parentId,
+                        parentName = "",
+                        path = p.path,
+                        sortNumber = p.sortNumber,
+                        target = p.target,
+                        updateTime = p.updateTime
+                    });
+                });
             jm.code = 0;
-            jm.msg = GlobalConstVars.ExcelExportSuccess;
-            jm.data = tpath + fileName;
-
+            jm.data = list;
+            jm.otherData = new
+            {
+                entity,
+                roleMenus
+            };
 
             return jm;
         }
 
         #endregion
 
-        #region 查询导出============================================================
+        #region 设置权限=====================================================================
 
-        // POST: Api/SysUserRole/QueryExportExcel/10
+        // POST: Api/SysRole/DoSetSysMenu
         /// <summary>
-        ///     查询导出
+        ///     设置权限
         /// </summary>
+        /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        [Description("查询导出")]
-        public async Task<AdminUiCallBack> QueryExportExcel()
+        [Description("设置权限")]
+        public async Task<AdminUiCallBack> DoSetSysMenu([FromBody] FMIntIdByListIntData entity)
         {
             var jm = new AdminUiCallBack();
 
-            var where = PredicateBuilder.True<SysUserRole>();
-            //查询筛选
-
-            //主键 int
-            var id = Request.Form["id"].FirstOrDefault().ObjectToInt(0);
-            if (id > 0) @where = @where.And(p => p.id == id);
-            //用户id int
-            var userId = Request.Form["userId"].FirstOrDefault().ObjectToInt(0);
-            if (userId > 0) @where = @where.And(p => p.userId == userId);
-            //角色id int
-            var roleId = Request.Form["roleId"].FirstOrDefault().ObjectToInt(0);
-            if (roleId > 0) @where = @where.And(p => p.roleId == roleId);
-            //创建时间 datetime
-            var createTime = Request.Form["createTime"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(createTime))
+            var oldModel = await _sysRoleServices.QueryByIdAsync(entity.id);
+            if (oldModel == null)
             {
-                var dt = createTime.ObjectToDate();
-                where = where.And(p => p.createTime > dt);
+                jm.msg = "不存在此信息";
+                return jm;
             }
 
-            //修改时间 datetime
-            var updateTime = Request.Form["updateTime"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(updateTime))
+            await _sysRoleMenuServices.DeleteAsync(p => p.roleId == oldModel.id);
+            if (entity.data.Any())
             {
-                var dt = updateTime.ObjectToDate();
-                where = where.And(p => p.updateTime > dt);
+                var list = new List<SysRoleMenu>();
+                entity.data.ForEach(p =>
+                {
+                    list.Add(new SysRoleMenu
+                    {
+                        createTime = DateTime.Now,
+                        menuId = p,
+                        roleId = oldModel.id
+                    });
+                });
+                await _sysRoleMenuServices.InsertAsync(list);
             }
-
-            //获取数据
-            //创建Excel文件的对象
-            var book = new HSSFWorkbook();
-            //添加一个sheet
-            var sheet1 = book.CreateSheet("Sheet1");
-            //获取list数据
-            var listmodel = await _sysUserRoleServices.QueryListByClauseAsync(where, p => p.id, OrderByType.Asc);
-            //给sheet1添加第一行的头部标题
-            var row1 = sheet1.CreateRow(0);
-            row1.CreateCell(0).SetCellValue("主键");
-            row1.CreateCell(1).SetCellValue("用户id");
-            row1.CreateCell(2).SetCellValue("角色id");
-            row1.CreateCell(3).SetCellValue("创建时间");
-            row1.CreateCell(4).SetCellValue("修改时间");
-
-            //将数据逐步写入sheet1各个行
-            for (var i = 0; i < listmodel.Count; i++)
-            {
-                var rowtemp = sheet1.CreateRow(i + 1);
-                rowtemp.CreateCell(0).SetCellValue(listmodel[i].id.ToString());
-                rowtemp.CreateCell(1).SetCellValue(listmodel[i].userId.ToString());
-                rowtemp.CreateCell(2).SetCellValue(listmodel[i].roleId.ToString());
-                rowtemp.CreateCell(3).SetCellValue(listmodel[i].createTime.ToString());
-                rowtemp.CreateCell(4).SetCellValue(listmodel[i].updateTime.ToString());
-            }
-
-            // 写入到excel
-            var webRootPath = _webHostEnvironment.WebRootPath;
-            var tpath = "/files/" + DateTime.Now.ToString("yyyy-MM-dd") + "/";
-            var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-SysUserRole导出(查询结果).xls";
-            var filePath = webRootPath + tpath;
-            var di = new DirectoryInfo(filePath);
-            if (!di.Exists) di.Create();
-            var fileHssf = new FileStream(filePath + fileName, FileMode.Create);
-            book.Write(fileHssf);
-            fileHssf.Close();
 
             jm.code = 0;
-            jm.msg = GlobalConstVars.ExcelExportSuccess;
-            jm.data = tpath + fileName;
-
+            jm.msg = "权限设置成功";
 
             return jm;
         }

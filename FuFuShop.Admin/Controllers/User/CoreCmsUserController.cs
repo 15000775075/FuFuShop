@@ -32,6 +32,7 @@ namespace FuFuShop.Admin.Controllers
     [Authorize(Permissions.Name)]
     public class UserController : ControllerBase
     {
+
         private readonly IUserServices _UserServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -47,15 +48,17 @@ namespace FuFuShop.Admin.Controllers
         public UserController(
             IWebHostEnvironment webHostEnvironment
             , IUserServices UserServices
+
         )
         {
             _webHostEnvironment = webHostEnvironment;
             _UserServices = UserServices;
+
         }
 
         #region 获取列表============================================================
 
-        // POST: Api/User/GetPageList
+        // POST: Api/FuFuShopUser/GetPageList
         /// <summary>
         ///     获取列表
         /// </summary>
@@ -224,6 +227,8 @@ namespace FuFuShop.Admin.Controllers
         }
 
         #endregion
+
+
 
     }
 }

@@ -23,13 +23,14 @@ using FuFuShop.Services.Bill;
 using FuFuShop.Services.Good;
 using FuFuShop.Services.Shop;
 using FuFuShop.Services.User;
+using FuFuShop.WeChat.Services.HttpClients;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SqlSugar;
 using System.ComponentModel;
 
-namespace FuFuShop.Admin.Controllers
+namespace FuFuShop.Admin.Controllers.Com
 {
     /// <summary>
     ///     后端常用方法
@@ -41,8 +42,9 @@ namespace FuFuShop.Admin.Controllers
     public class ToolsController : ControllerBase
     {
         private readonly IAreaServices _areaServices;
+
         private readonly IGoodsServices _GoodsServices;
-        //  private readonly INoticeServices _NoticeServices;
+
         private readonly ISettingServices _SettingServices;
         private readonly ILogisticsServices _logisticsServices;
         private readonly ISysMenuServices _sysMenuServices;
@@ -62,11 +64,12 @@ namespace FuFuShop.Admin.Controllers
         private readonly IOrderServices _orderServices;
         private readonly ISettingServices _settingServices;
         private readonly IProductsServices _productsServices;
+
         private readonly IToolsServices _toolsServices;
 
 
 
-        //   private readonly WeChat.Service.HttpClients.IWeChatApiHttpClientFactory _weChatApiHttpClientFactory;
+        private readonly IWeChatApiHttpClientFactory _weChatApiHttpClientFactory;
 
 
 
@@ -84,19 +87,20 @@ namespace FuFuShop.Admin.Controllers
             , ISysRoleServices sysRoleServices
             , ISysMenuServices sysMenuServices
             , ISysUserRoleServices sysUserRoleServices
-            , ISysOrganizationServices sysOrganizationServices,
-            ILogisticsServices logisticsServices,
-            ISysLoginRecordServices sysLoginRecordServices,
-            ISysNLogRecordsServices sysNLogRecordsServices,
-            IBillPaymentsServices paymentsServices,
-            IBillDeliveryServices billDeliveryServices,
-            IUserServices userServices,
-            IOrderServices orderServices,
-            IBillAftersalesServices aftersalesServices,
-            ISettingServices settingServices,
-            IProductsServices productsServices,
-            ISysRoleMenuServices sysRoleMenuServices,
-            IToolsServices toolsServices)
+            , ISysOrganizationServices sysOrganizationServices
+            , ILogisticsServices logisticsServices
+            , ISysLoginRecordServices sysLoginRecordServices
+            , ISysNLogRecordsServices sysNLogRecordsServices
+            , IBillPaymentsServices paymentsServices
+            , IBillDeliveryServices billDeliveryServices
+            , IUserServices userServices
+            , IOrderServices orderServices
+            , IBillAftersalesServices aftersalesServices
+            , ISettingServices settingServices
+            , IProductsServices productsServices
+            , ISysRoleMenuServices sysRoleMenuServices
+            , IWeChatApiHttpClientFactory weChatApiHttpClientFactory
+            , IToolsServices toolsServices)
         {
             _user = user;
             _webHostEnvironment = webHostEnvironment;
@@ -120,6 +124,7 @@ namespace FuFuShop.Admin.Controllers
             _settingServices = settingServices;
             _productsServices = productsServices;
             _sysRoleMenuServices = sysRoleMenuServices;
+            _weChatApiHttpClientFactory = weChatApiHttpClientFactory;
             _toolsServices = toolsServices;
         }
 
@@ -311,6 +316,7 @@ namespace FuFuShop.Admin.Controllers
 
         #endregion
 
+
         //通用操作=========================================================================
 
         #region 通用上传接口====================================================
@@ -352,9 +358,7 @@ namespace FuFuShop.Admin.Controllers
                 jm.msg = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + filesStorageOptions.FileTypes;
                 return jm;
             }
-
             string url = await _toolsServices.UpLoadFileForQCloudOSS(filesStorageOptions, fileExt, file);
-
             var bl = !string.IsNullOrEmpty(url);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? "上传成功!" : "上传失败";
@@ -391,9 +395,7 @@ namespace FuFuShop.Admin.Controllers
             entity.base64 = entity.base64.Replace("data:image/png;base64,", "").Replace("data:image/jgp;base64,", "").Replace("data:image/jpg;base64,", "").Replace("data:image/jpeg;base64,", "");//将base64头部信息替换
             byte[] bytes = Convert.FromBase64String(entity.base64);
             MemoryStream memStream = new MemoryStream(bytes);
-
             string url = _toolsServices.UpLoadBase64ForQCloudOSS(filesStorageOptions, bytes);
-
             var bl = !string.IsNullOrEmpty(url);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? "上传成功!" : "上传失败";
@@ -408,7 +410,55 @@ namespace FuFuShop.Admin.Controllers
 
         #endregion
 
+        #region CKEditor编辑上传接口====================================================
 
+        /// <summary>
+        ///     CKEditor编辑上传接口
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<CKEditorUploadedResult> CkEditorUploadFiles()
+        {
+            var jm = new CKEditorUploadedResult();
+
+            var filesStorageOptions = await _SettingServices.GetFilesStorageOptions();
+
+            //初始化上传参数
+            var maxSize = 1024 * 1024 * filesStorageOptions.MaxSize; //上传大小5M
+
+            var file = Request.Form.Files["upload"];
+            if (file == null)
+            {
+                jm.error.message = "请选择文件";
+                return jm;
+            }
+
+            var fileName = file.FileName;
+            var fileExt = Path.GetExtension(fileName).ToLowerInvariant();
+
+            //检查大小
+            if (file.Length > maxSize)
+            {
+                jm.error.message = "上传文件大小超过限制，最大允许上传" + filesStorageOptions.MaxSize + "M";
+                return jm;
+            }
+
+            //检查文件扩展名
+            if (string.IsNullOrEmpty(fileExt) || Array.IndexOf(filesStorageOptions.FileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
+            {
+                jm.error.message = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + filesStorageOptions.FileTypes;
+                return jm;
+            }
+
+            string url = await _toolsServices.UpLoadFileForQCloudOSS(filesStorageOptions, fileExt, file);
+
+            jm.uploaded = !string.IsNullOrEmpty(url) ? 1 : 0;
+            jm.fileName = fileName;
+            jm.url = url;
+            return jm;
+        }
+
+        #endregion
 
         #region 根据id获取商品信息====================================================
 
@@ -431,7 +481,6 @@ namespace FuFuShop.Admin.Controllers
         }
 
         #endregion
-
 
 
         //通用页面获取=========================================================================
@@ -506,7 +555,6 @@ namespace FuFuShop.Admin.Controllers
         }
 
         #endregion
-
 
 
 

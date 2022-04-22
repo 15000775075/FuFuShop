@@ -21,7 +21,7 @@ using SqlSugar;
 using System.ComponentModel;
 using System.Linq.Expressions;
 
-namespace FuFuShop.Admin.Controllers
+namespace FuFuShop.Admin.Controllers.Good
 {
     /// <summary>
     /// 货品表

@@ -23,34 +23,35 @@ using SqlSugar;
 using System.ComponentModel;
 using System.Linq.Expressions;
 
-namespace FuFuShop.Admin.Controllers
+namespace FuFuShop.Admin.Controllers.System
 {
     /// <summary>
-    ///     商品参数表
+    ///     登录日志表
     /// </summary>
-    [Description("商品参数表")]
+    [Description("登录日志表")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class GoodsParamsController : ControllerBase
+    public class SysLoginRecordController : ControllerBase
     {
-        private readonly IGoodsParamsServices _GoodsParamsServices;
+        private readonly ISysLoginRecordServices _sysLoginRecordServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         /// <summary>
         ///     构造函数
         /// </summary>
-        public GoodsParamsController(IWebHostEnvironment webHostEnvironment,
-            IGoodsParamsServices GoodsParamsServices)
+        public SysLoginRecordController(IWebHostEnvironment webHostEnvironment
+            , ISysLoginRecordServices sysLoginRecordServices
+        )
         {
             _webHostEnvironment = webHostEnvironment;
-            _GoodsParamsServices = GoodsParamsServices;
+            _sysLoginRecordServices = sysLoginRecordServices;
         }
 
         #region 获取列表============================================================
 
-        // POST: Api/GoodsParams/GetPageList
+        // POST: Api/SysLoginRecord/GetPageList
         /// <summary>
         ///     获取列表
         /// </summary>
@@ -62,23 +63,35 @@ namespace FuFuShop.Admin.Controllers
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
             var pageSize = Request.Form["limit"].FirstOrDefault().ObjectToInt(30);
-            var where = PredicateBuilder.True<GoodsParams>();
+            var where = PredicateBuilder.True<SysLoginRecord>();
             //获取排序字段
             var orderField = Request.Form["orderField"].FirstOrDefault();
-            Expression<Func<GoodsParams, object>> orderEx;
+            Expression<Func<SysLoginRecord, object>> orderEx;
             switch (orderField)
             {
                 case "id":
                     orderEx = p => p.id;
                     break;
-                case "name":
-                    orderEx = p => p.name;
+                case "username":
+                    orderEx = p => p.username;
                     break;
-                case "value":
-                    orderEx = p => p.value;
+                case "os":
+                    orderEx = p => p.os;
                     break;
-                case "type":
-                    orderEx = p => p.type;
+                case "device":
+                    orderEx = p => p.device;
+                    break;
+                case "browser":
+                    orderEx = p => p.browser;
+                    break;
+                case "ip":
+                    orderEx = p => p.ip;
+                    break;
+                case "operType":
+                    orderEx = p => p.operType;
+                    break;
+                case "comments":
+                    orderEx = p => p.comments;
                     break;
                 case "createTime":
                     orderEx = p => p.createTime;
@@ -101,19 +114,31 @@ namespace FuFuShop.Admin.Controllers
             };
             //查询筛选
 
-            //序列 int
+            //主键 int
             var id = Request.Form["id"].FirstOrDefault().ObjectToInt(0);
             if (id > 0) @where = @where.And(p => p.id == id);
-            //参数名称 nvarchar
-            var name = Request.Form["name"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(name)) @where = @where.And(p => p.name.Contains(name));
-            //参数值 nvarchar
-            var value = Request.Form["value"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(value)) @where = @where.And(p => p.value.Contains(value));
-            //参数类型 nvarchar
-            var type = Request.Form["type"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(type)) @where = @where.And(p => p.type.Contains(type));
-            //创建时间 datetime
+            //用户账号 nvarchar
+            var username = Request.Form["username"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(username)) @where = @where.And(p => p.username.Contains(username));
+            //操作系统 nvarchar
+            var os = Request.Form["os"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(os)) @where = @where.And(p => p.os.Contains(os));
+            //设备名 nvarchar
+            var device = Request.Form["device"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(device)) @where = @where.And(p => p.device.Contains(device));
+            //浏览器类型 nvarchar
+            var browser = Request.Form["browser"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(browser)) @where = @where.And(p => p.browser.Contains(browser));
+            //ip地址 nvarchar
+            var ip = Request.Form["ip"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(ip)) @where = @where.And(p => p.ip.Contains(ip));
+            //操作类型,0登录成功,1登录失败,2退出登录,3刷新token int
+            var operType = Request.Form["operType"].FirstOrDefault().ObjectToInt(0);
+            if (operType > 0) @where = @where.And(p => p.operType == operType);
+            //备注 nvarchar
+            var comments = Request.Form["comments"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(comments)) @where = @where.And(p => p.comments.Contains(comments));
+            //登录时间 datetime
             var createTime = Request.Form["createTime"].FirstOrDefault();
             if (!string.IsNullOrEmpty(createTime))
             {
@@ -132,7 +157,7 @@ namespace FuFuShop.Admin.Controllers
                 }
             }
 
-            //更新时间 datetime
+            //修改时间 datetime
             var updateTime = Request.Form["updateTime"].FirstOrDefault();
             if (!string.IsNullOrEmpty(updateTime))
             {
@@ -152,7 +177,7 @@ namespace FuFuShop.Admin.Controllers
             }
 
             //获取数据
-            var list = await _GoodsParamsServices.QueryPageAsync(where, orderEx, orderBy, pageCurrent, pageSize);
+            var list = await _sysLoginRecordServices.QueryPageAsync(where, orderEx, orderBy, pageCurrent, pageSize);
             //返回数据
             jm.data = list;
             jm.code = 0;
@@ -165,7 +190,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 首页数据============================================================
 
-        // POST: Api/GoodsParams/GetIndex
+        // POST: Api/SysLoginRecord/GetIndex
         /// <summary>
         ///     首页数据
         /// </summary>
@@ -176,168 +201,13 @@ namespace FuFuShop.Admin.Controllers
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            var goodsParamTypes = EnumHelper.EnumToList<GlobalEnumVars.GoodsParamTypes>();
+
+            var logType = EnumHelper.EnumToList<GlobalEnumVars.LoginRecordType>();
             jm.data = new
             {
-                goodsParamTypes
-            };
-            return jm;
-        }
-
-        #endregion
-
-        #region 创建数据============================================================
-
-        // POST: Api/GoodsParams/GetCreate
-        /// <summary>
-        ///     创建数据
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Description("创建数据")]
-        public AdminUiCallBack GetCreate()
-        {
-            //返回数据
-            var jm = new AdminUiCallBack { code = 0 };
-            var goodsParamTypes = EnumHelper.EnumToList<GlobalEnumVars.GoodsParamTypes>();
-            jm.data = new
-            {
-                goodsParamTypes
-            };
-            return jm;
-        }
-
-        #endregion
-
-        #region 创建提交============================================================
-
-        // POST: Api/GoodsParams/DoCreate
-        /// <summary>
-        ///     创建提交
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Description("创建提交")]
-        public async Task<AdminUiCallBack> DoCreate([FromBody] GoodsParams entity)
-        {
-            var jm = new AdminUiCallBack();
-
-            entity.createTime = DateTime.Now;
-            var bl = await _GoodsParamsServices.InsertAsync(entity) > 0;
-            jm.code = bl ? 0 : 1;
-            jm.msg = bl ? GlobalConstVars.CreateSuccess : GlobalConstVars.CreateFailure;
-
-            if (bl)
-            {
-                //获取列表
-                var paramsList = await _GoodsParamsServices.QueryListByClauseAsync(p => p.id > 0, p => p.id, OrderByType.Desc, true);
-                jm.data = new
-                {
-                    paramsList
-                };
-            }
-
-            return jm;
-        }
-
-        #endregion
-
-        #region 编辑数据============================================================
-
-        // POST: Api/GoodsParams/GetEdit
-        /// <summary>
-        ///     编辑数据
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Description("编辑数据")]
-        public async Task<AdminUiCallBack> GetEdit([FromBody] FMIntId entity)
-        {
-            var jm = new AdminUiCallBack();
-
-            var model = await _GoodsParamsServices.QueryByIdAsync(entity.id);
-            if (model == null)
-            {
-                jm.msg = "不存在此信息";
-                return jm;
-            }
-
-            jm.code = 0;
-            var goodsParamTypes = EnumHelper.EnumToList<GlobalEnumVars.GoodsParamTypes>();
-            jm.data = new
-            {
-                model,
-                goodsParamTypes
+                logType
             };
 
-            return jm;
-        }
-
-        #endregion
-
-        #region 编辑提交============================================================
-
-        // POST: Admins/GoodsParams/Edit
-        /// <summary>
-        ///     编辑提交
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Description("编辑提交")]
-        public async Task<AdminUiCallBack> DoEdit([FromBody] GoodsParams entity)
-        {
-            var jm = new AdminUiCallBack();
-
-            var oldModel = await _GoodsParamsServices.QueryByIdAsync(entity.id);
-            if (oldModel == null)
-            {
-                jm.msg = "不存在此信息";
-                return jm;
-            }
-
-            //事物处理过程开始
-            oldModel.name = entity.name;
-            oldModel.value = entity.value;
-            oldModel.type = entity.type;
-            oldModel.updateTime = DateTime.Now;
-
-            //事物处理过程结束
-            var bl = await _GoodsParamsServices.UpdateAsync(oldModel);
-            jm.code = bl ? 0 : 1;
-            jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
-
-            return jm;
-        }
-
-        #endregion
-
-        #region 删除数据============================================================
-
-        // POST: Api/GoodsParams/DoDelete/10
-        /// <summary>
-        ///     单选删除
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Description("单选删除")]
-        public async Task<AdminUiCallBack> DoDelete([FromBody] FMIntId entity)
-        {
-            var jm = new AdminUiCallBack();
-
-            var model = await _GoodsParamsServices.QueryByIdAsync(entity.id);
-            if (model == null)
-            {
-                jm.msg = GlobalConstVars.DataisNo;
-                return jm;
-            }
-
-            var bl = await _GoodsParamsServices.DeleteByIdAsync(entity.id);
-            jm.code = bl ? 0 : 1;
-            jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
             return jm;
         }
 
@@ -345,7 +215,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 预览数据============================================================
 
-        // POST: Api/GoodsParams/GetDetails/10
+        // POST: Api/SysLoginRecord/GetDetails/10
         /// <summary>
         ///     预览数据
         /// </summary>
@@ -357,10 +227,10 @@ namespace FuFuShop.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
 
-            var model = await _GoodsParamsServices.QueryByIdAsync(entity.id);
+            var model = await _sysLoginRecordServices.QueryByIdAsync(entity.id);
             if (model == null)
             {
-                jm.msg = GlobalConstVars.DataisNo;
+                jm.msg = "不存在此信息";
                 return jm;
             }
 
@@ -374,7 +244,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 选择导出============================================================
 
-        // POST: Api/GoodsParams/SelectExportExcel/10
+        // POST: Api/SysLoginRecord/SelectExportExcel/10
         /// <summary>
         ///     选择导出
         /// </summary>
@@ -391,34 +261,41 @@ namespace FuFuShop.Admin.Controllers
             //添加一个sheet
             var sheet1 = book.CreateSheet("Sheet1");
             //获取list数据
-            var listmodel =
-                await _GoodsParamsServices.QueryListByClauseAsync(p => entity.id.Contains(p.id), p => p.id,
-                    OrderByType.Asc);
+            var listmodel = await _sysLoginRecordServices.QueryListByClauseAsync(p => entity.id.Contains(p.id),
+                p => p.id, OrderByType.Asc);
             //给sheet1添加第一行的头部标题
             var row1 = sheet1.CreateRow(0);
-            row1.CreateCell(0).SetCellValue("序列");
-            row1.CreateCell(1).SetCellValue("参数名称");
-            row1.CreateCell(2).SetCellValue("参数值");
-            row1.CreateCell(3).SetCellValue("参数类型");
-            row1.CreateCell(4).SetCellValue("创建时间");
-            row1.CreateCell(5).SetCellValue("更新时间");
+            row1.CreateCell(0).SetCellValue("主键");
+            row1.CreateCell(1).SetCellValue("用户账号");
+            row1.CreateCell(2).SetCellValue("操作系统");
+            row1.CreateCell(3).SetCellValue("设备名");
+            row1.CreateCell(4).SetCellValue("浏览器类型");
+            row1.CreateCell(5).SetCellValue("ip地址");
+            row1.CreateCell(6).SetCellValue("操作类型,0登录成功,1登录失败,2退出登录,3刷新token");
+            row1.CreateCell(7).SetCellValue("备注");
+            row1.CreateCell(8).SetCellValue("登录时间");
+            row1.CreateCell(9).SetCellValue("修改时间");
 
             //将数据逐步写入sheet1各个行
             for (var i = 0; i < listmodel.Count; i++)
             {
                 var rowtemp = sheet1.CreateRow(i + 1);
                 rowtemp.CreateCell(0).SetCellValue(listmodel[i].id.ToString());
-                rowtemp.CreateCell(1).SetCellValue(listmodel[i].name);
-                rowtemp.CreateCell(2).SetCellValue(listmodel[i].value);
-                rowtemp.CreateCell(3).SetCellValue(listmodel[i].type);
-                rowtemp.CreateCell(4).SetCellValue(listmodel[i].createTime.ToString());
-                rowtemp.CreateCell(5).SetCellValue(listmodel[i].updateTime.ToString());
+                rowtemp.CreateCell(1).SetCellValue(listmodel[i].username);
+                rowtemp.CreateCell(2).SetCellValue(listmodel[i].os);
+                rowtemp.CreateCell(3).SetCellValue(listmodel[i].device);
+                rowtemp.CreateCell(4).SetCellValue(listmodel[i].browser);
+                rowtemp.CreateCell(5).SetCellValue(listmodel[i].ip);
+                rowtemp.CreateCell(6).SetCellValue(listmodel[i].operType.ToString());
+                rowtemp.CreateCell(7).SetCellValue(listmodel[i].comments);
+                rowtemp.CreateCell(8).SetCellValue(listmodel[i].createTime.ToString());
+                rowtemp.CreateCell(9).SetCellValue(listmodel[i].updateTime.ToString());
             }
 
             // 导出excel
             var webRootPath = _webHostEnvironment.WebRootPath;
             var tpath = "/files/" + DateTime.Now.ToString("yyyy-MM-dd") + "/";
-            var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-GoodsParams导出(选择结果).xls";
+            var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-SysLoginRecord导出(选择结果).xls";
             var filePath = webRootPath + tpath;
             var di = new DirectoryInfo(filePath);
             if (!di.Exists) di.Create();
@@ -430,7 +307,6 @@ namespace FuFuShop.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
-
             return jm;
         }
 
@@ -438,7 +314,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 查询导出============================================================
 
-        // POST: Api/GoodsParams/QueryExportExcel/10
+        // POST: Api/SysLoginRecord/QueryExportExcel/10
         /// <summary>
         ///     查询导出
         /// </summary>
@@ -449,22 +325,34 @@ namespace FuFuShop.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
 
-            var where = PredicateBuilder.True<GoodsParams>();
+            var where = PredicateBuilder.True<SysLoginRecord>();
             //查询筛选
 
-            //序列 int
+            //主键 int
             var id = Request.Form["id"].FirstOrDefault().ObjectToInt(0);
             if (id > 0) @where = @where.And(p => p.id == id);
-            //参数名称 nvarchar
-            var name = Request.Form["name"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(name)) @where = @where.And(p => p.name.Contains(name));
-            //参数值 nvarchar
-            var value = Request.Form["value"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(value)) @where = @where.And(p => p.value.Contains(value));
-            //参数类型 nvarchar
-            var type = Request.Form["type"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(type)) @where = @where.And(p => p.type.Contains(type));
-            //创建时间 datetime
+            //用户账号 nvarchar
+            var username = Request.Form["username"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(username)) @where = @where.And(p => p.username.Contains(username));
+            //操作系统 nvarchar
+            var os = Request.Form["os"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(os)) @where = @where.And(p => p.os.Contains(os));
+            //设备名 nvarchar
+            var device = Request.Form["device"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(device)) @where = @where.And(p => p.device.Contains(device));
+            //浏览器类型 nvarchar
+            var browser = Request.Form["browser"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(browser)) @where = @where.And(p => p.browser.Contains(browser));
+            //ip地址 nvarchar
+            var ip = Request.Form["ip"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(ip)) @where = @where.And(p => p.ip.Contains(ip));
+            //操作类型,0登录成功,1登录失败,2退出登录,3刷新token int
+            var operType = Request.Form["operType"].FirstOrDefault().ObjectToInt(0);
+            if (operType > 0) @where = @where.And(p => p.operType == operType);
+            //备注 nvarchar
+            var comments = Request.Form["comments"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(comments)) @where = @where.And(p => p.comments.Contains(comments));
+            //登录时间 datetime
             var createTime = Request.Form["createTime"].FirstOrDefault();
             if (!string.IsNullOrEmpty(createTime))
             {
@@ -472,7 +360,7 @@ namespace FuFuShop.Admin.Controllers
                 where = where.And(p => p.createTime > dt);
             }
 
-            //更新时间 datetime
+            //修改时间 datetime
             var updateTime = Request.Form["updateTime"].FirstOrDefault();
             if (!string.IsNullOrEmpty(updateTime))
             {
@@ -486,33 +374,40 @@ namespace FuFuShop.Admin.Controllers
             //添加一个sheet
             var sheet1 = book.CreateSheet("Sheet1");
             //获取list数据
-            var listmodel =
-                await _GoodsParamsServices.QueryListByClauseAsync(where, p => p.id, OrderByType.Asc);
+            var listmodel = await _sysLoginRecordServices.QueryListByClauseAsync(where, p => p.id, OrderByType.Asc);
             //给sheet1添加第一行的头部标题
             var row1 = sheet1.CreateRow(0);
-            row1.CreateCell(0).SetCellValue("序列");
-            row1.CreateCell(1).SetCellValue("参数名称");
-            row1.CreateCell(2).SetCellValue("参数值");
-            row1.CreateCell(3).SetCellValue("参数类型");
-            row1.CreateCell(4).SetCellValue("创建时间");
-            row1.CreateCell(5).SetCellValue("更新时间");
+            row1.CreateCell(0).SetCellValue("主键");
+            row1.CreateCell(1).SetCellValue("用户账号");
+            row1.CreateCell(2).SetCellValue("操作系统");
+            row1.CreateCell(3).SetCellValue("设备名");
+            row1.CreateCell(4).SetCellValue("浏览器类型");
+            row1.CreateCell(5).SetCellValue("ip地址");
+            row1.CreateCell(6).SetCellValue("操作类型,0登录成功,1登录失败,2退出登录,3刷新token");
+            row1.CreateCell(7).SetCellValue("备注");
+            row1.CreateCell(8).SetCellValue("登录时间");
+            row1.CreateCell(9).SetCellValue("修改时间");
 
             //将数据逐步写入sheet1各个行
             for (var i = 0; i < listmodel.Count; i++)
             {
                 var rowtemp = sheet1.CreateRow(i + 1);
                 rowtemp.CreateCell(0).SetCellValue(listmodel[i].id.ToString());
-                rowtemp.CreateCell(1).SetCellValue(listmodel[i].name);
-                rowtemp.CreateCell(2).SetCellValue(listmodel[i].value);
-                rowtemp.CreateCell(3).SetCellValue(listmodel[i].type);
-                rowtemp.CreateCell(4).SetCellValue(listmodel[i].createTime.ToString());
-                rowtemp.CreateCell(5).SetCellValue(listmodel[i].updateTime.ToString());
+                rowtemp.CreateCell(1).SetCellValue(listmodel[i].username);
+                rowtemp.CreateCell(2).SetCellValue(listmodel[i].os);
+                rowtemp.CreateCell(3).SetCellValue(listmodel[i].device);
+                rowtemp.CreateCell(4).SetCellValue(listmodel[i].browser);
+                rowtemp.CreateCell(5).SetCellValue(listmodel[i].ip);
+                rowtemp.CreateCell(6).SetCellValue(listmodel[i].operType.ToString());
+                rowtemp.CreateCell(7).SetCellValue(listmodel[i].comments);
+                rowtemp.CreateCell(8).SetCellValue(listmodel[i].createTime.ToString());
+                rowtemp.CreateCell(9).SetCellValue(listmodel[i].updateTime.ToString());
             }
 
             // 写入到excel
             var webRootPath = _webHostEnvironment.WebRootPath;
             var tpath = "/files/" + DateTime.Now.ToString("yyyy-MM-dd") + "/";
-            var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-GoodsParams导出(查询结果).xls";
+            var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-SysLoginRecord导出(查询结果).xls";
             var filePath = webRootPath + tpath;
             var di = new DirectoryInfo(filePath);
             if (!di.Exists) di.Create();
@@ -524,10 +419,55 @@ namespace FuFuShop.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
+            return jm;
+        }
+
+        #endregion
+
+        #region 批量删除============================================================
+
+        // POST: Api/SysNLogRecords/DoBatchDelete/10,11,20
+        /// <summary>
+        ///     批量删除
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("批量删除")]
+        public async Task<AdminUiCallBack> DoBatchDelete([FromBody] FMArrayIntIds entity)
+        {
+            var jm = new AdminUiCallBack();
+
+            var bl = await _sysLoginRecordServices.DeleteByIdsAsync(entity.id);
+            jm.code = bl ? 0 : 1;
+            jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
 
             return jm;
         }
 
         #endregion
+
+        #region 清空数据============================================================
+
+        // POST: Api/SysNLogRecords/DoBatchDelete/10,11,20
+        /// <summary>
+        ///     清空数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("清空数据")]
+        public async Task<AdminUiCallBack> DoWipeData()
+        {
+            var jm = new AdminUiCallBack();
+
+            var bl = await _sysLoginRecordServices.DeleteAsync(p => p.id > 0);
+            jm.code = bl ? 0 : 1;
+            jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
+
+            return jm;
+        }
+
+        #endregion
+
     }
 }

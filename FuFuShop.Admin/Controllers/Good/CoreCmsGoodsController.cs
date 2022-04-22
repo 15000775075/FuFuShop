@@ -25,7 +25,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using Yitter.IdGenerator;
 
-namespace FuFuShop.Admin.Controllers
+namespace FuFuShop.Admin.Controllers.Good
 {
     /// <summary>
     ///     商品表
@@ -49,6 +49,7 @@ namespace FuFuShop.Admin.Controllers
         private readonly IGoodsTypeSpecServices _typeSpecServices;
         private readonly IGoodsTypeSpecValueServices _typeSpecValueServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
+
 
 
         /// <summary>
@@ -76,6 +77,7 @@ namespace FuFuShop.Admin.Controllers
             _typeSpecServices = typeSpecServices;
             _typeSpecValueServices = typeSpecValueServices;
             _productsServices = productsServices;
+            _categoryExtendServices = categoryExtendServices;
             _labelServices = labelServices;
             _goodsTypeSpecServices = goodsTypeSpecServices;
         }
@@ -383,8 +385,6 @@ namespace FuFuShop.Admin.Controllers
 
             //获取品牌
             var brands = await _brandServices.QueryListByClauseAsync(p => p.id > 0 && p.isShow == true, p => p.id, OrderByType.Desc, true);
-
-
             //获取商品分销enum
             var productsDistributionType = EnumHelper.EnumToList<GlobalEnumVars.ProductsDistributionType>();
 
@@ -446,6 +446,7 @@ namespace FuFuShop.Admin.Controllers
             //获取商品分类
             var categories = await _GoodsCategoryServices.GetCaChe();
             categories = categories.Where(p => p.isShow == true).ToList();
+
 
             //货品信息
             var products =
@@ -1052,6 +1053,7 @@ namespace FuFuShop.Admin.Controllers
         }
 
         #endregion
+
 
 
 

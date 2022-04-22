@@ -39,7 +39,7 @@ namespace FuFuShop.Controllers
             IGoodsServices goodsServices,
             IBrandServices brandServices,
             IProductsServices productsServices,
-            IGoodsCommentServices goodsCommentServices ,
+            IGoodsCommentServices goodsCommentServices,
              IGoodsParamsServices goodsParamsServices
         )
         {

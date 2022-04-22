@@ -260,7 +260,7 @@ namespace FuFuShop.Admin.Controllers
                     var sLog = new StockLog
                     {
                         stockId = entity.id,
-                        productId = item.id,
+                        productId = item.productId,
                         goodsId = item.goodsId,
                         nums = item.nums,
                         sn = item.sn,

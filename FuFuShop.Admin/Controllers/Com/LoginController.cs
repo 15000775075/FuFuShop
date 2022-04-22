@@ -1,4 +1,14 @@
-﻿using FuFuShop.Common.AppSettings;
+﻿/***********************************************************************
+ *            Project: 
+ *        ProjectName: 核心内容管理系统                                
+ *                Web: https://www..net                      
+ *             Author: 大灰灰                                          
+ *              Email: jianweie@163.com                                
+ *         CreateTime: 2021/1/31 21:45:10
+ *        Description: 暂无
+ ***********************************************************************/
+
+using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Auth;
 using FuFuShop.Common.Extensions;
 using FuFuShop.Common.Helper;
@@ -15,7 +25,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
 
-namespace FuFuShop.Admin.Controllers
+namespace FuFuShop.Admin.Controllers.Com
 {
     /// <summary>
     /// 用户授权登录

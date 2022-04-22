@@ -22,7 +22,7 @@ using SqlSugar;
 using System.ComponentModel;
 using System.Linq.Expressions;
 
-namespace FuFuShop.Admin.Controllers
+namespace FuFuShop.Admin.Controllers.System
 {
     /// <summary>
     ///     用户表

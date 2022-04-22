@@ -426,6 +426,26 @@ app.UseHangfireDashboard("/job", options); //可以改变Dashboard的url
 HangfireDispose.HangfireService();
 
 #endregion
+// 使用静态文件
+app.UseStaticFiles();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        "areas",
+        "{area:exists}/{controller=Default}/{action=Index}/{id?}"
+    );
+
+    endpoints.MapControllerRoute(
+        "default",
+        "{controller=Home}/{action=Index}/{id?}");
+});
+//设置默认起始页（如default.html）
+//此处的路径是相对于wwwroot文件夹的相对路径
+var defaultFilesOptions = new DefaultFilesOptions();
+defaultFilesOptions.DefaultFileNames.Clear();
+defaultFilesOptions.DefaultFileNames.Add("index.html");
+app.UseDefaultFiles(defaultFilesOptions);
+app.UseStaticFiles();
 
 app.Run("http://*:5041");

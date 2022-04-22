@@ -71,8 +71,8 @@ builder.Services.AddSwaggerGen((s) =>
         //生成API XML文档
         var basePath = AppContext.BaseDirectory;
         var xmlPath = Path.Combine(basePath, "FuFuShop.xml");
-        s.IncludeXmlComments(xmlPath,true);
-        s.OrderActionsBy(o => o.RelativePath); 
+        s.IncludeXmlComments(xmlPath, true);
+        s.OrderActionsBy(o => o.RelativePath);
     }
     catch (Exception ex)
     {
@@ -376,7 +376,7 @@ app.UseSwagger().UseSwaggerUI(c =>
         });
     //设置默认跳转到swagger-ui
     c.RoutePrefix = "doc";
- 
+
 });
 
 

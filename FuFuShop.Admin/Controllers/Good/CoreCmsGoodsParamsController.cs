@@ -11,6 +11,7 @@
 using FuFuShop.Admin.Filter;
 using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Extensions;
+using FuFuShop.Common.Helper;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.UI;
@@ -22,39 +23,34 @@ using SqlSugar;
 using System.ComponentModel;
 using System.Linq.Expressions;
 
-namespace FuFuShop.Admin.Controllers
+namespace FuFuShop.Admin.Controllers.Good
 {
     /// <summary>
-    ///     提货单表
+    ///     商品参数表
     /// </summary>
-    [Description("提货单表")]
+    [Description("商品参数表")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class BillLadingController : ControllerBase
+    public class GoodsParamsController : ControllerBase
     {
-        private readonly IBillLadingServices _BillLadingServices;
-        private readonly IStoreServices _storeServices;
+        private readonly IGoodsParamsServices _GoodsParamsServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         /// <summary>
         ///     构造函数
         /// </summary>
-        public BillLadingController(
-            IWebHostEnvironment webHostEnvironment
-            , IBillLadingServices BillLadingServices
-            , IStoreServices storeServices
-        )
+        public GoodsParamsController(IWebHostEnvironment webHostEnvironment,
+            IGoodsParamsServices GoodsParamsServices)
         {
             _webHostEnvironment = webHostEnvironment;
-            _BillLadingServices = BillLadingServices;
-            _storeServices = storeServices;
+            _GoodsParamsServices = GoodsParamsServices;
         }
 
         #region 获取列表============================================================
 
-        // POST: Api/BillLading/GetPageList
+        // POST: Api/GoodsParams/GetPageList
         /// <summary>
         ///     获取列表
         /// </summary>
@@ -66,44 +62,29 @@ namespace FuFuShop.Admin.Controllers
             var jm = new AdminUiCallBack();
             var pageCurrent = Request.Form["page"].FirstOrDefault().ObjectToInt(1);
             var pageSize = Request.Form["limit"].FirstOrDefault().ObjectToInt(30);
-            var where = PredicateBuilder.True<BillLading>();
+            var where = PredicateBuilder.True<GoodsParams>();
             //获取排序字段
             var orderField = Request.Form["orderField"].FirstOrDefault();
-            Expression<Func<BillLading, object>> orderEx;
+            Expression<Func<GoodsParams, object>> orderEx;
             switch (orderField)
             {
                 case "id":
                     orderEx = p => p.id;
                     break;
-                case "orderId":
-                    orderEx = p => p.orderId;
-                    break;
-                case "storeId":
-                    orderEx = p => p.storeId;
-                    break;
                 case "name":
                     orderEx = p => p.name;
                     break;
-                case "mobile":
-                    orderEx = p => p.mobile;
+                case "value":
+                    orderEx = p => p.value;
                     break;
-                case "clerkId":
-                    orderEx = p => p.clerkId;
-                    break;
-                case "pickUpTime":
-                    orderEx = p => p.pickUpTime;
-                    break;
-                case "status":
-                    orderEx = p => p.status;
+                case "type":
+                    orderEx = p => p.type;
                     break;
                 case "createTime":
                     orderEx = p => p.createTime;
                     break;
                 case "updateTime":
                     orderEx = p => p.updateTime;
-                    break;
-                case "isDel":
-                    orderEx = p => p.isDel;
                     break;
                 default:
                     orderEx = p => p.id;
@@ -120,49 +101,18 @@ namespace FuFuShop.Admin.Controllers
             };
             //查询筛选
 
-            //提货单号 nvarchar
-            var id = Request.Form["id"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(id)) @where = @where.And(p => p.id.Contains(id));
-            //订单号 nvarchar
-            var orderId = Request.Form["orderId"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(orderId)) @where = @where.And(p => p.orderId.Contains(orderId));
-            //提货门店ID int
-            var storeId = Request.Form["storeId"].FirstOrDefault().ObjectToInt(0);
-            if (storeId > 0) @where = @where.And(p => p.storeId == storeId);
-            //提货人姓名 nvarchar
+            //序列 int
+            var id = Request.Form["id"].FirstOrDefault().ObjectToInt(0);
+            if (id > 0) @where = @where.And(p => p.id == id);
+            //参数名称 nvarchar
             var name = Request.Form["name"].FirstOrDefault();
             if (!string.IsNullOrEmpty(name)) @where = @where.And(p => p.name.Contains(name));
-            //提货手机号 nvarchar
-            var mobile = Request.Form["mobile"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(mobile)) @where = @where.And(p => p.mobile.Contains(mobile));
-            //处理店员ID int
-            var clerkId = Request.Form["clerkId"].FirstOrDefault().ObjectToInt(0);
-            if (clerkId > 0) @where = @where.And(p => p.clerkId == clerkId);
-            //提货时间 datetime
-            var pickUpTime = Request.Form["pickUpTime"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(pickUpTime))
-            {
-                if (pickUpTime.Contains("到"))
-                {
-                    var dts = pickUpTime.Split("到");
-                    var dtStart = dts[0].Trim().ObjectToDate();
-                    where = where.And(p => p.pickUpTime > dtStart);
-                    var dtEnd = dts[1].Trim().ObjectToDate();
-                    where = where.And(p => p.pickUpTime < dtEnd);
-                }
-                else
-                {
-                    var dt = pickUpTime.ObjectToDate();
-                    where = where.And(p => p.pickUpTime > dt);
-                }
-            }
-
-            //是否提货 bit
-            var status = Request.Form["status"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(status) && status.ToLowerInvariant() == "true")
-                @where = @where.And(p => p.status);
-            else if (!string.IsNullOrEmpty(status) && status.ToLowerInvariant() == "false")
-                @where = @where.And(p => p.status == false);
+            //参数值 nvarchar
+            var value = Request.Form["value"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(value)) @where = @where.And(p => p.value.Contains(value));
+            //参数类型 nvarchar
+            var type = Request.Form["type"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(type)) @where = @where.And(p => p.type.Contains(type));
             //创建时间 datetime
             var createTime = Request.Form["createTime"].FirstOrDefault();
             if (!string.IsNullOrEmpty(createTime))
@@ -201,14 +151,8 @@ namespace FuFuShop.Admin.Controllers
                 }
             }
 
-            //删除时间 bit
-            var isDel = Request.Form["isDel"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(isDel) && isDel.ToLowerInvariant() == "true")
-                @where = @where.And(p => p.isDel);
-            else if (!string.IsNullOrEmpty(isDel) && isDel.ToLowerInvariant() == "false")
-                @where = @where.And(p => p.isDel == false);
             //获取数据
-            var list = await _BillLadingServices.QueryPageAsync(where, orderEx, orderBy, pageCurrent, pageSize);
+            var list = await _GoodsParamsServices.QueryPageAsync(where, orderEx, orderBy, pageCurrent, pageSize);
             //返回数据
             jm.data = list;
             jm.code = 0;
@@ -221,22 +165,79 @@ namespace FuFuShop.Admin.Controllers
 
         #region 首页数据============================================================
 
-        // POST: Api/BillLading/GetIndex
+        // POST: Api/GoodsParams/GetIndex
         /// <summary>
         ///     首页数据
         /// </summary>
         /// <returns></returns>
         [HttpPost]
         [Description("首页数据")]
-        public async Task<AdminUiCallBack> GetIndex()
+        public AdminUiCallBack GetIndex()
         {
             //返回数据
             var jm = new AdminUiCallBack { code = 0 };
-            var stores = await _storeServices.QueryAsync();
+            var goodsParamTypes = EnumHelper.EnumToList<GlobalEnumVars.GoodsParamTypes>();
             jm.data = new
             {
-                stores
+                goodsParamTypes
             };
+            return jm;
+        }
+
+        #endregion
+
+        #region 创建数据============================================================
+
+        // POST: Api/GoodsParams/GetCreate
+        /// <summary>
+        ///     创建数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("创建数据")]
+        public AdminUiCallBack GetCreate()
+        {
+            //返回数据
+            var jm = new AdminUiCallBack { code = 0 };
+            var goodsParamTypes = EnumHelper.EnumToList<GlobalEnumVars.GoodsParamTypes>();
+            jm.data = new
+            {
+                goodsParamTypes
+            };
+            return jm;
+        }
+
+        #endregion
+
+        #region 创建提交============================================================
+
+        // POST: Api/GoodsParams/DoCreate
+        /// <summary>
+        ///     创建提交
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("创建提交")]
+        public async Task<AdminUiCallBack> DoCreate([FromBody] GoodsParams entity)
+        {
+            var jm = new AdminUiCallBack();
+
+            entity.createTime = DateTime.Now;
+            var bl = await _GoodsParamsServices.InsertAsync(entity) > 0;
+            jm.code = bl ? 0 : 1;
+            jm.msg = bl ? GlobalConstVars.CreateSuccess : GlobalConstVars.CreateFailure;
+
+            if (bl)
+            {
+                //获取列表
+                var paramsList = await _GoodsParamsServices.QueryListByClauseAsync(p => p.id > 0, p => p.id, OrderByType.Desc, true);
+                jm.data = new
+                {
+                    paramsList
+                };
+            }
+
             return jm;
         }
 
@@ -244,7 +245,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 编辑数据============================================================
 
-        // POST: Api/BillLading/GetEdit
+        // POST: Api/GoodsParams/GetEdit
         /// <summary>
         ///     编辑数据
         /// </summary>
@@ -252,23 +253,23 @@ namespace FuFuShop.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑数据")]
-        public async Task<AdminUiCallBack> GetEdit([FromBody] FMStringId entity)
+        public async Task<AdminUiCallBack> GetEdit([FromBody] FMIntId entity)
         {
             var jm = new AdminUiCallBack();
 
-            var model = await _BillLadingServices.QueryByIdAsync(entity.id);
+            var model = await _GoodsParamsServices.QueryByIdAsync(entity.id);
             if (model == null)
             {
                 jm.msg = "不存在此信息";
                 return jm;
             }
 
-            var stores = await _storeServices.QueryAsync();
             jm.code = 0;
+            var goodsParamTypes = EnumHelper.EnumToList<GlobalEnumVars.GoodsParamTypes>();
             jm.data = new
             {
                 model,
-                stores
+                goodsParamTypes
             };
 
             return jm;
@@ -278,7 +279,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 编辑提交============================================================
 
-        // POST: Admins/BillLading/Edit
+        // POST: Admins/GoodsParams/Edit
         /// <summary>
         ///     编辑提交
         /// </summary>
@@ -286,11 +287,11 @@ namespace FuFuShop.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("编辑提交")]
-        public async Task<AdminUiCallBack> DoEdit([FromBody] BillLading entity)
+        public async Task<AdminUiCallBack> DoEdit([FromBody] GoodsParams entity)
         {
             var jm = new AdminUiCallBack();
 
-            var oldModel = await _BillLadingServices.QueryByIdAsync(entity.id);
+            var oldModel = await _GoodsParamsServices.QueryByIdAsync(entity.id);
             if (oldModel == null)
             {
                 jm.msg = "不存在此信息";
@@ -298,12 +299,13 @@ namespace FuFuShop.Admin.Controllers
             }
 
             //事物处理过程开始
-            oldModel.storeId = entity.storeId;
             oldModel.name = entity.name;
-            oldModel.mobile = entity.mobile;
-            //事物处理过程结束
+            oldModel.value = entity.value;
+            oldModel.type = entity.type;
+            oldModel.updateTime = DateTime.Now;
 
-            var bl = await _BillLadingServices.UpdateAsync(oldModel);
+            //事物处理过程结束
+            var bl = await _GoodsParamsServices.UpdateAsync(oldModel);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.EditSuccess : GlobalConstVars.EditFailure;
 
@@ -314,7 +316,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 删除数据============================================================
 
-        // POST: Api/BillLading/DoDelete/10
+        // POST: Api/GoodsParams/DoDelete/10
         /// <summary>
         ///     单选删除
         /// </summary>
@@ -326,25 +328,53 @@ namespace FuFuShop.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
 
-            var model = await _BillLadingServices.QueryByIdAsync(entity.id);
+            var model = await _GoodsParamsServices.QueryByIdAsync(entity.id);
             if (model == null)
             {
                 jm.msg = GlobalConstVars.DataisNo;
                 return jm;
             }
 
-            var bl = await _BillLadingServices.DeleteByIdAsync(entity.id);
+            var bl = await _GoodsParamsServices.DeleteByIdAsync(entity.id);
             jm.code = bl ? 0 : 1;
             jm.msg = bl ? GlobalConstVars.DeleteSuccess : GlobalConstVars.DeleteFailure;
             return jm;
+        }
 
+        #endregion
+
+        #region 预览数据============================================================
+
+        // POST: Api/GoodsParams/GetDetails/10
+        /// <summary>
+        ///     预览数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("预览数据")]
+        public async Task<AdminUiCallBack> GetDetails([FromBody] FMIntId entity)
+        {
+            var jm = new AdminUiCallBack();
+
+            var model = await _GoodsParamsServices.QueryByIdAsync(entity.id);
+            if (model == null)
+            {
+                jm.msg = GlobalConstVars.DataisNo;
+                return jm;
+            }
+
+            jm.code = 0;
+            jm.data = model;
+
+            return jm;
         }
 
         #endregion
 
         #region 选择导出============================================================
 
-        // POST: Api/BillLading/SelectExportExcel/10
+        // POST: Api/GoodsParams/SelectExportExcel/10
         /// <summary>
         ///     选择导出
         /// </summary>
@@ -352,7 +382,7 @@ namespace FuFuShop.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("选择导出")]
-        public async Task<AdminUiCallBack> SelectExportExcel([FromBody] FMArrayStringIds entity)
+        public async Task<AdminUiCallBack> SelectExportExcel([FromBody] FMArrayIntIds entity)
         {
             var jm = new AdminUiCallBack();
 
@@ -361,43 +391,34 @@ namespace FuFuShop.Admin.Controllers
             //添加一个sheet
             var sheet1 = book.CreateSheet("Sheet1");
             //获取list数据
-            var listmodel = await _BillLadingServices.QueryListByClauseAsync(p => entity.id.Contains(p.id),
-                p => p.id, OrderByType.Asc);
+            var listmodel =
+                await _GoodsParamsServices.QueryListByClauseAsync(p => entity.id.Contains(p.id), p => p.id,
+                    OrderByType.Asc);
             //给sheet1添加第一行的头部标题
             var row1 = sheet1.CreateRow(0);
-            row1.CreateCell(0).SetCellValue("提货单号");
-            row1.CreateCell(1).SetCellValue("订单号");
-            row1.CreateCell(2).SetCellValue("提货门店ID");
-            row1.CreateCell(3).SetCellValue("提货人姓名");
-            row1.CreateCell(4).SetCellValue("提货手机号");
-            row1.CreateCell(5).SetCellValue("处理店员ID");
-            row1.CreateCell(6).SetCellValue("提货时间");
-            row1.CreateCell(7).SetCellValue("是否提货");
-            row1.CreateCell(8).SetCellValue("创建时间");
-            row1.CreateCell(9).SetCellValue("更新时间");
-            row1.CreateCell(10).SetCellValue("删除时间");
+            row1.CreateCell(0).SetCellValue("序列");
+            row1.CreateCell(1).SetCellValue("参数名称");
+            row1.CreateCell(2).SetCellValue("参数值");
+            row1.CreateCell(3).SetCellValue("参数类型");
+            row1.CreateCell(4).SetCellValue("创建时间");
+            row1.CreateCell(5).SetCellValue("更新时间");
 
             //将数据逐步写入sheet1各个行
             for (var i = 0; i < listmodel.Count; i++)
             {
                 var rowtemp = sheet1.CreateRow(i + 1);
-                rowtemp.CreateCell(0).SetCellValue(listmodel[i].id);
-                rowtemp.CreateCell(1).SetCellValue(listmodel[i].orderId);
-                rowtemp.CreateCell(2).SetCellValue(listmodel[i].storeId.ToString());
-                rowtemp.CreateCell(3).SetCellValue(listmodel[i].name);
-                rowtemp.CreateCell(4).SetCellValue(listmodel[i].mobile);
-                rowtemp.CreateCell(5).SetCellValue(listmodel[i].clerkId.ToString());
-                rowtemp.CreateCell(6).SetCellValue(listmodel[i].pickUpTime.ToString());
-                rowtemp.CreateCell(7).SetCellValue(listmodel[i].status.ToString());
-                rowtemp.CreateCell(8).SetCellValue(listmodel[i].createTime.ToString());
-                rowtemp.CreateCell(9).SetCellValue(listmodel[i].updateTime.ToString());
-                rowtemp.CreateCell(10).SetCellValue(listmodel[i].isDel.ToString());
+                rowtemp.CreateCell(0).SetCellValue(listmodel[i].id.ToString());
+                rowtemp.CreateCell(1).SetCellValue(listmodel[i].name);
+                rowtemp.CreateCell(2).SetCellValue(listmodel[i].value);
+                rowtemp.CreateCell(3).SetCellValue(listmodel[i].type);
+                rowtemp.CreateCell(4).SetCellValue(listmodel[i].createTime.ToString());
+                rowtemp.CreateCell(5).SetCellValue(listmodel[i].updateTime.ToString());
             }
 
             // 导出excel
             var webRootPath = _webHostEnvironment.WebRootPath;
             var tpath = "/files/" + DateTime.Now.ToString("yyyy-MM-dd") + "/";
-            var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-BillLading导出(选择结果).xls";
+            var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-GoodsParams导出(选择结果).xls";
             var filePath = webRootPath + tpath;
             var di = new DirectoryInfo(filePath);
             if (!di.Exists) di.Create();
@@ -409,6 +430,7 @@ namespace FuFuShop.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
+
             return jm;
         }
 
@@ -416,7 +438,7 @@ namespace FuFuShop.Admin.Controllers
 
         #region 查询导出============================================================
 
-        // POST: Api/BillLading/QueryExportExcel/10
+        // POST: Api/GoodsParams/QueryExportExcel/10
         /// <summary>
         ///     查询导出
         /// </summary>
@@ -427,41 +449,21 @@ namespace FuFuShop.Admin.Controllers
         {
             var jm = new AdminUiCallBack();
 
-            var where = PredicateBuilder.True<BillLading>();
+            var where = PredicateBuilder.True<GoodsParams>();
             //查询筛选
 
-            //提货单号 nvarchar
-            var id = Request.Form["id"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(id)) @where = @where.And(p => p.id.Contains(id));
-            //订单号 nvarchar
-            var orderId = Request.Form["orderId"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(orderId)) @where = @where.And(p => p.orderId.Contains(orderId));
-            //提货门店ID int
-            var storeId = Request.Form["storeId"].FirstOrDefault().ObjectToInt(0);
-            if (storeId > 0) @where = @where.And(p => p.storeId == storeId);
-            //提货人姓名 nvarchar
+            //序列 int
+            var id = Request.Form["id"].FirstOrDefault().ObjectToInt(0);
+            if (id > 0) @where = @where.And(p => p.id == id);
+            //参数名称 nvarchar
             var name = Request.Form["name"].FirstOrDefault();
             if (!string.IsNullOrEmpty(name)) @where = @where.And(p => p.name.Contains(name));
-            //提货手机号 nvarchar
-            var mobile = Request.Form["mobile"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(mobile)) @where = @where.And(p => p.mobile.Contains(mobile));
-            //处理店员ID int
-            var clerkId = Request.Form["clerkId"].FirstOrDefault().ObjectToInt(0);
-            if (clerkId > 0) @where = @where.And(p => p.clerkId == clerkId);
-            //提货时间 datetime
-            var pickUpTime = Request.Form["pickUpTime"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(pickUpTime))
-            {
-                var dt = pickUpTime.ObjectToDate();
-                where = where.And(p => p.pickUpTime > dt);
-            }
-
-            //是否提货 bit
-            var status = Request.Form["status"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(status) && status.ToLowerInvariant() == "true")
-                @where = @where.And(p => p.status);
-            else if (!string.IsNullOrEmpty(status) && status.ToLowerInvariant() == "false")
-                @where = @where.And(p => p.status == false);
+            //参数值 nvarchar
+            var value = Request.Form["value"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(value)) @where = @where.And(p => p.value.Contains(value));
+            //参数类型 nvarchar
+            var type = Request.Form["type"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(type)) @where = @where.And(p => p.type.Contains(type));
             //创建时间 datetime
             var createTime = Request.Form["createTime"].FirstOrDefault();
             if (!string.IsNullOrEmpty(createTime))
@@ -478,12 +480,6 @@ namespace FuFuShop.Admin.Controllers
                 where = where.And(p => p.updateTime > dt);
             }
 
-            //删除时间 bit
-            var isDel = Request.Form["isDel"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(isDel) && isDel.ToLowerInvariant() == "true")
-                @where = @where.And(p => p.isDel);
-            else if (!string.IsNullOrEmpty(isDel) && isDel.ToLowerInvariant() == "false")
-                @where = @where.And(p => p.isDel == false);
             //获取数据
             //创建Excel文件的对象
             var book = new HSSFWorkbook();
@@ -491,42 +487,32 @@ namespace FuFuShop.Admin.Controllers
             var sheet1 = book.CreateSheet("Sheet1");
             //获取list数据
             var listmodel =
-                await _BillLadingServices.QueryListByClauseAsync(where, p => p.id, OrderByType.Asc);
+                await _GoodsParamsServices.QueryListByClauseAsync(where, p => p.id, OrderByType.Asc);
             //给sheet1添加第一行的头部标题
             var row1 = sheet1.CreateRow(0);
-            row1.CreateCell(0).SetCellValue("提货单号");
-            row1.CreateCell(1).SetCellValue("订单号");
-            row1.CreateCell(2).SetCellValue("提货门店ID");
-            row1.CreateCell(3).SetCellValue("提货人姓名");
-            row1.CreateCell(4).SetCellValue("提货手机号");
-            row1.CreateCell(5).SetCellValue("处理店员ID");
-            row1.CreateCell(6).SetCellValue("提货时间");
-            row1.CreateCell(7).SetCellValue("是否提货");
-            row1.CreateCell(8).SetCellValue("创建时间");
-            row1.CreateCell(9).SetCellValue("更新时间");
-            row1.CreateCell(10).SetCellValue("删除时间");
+            row1.CreateCell(0).SetCellValue("序列");
+            row1.CreateCell(1).SetCellValue("参数名称");
+            row1.CreateCell(2).SetCellValue("参数值");
+            row1.CreateCell(3).SetCellValue("参数类型");
+            row1.CreateCell(4).SetCellValue("创建时间");
+            row1.CreateCell(5).SetCellValue("更新时间");
 
             //将数据逐步写入sheet1各个行
             for (var i = 0; i < listmodel.Count; i++)
             {
                 var rowtemp = sheet1.CreateRow(i + 1);
-                rowtemp.CreateCell(0).SetCellValue(listmodel[i].id);
-                rowtemp.CreateCell(1).SetCellValue(listmodel[i].orderId);
-                rowtemp.CreateCell(2).SetCellValue(listmodel[i].storeId.ToString());
-                rowtemp.CreateCell(3).SetCellValue(listmodel[i].name);
-                rowtemp.CreateCell(4).SetCellValue(listmodel[i].mobile);
-                rowtemp.CreateCell(5).SetCellValue(listmodel[i].clerkId.ToString());
-                rowtemp.CreateCell(6).SetCellValue(listmodel[i].pickUpTime.ToString());
-                rowtemp.CreateCell(7).SetCellValue(listmodel[i].status.ToString());
-                rowtemp.CreateCell(8).SetCellValue(listmodel[i].createTime.ToString());
-                rowtemp.CreateCell(9).SetCellValue(listmodel[i].updateTime.ToString());
-                rowtemp.CreateCell(10).SetCellValue(listmodel[i].isDel.ToString());
+                rowtemp.CreateCell(0).SetCellValue(listmodel[i].id.ToString());
+                rowtemp.CreateCell(1).SetCellValue(listmodel[i].name);
+                rowtemp.CreateCell(2).SetCellValue(listmodel[i].value);
+                rowtemp.CreateCell(3).SetCellValue(listmodel[i].type);
+                rowtemp.CreateCell(4).SetCellValue(listmodel[i].createTime.ToString());
+                rowtemp.CreateCell(5).SetCellValue(listmodel[i].updateTime.ToString());
             }
 
             // 写入到excel
             var webRootPath = _webHostEnvironment.WebRootPath;
             var tpath = "/files/" + DateTime.Now.ToString("yyyy-MM-dd") + "/";
-            var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-BillLading导出(查询结果).xls";
+            var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-GoodsParams导出(查询结果).xls";
             var filePath = webRootPath + tpath;
             var di = new DirectoryInfo(filePath);
             if (!di.Exists) di.Create();
@@ -538,11 +524,10 @@ namespace FuFuShop.Admin.Controllers
             jm.msg = GlobalConstVars.ExcelExportSuccess;
             jm.data = tpath + fileName;
 
+
             return jm;
         }
 
         #endregion
-
-
     }
 }
