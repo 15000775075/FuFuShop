@@ -34,7 +34,7 @@ namespace FuFuShop.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class BillAftersalesController : ControllerBase
+    public class CoreCmsBillAftersalesController : ControllerBase
     {
         private readonly IBillAftersalesServices _BillAftersalesServices;
         private readonly IBillAftersalesImagesServices _imagesServices;
@@ -46,7 +46,7 @@ namespace FuFuShop.Admin.Controllers
         /// <summary>
         ///     构造函数
         /// </summary>
-        public BillAftersalesController(IWebHostEnvironment webHostEnvironment
+        public CoreCmsBillAftersalesController(IWebHostEnvironment webHostEnvironment
             , IBillAftersalesServices BillAftersalesServices
             , IUserServices userServices
             , IBillAftersalesItemServices itemServices

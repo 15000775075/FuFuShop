@@ -68,7 +68,7 @@ namespace FuFuShop.Repository.Good
                                                         ( CASE WHEN stock < freezeStock THEN 0
                                                                ELSE stock - freezeStock
                                                           END ) AS number
-                                              FROM      Products
+                                              FROM     FuFuShop_Products
                                             ) t
                                   WHERE     t.number < " + goodsStocksWarn + @"
                                   GROUP BY  t.goodsId

@@ -32,7 +32,7 @@ namespace FuFuShop.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class BillLadingController : ControllerBase
+    public class CoreCmsBillLadingController : ControllerBase
     {
         private readonly IBillLadingServices _BillLadingServices;
         private readonly IStoreServices _storeServices;
@@ -41,7 +41,7 @@ namespace FuFuShop.Admin.Controllers
         /// <summary>
         ///     构造函数
         /// </summary>
-        public BillLadingController(
+        public CoreCmsBillLadingController(
             IWebHostEnvironment webHostEnvironment
             , IBillLadingServices BillLadingServices
             , IStoreServices storeServices

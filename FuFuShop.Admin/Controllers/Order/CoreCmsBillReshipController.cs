@@ -34,7 +34,7 @@ namespace FuFuShop.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class BillReshipController : ControllerBase
+    public class CoreCmsBillReshipController : ControllerBase
     {
         private readonly IBillReshipServices _BillReshipServices;
         private readonly IBillReshipItemServices _billReshipItemServices;
@@ -46,7 +46,7 @@ namespace FuFuShop.Admin.Controllers
         /// <summary>
         ///     构造函数
         /// </summary>
-        public BillReshipController(IWebHostEnvironment webHostEnvironment,
+        public CoreCmsBillReshipController(IWebHostEnvironment webHostEnvironment,
             IBillReshipServices BillReshipServices, IBillReshipItemServices billReshipItemServices, IGoodsServices goodsServices, IStockServices stockServices, IStockLogServices stockLogServices)
         {
             _webHostEnvironment = webHostEnvironment;

@@ -9,11 +9,6 @@ namespace FuFuShop.Model.Entities
     /// </summary>
     public partial class GoodsCategory
     {
-        /// <summary>
-        ///     类别名称
-        /// </summary>
-        [Display(Name = "类别名称")]
-        [SugarColumn(IsIgnore = true)]
-        public string typeName { get; set; }
+
     }
 }
