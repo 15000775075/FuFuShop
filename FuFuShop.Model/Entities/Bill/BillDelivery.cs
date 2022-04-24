@@ -6,6 +6,7 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     ///     发货单表
     /// </summary>
+    [SugarTable("FuFuShop_BillDelivery", TableDescription = "发货单表")]
     public partial class BillDelivery
     {
         /// <summary>

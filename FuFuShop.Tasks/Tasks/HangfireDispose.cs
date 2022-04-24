@@ -30,7 +30,7 @@ namespace FuFuShop.Tasks.Tasks
 
 
             //定时刷新获取微信AccessToken
-            RecurringJob.AddOrUpdate<RefreshWeChatAccessTokenJob>(s => s.Execute(), "0 0/4 * * * ? ", TimeZoneInfo.Local); // 每2分钟刷新获取微信AccessToken
+            //RecurringJob.AddOrUpdate<RefreshWeChatAccessTokenJob>(s => s.Execute(), "0 0/4 * * * ? ", TimeZoneInfo.Local); // 每2分钟刷新获取微信AccessToken
 
         }
 

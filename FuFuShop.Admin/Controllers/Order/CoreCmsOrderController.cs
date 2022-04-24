@@ -40,7 +40,7 @@ namespace FuFuShop.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class OrderController : ControllerBase
+    public class CoreCmsOrderController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IOrderServices _OrderServices;
@@ -62,7 +62,7 @@ namespace FuFuShop.Admin.Controllers
         /// <summary>
         /// 构造函数
         ///</summary>
-        public OrderController(IWebHostEnvironment webHostEnvironment
+        public CoreCmsOrderController(IWebHostEnvironment webHostEnvironment
             , IOrderServices OrderServices
             , IUserServices userServices
             , IAreaServices areaServices

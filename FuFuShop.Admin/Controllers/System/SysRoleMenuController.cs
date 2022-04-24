@@ -514,5 +514,15 @@ namespace FuFuShop.Admin.Controllers.System
         }
 
         #endregion
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<List<SysRoleMenu>> RoleModuleMaps()
+        {
+            return await _sysRoleMenuServices.RoleModuleMaps();
+        }
     }
 }

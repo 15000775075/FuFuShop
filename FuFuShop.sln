@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuFuShop.WeChat", "FuFuShop
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuFuShop.Tasks", "FuFuShop.Tasks\FuFuShop.Tasks.csproj", "{587C3577-56E1-479A-90AC-0B004A27C481}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuFuShop.Admin", "FuFuShop.Admin\FuFuShop.Admin.csproj", "{45A7A585-C06B-413D-A756-5881AF7333C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuFuShop.Admin", "FuFuShop.Admin\FuFuShop.Admin.csproj", "{45A7A585-C06B-413D-A756-5881AF7333C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -35,7 +35,7 @@ namespace FuFuShop.Admin.Controllers.Good
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class GoodsController : ControllerBase
+    public class CoreCmsGoodsController : ControllerBase
     {
         private readonly IBrandServices _brandServices;
         private readonly IGoodsCategoryExtendServices _categoryExtendServices;
@@ -55,7 +55,7 @@ namespace FuFuShop.Admin.Controllers.Good
         /// <summary>
         ///     构造函数
         /// </summary>
-        public GoodsController(IWebHostEnvironment webHostEnvironment
+        public CoreCmsGoodsController(IWebHostEnvironment webHostEnvironment
             , IGoodsServices GoodsServices
             , ISettingServices settingServices
             , IBrandServices brandServices
@@ -339,10 +339,6 @@ namespace FuFuShop.Admin.Controllers.Good
                 OrderByType.Asc);
             //获取品牌
             var brands = await _brandServices.QueryAsync();
-
-            //获取商品分销方式
-            var productsDistributionType = EnumHelper.EnumToList<GlobalEnumVars.ProductsDistributionType>();
-
             jm.data = new
             {
                 totalGoods,
@@ -352,7 +348,6 @@ namespace FuFuShop.Admin.Controllers.Good
                 categories = GoodsHelper.GetTree(categories),
                 categoriesAll = categories,
                 brands,
-                productsDistributionType
             };
 
             return jm;

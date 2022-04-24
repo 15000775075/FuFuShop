@@ -181,6 +181,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IWeChatApiHttpClientFactory, WeChatApiHttpClientFactory>();
 
 
+builder.Services.AddSession();
+
 #region Redis
 builder.Services.AddTransient<IRedisOperationRepository, RedisOperationRepository>();
 
@@ -248,8 +250,8 @@ var tokenValidationParameters = new TokenValidationParameters
 builder.Services.AddAuthentication(o =>
 {
     o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    o.DefaultChallengeScheme = nameof(ApiResponseHandler);
-    o.DefaultForbidScheme = nameof(ApiResponseHandler);
+    o.DefaultChallengeScheme = nameof(ApiResponseForAdminHandler);
+    o.DefaultForbidScheme = nameof(ApiResponseForAdminHandler);
 })
  // 添加JwtBearer服务
  .AddJwtBearer(o =>
@@ -286,11 +288,11 @@ builder.Services.AddAuthentication(o =>
          }
      };
  })
- .AddScheme<AuthenticationSchemeOptions, ApiResponseHandler>(nameof(ApiResponseHandler), o => { });
+ .AddScheme<AuthenticationSchemeOptions, ApiResponseForAdminHandler>(nameof(ApiResponseForAdminHandler), o => { });
 
 
 // 注入权限处理器
-builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionForAdminHandler>();
 builder.Services.AddSingleton(permissionRequirement);
 #endregion
 #region     Hangfire
@@ -379,13 +381,27 @@ app.UseSwagger().UseSwaggerUI(c =>
 });
 
 
-app.UseHttpsRedirection();
+//使用 Session
+app.UseSession();
+
+
+// CORS跨域
+app.UseCors(AppSettingsConstVars.CorsPolicyName);
+
+// 使用静态文件
+app.UseStaticFiles();
+// 使用cookie
+app.UseCookiePolicy();
+// 返回错误码
+app.UseStatusCodePages();
+
+// Routing
+app.UseRouting();
+
 // 先开启认证
 app.UseAuthentication();
 
 app.UseAuthorization();
-
-app.MapControllers();
 
 #region Hangfire定时任务
 
@@ -426,19 +442,18 @@ app.UseHangfireDashboard("/job", options); //可以改变Dashboard的url
 HangfireDispose.HangfireService();
 
 #endregion
-// 使用静态文件
-app.UseStaticFiles();
+
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapControllerRoute(
-        "areas",
-        "{area:exists}/{controller=Default}/{action=Index}/{id?}"
-    );
+endpoints.MapControllerRoute(
+    "areas",
+    "{area:exists}/{controller=Default}/{action=Index}/{id?}"
+);
 
-    endpoints.MapControllerRoute(
-        "default",
-        "{controller=Home}/{action=Index}/{id?}");
+endpoints.MapControllerRoute(
+    "default",
+    "{controller=Home}/{action=Index}/{id?}");
 });
 //设置默认起始页（如default.html）
 //此处的路径是相对于wwwroot文件夹的相对路径
@@ -448,4 +463,5 @@ defaultFilesOptions.DefaultFileNames.Add("index.html");
 app.UseDefaultFiles(defaultFilesOptions);
 app.UseStaticFiles();
 
-app.Run("http://*:5041");
+
+app.Run();

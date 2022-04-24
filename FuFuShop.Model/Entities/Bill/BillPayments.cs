@@ -8,6 +8,8 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     /// 支付单表
     /// </summary>
+    [SugarTable("FuFuShop_BillPayments", TableDescription = "支付单表")]
+
     public partial class BillPayments
     {
         /// <summary>
