@@ -34,7 +34,7 @@ namespace FuFuShop.Admin.Controllers.Financial
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class BillRefundController : ControllerBase
+    public class CoreCmsBillRefundController : ControllerBase
     {
         private readonly IBillRefundServices _BillRefundServices;
         private readonly IUserServices _userServices;
@@ -46,7 +46,7 @@ namespace FuFuShop.Admin.Controllers.Financial
         /// <param name="webHostEnvironment"></param>
         /// <param name="BillRefundServices"></param>
         /// <param name="userServices"></param>
-        public BillRefundController(IWebHostEnvironment webHostEnvironment
+        public CoreCmsBillRefundController(IWebHostEnvironment webHostEnvironment
             , IBillRefundServices BillRefundServices, IUserServices userServices)
         {
             _webHostEnvironment = webHostEnvironment;

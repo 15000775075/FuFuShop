@@ -73,8 +73,8 @@ namespace FuFuShop.Repository
             oldModel.menuType = entity.menuType;
             oldModel.sortNumber = entity.sortNumber;
             oldModel.authority = entity.authority;
-            oldModel.target = entity.target;
-            oldModel.iconColor = entity.iconColor;
+           /// oldModel.target = entity.target;
+            //oldModel.iconColor = entity.iconColor;
             oldModel.hide = entity.hide;
             //oldModel.deleted = entity.deleted;
             //oldModel.createTime = oldModel.createTime;

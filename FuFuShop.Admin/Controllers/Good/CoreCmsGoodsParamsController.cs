@@ -33,7 +33,7 @@ namespace FuFuShop.Admin.Controllers.Good
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class GoodsParamsController : ControllerBase
+    public class CoreCmsGoodsParamsController : ControllerBase
     {
         private readonly IGoodsParamsServices _GoodsParamsServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -41,7 +41,7 @@ namespace FuFuShop.Admin.Controllers.Good
         /// <summary>
         ///     构造函数
         /// </summary>
-        public GoodsParamsController(IWebHostEnvironment webHostEnvironment,
+        public CoreCmsGoodsParamsController(IWebHostEnvironment webHostEnvironment,
             IGoodsParamsServices GoodsParamsServices)
         {
             _webHostEnvironment = webHostEnvironment;

@@ -15,7 +15,7 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     /// 商品参数表
     /// </summary>
-    [SugarTable("GoodsParams", TableDescription = "商品参数表")]
+    [SugarTable("FuFuShop_GoodsParams", TableDescription = "商品参数表")]
     public partial class GoodsParams
     {
         /// <summary>

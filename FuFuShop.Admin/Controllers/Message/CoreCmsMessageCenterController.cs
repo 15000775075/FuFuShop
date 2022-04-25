@@ -32,7 +32,7 @@ namespace FuFuShop.Admin.Controllers.Message
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class MessageCenterController : ControllerBase
+    public class CoreCmsMessageCenterController : ControllerBase
     {
         private readonly IMessageCenterServices _MessageCenterServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -42,7 +42,7 @@ namespace FuFuShop.Admin.Controllers.Message
         /// </summary>
         /// <param name="webHostEnvironment"></param>
         /// <param name="MessageCenterServices"></param>
-        public MessageCenterController(IWebHostEnvironment webHostEnvironment
+        public CoreCmsMessageCenterController(IWebHostEnvironment webHostEnvironment
             , IMessageCenterServices MessageCenterServices
         )
         {

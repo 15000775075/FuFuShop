@@ -33,7 +33,7 @@ namespace FuFuShop.Admin.Controllers.Advert
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class AdvertisementController : ControllerBase
+    public class CoreCmsAdvertisementController : ControllerBase
     {
         private readonly IAdvertisementServices _AdvertisementServices;
         private readonly IAdvertPositionServices _AdvertPositionServices;
@@ -49,7 +49,7 @@ namespace FuFuShop.Admin.Controllers.Advert
         /// <param name="GoodsServices"></param>
         /// <param name="ArticleServices"></param>
         /// <param name="ArticleTypeServices"></param>
-        public AdvertisementController(IWebHostEnvironment webHostEnvironment
+        public CoreCmsAdvertisementController(IWebHostEnvironment webHostEnvironment
             , IAdvertisementServices AdvertisementServices
             , IAdvertPositionServices AdvertPositionServices
             , IGoodsServices GoodsServices

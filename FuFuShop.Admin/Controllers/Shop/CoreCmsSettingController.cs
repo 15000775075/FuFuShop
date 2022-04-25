@@ -28,7 +28,7 @@ namespace FuFuShop.Admin.Controllers.Shop
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class SettingController : ControllerBase
+    public class CoreCmsSettingController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ISettingServices _SettingServices;
@@ -38,7 +38,7 @@ namespace FuFuShop.Admin.Controllers.Shop
         ///</summary>
         ///  <param name="webHostEnvironment"></param>
         ///<param name="SettingServices"></param>
-        public SettingController(IWebHostEnvironment webHostEnvironment, ISettingServices SettingServices)
+        public CoreCmsSettingController(IWebHostEnvironment webHostEnvironment, ISettingServices SettingServices)
         {
             _webHostEnvironment = webHostEnvironment;
             _SettingServices = SettingServices;

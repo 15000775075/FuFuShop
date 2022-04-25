@@ -33,7 +33,7 @@ namespace FuFuShop.Admin.Controllers.Shop
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class StoreController : ControllerBase
+    public class CoreCmsStoreController : ControllerBase
     {
         private readonly IClerkServices _ClerkServices;
         private readonly IStoreServices _StoreServices;
@@ -43,7 +43,7 @@ namespace FuFuShop.Admin.Controllers.Shop
         /// <summary>
         ///     构造函数
         /// </summary>
-        public StoreController(IWebHostEnvironment webHostEnvironment,
+        public CoreCmsStoreController(IWebHostEnvironment webHostEnvironment,
             IStoreServices StoreServices, IClerkServices ClerkServices,
             IUserServices UserServices)
         {

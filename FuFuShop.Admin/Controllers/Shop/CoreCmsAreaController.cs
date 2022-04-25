@@ -31,7 +31,7 @@ namespace FuFuShop.Admin.Controllers.Shop
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class AreaController : ControllerBase
+    public class CoreCmsAreaController : ControllerBase
     {
         private readonly IAreaServices _AreaServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -41,7 +41,7 @@ namespace FuFuShop.Admin.Controllers.Shop
         /// </summary>
         /// <param name="webHostEnvironment"></param>
         /// <param name="AreaServices"></param>
-        public AreaController(IWebHostEnvironment webHostEnvironment, IAreaServices AreaServices)
+        public CoreCmsAreaController(IWebHostEnvironment webHostEnvironment, IAreaServices AreaServices)
         {
             _webHostEnvironment = webHostEnvironment;
             _AreaServices = AreaServices;

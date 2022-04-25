@@ -33,7 +33,7 @@ namespace FuFuShop.Admin.Controllers.Financial
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class BillPaymentsController : ControllerBase
+    public class CoreCmsBillPaymentsController : ControllerBase
     {
         private readonly IBillPaymentsServices _BillPaymentsServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -43,7 +43,7 @@ namespace FuFuShop.Admin.Controllers.Financial
         /// </summary>
         /// <param name="webHostEnvironment"></param>
         /// <param name="BillPaymentsServices"></param>
-        public BillPaymentsController(IWebHostEnvironment webHostEnvironment
+        public CoreCmsBillPaymentsController(IWebHostEnvironment webHostEnvironment
             , IBillPaymentsServices BillPaymentsServices)
         {
             _webHostEnvironment = webHostEnvironment;

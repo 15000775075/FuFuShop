@@ -32,7 +32,7 @@ namespace FuFuShop.Admin.Controllers.Shop
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class ServiceDescriptionController : ControllerBase
+    public class CoreCmsServiceDescriptionController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IServiceDescriptionServices _ServiceDescriptionServices;
@@ -40,7 +40,7 @@ namespace FuFuShop.Admin.Controllers.Shop
         /// <summary>
         /// 构造函数
         ///</summary>
-        public ServiceDescriptionController(IWebHostEnvironment webHostEnvironment
+        public CoreCmsServiceDescriptionController(IWebHostEnvironment webHostEnvironment
             , IServiceDescriptionServices ServiceDescriptionServices
             )
         {

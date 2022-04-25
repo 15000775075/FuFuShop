@@ -31,7 +31,7 @@ namespace FuFuShop.Admin.Controllers.Good
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class GoodsTypeSpecController : ControllerBase
+    public class CoreCmsGoodsTypeSpecController : ControllerBase
     {
         private readonly IGoodsTypeSpecServices _GoodsTypeSpecServices;
         private readonly IGoodsTypeSpecValueServices _valueServices;
@@ -40,7 +40,7 @@ namespace FuFuShop.Admin.Controllers.Good
         /// <summary>
         ///     构造函数
         /// </summary>
-        public GoodsTypeSpecController(IWebHostEnvironment webHostEnvironment
+        public CoreCmsGoodsTypeSpecController(IWebHostEnvironment webHostEnvironment
             , IGoodsTypeSpecServices GoodsTypeSpecServices
             , IGoodsTypeSpecValueServices GoodsTypeSpecValueServices)
         {

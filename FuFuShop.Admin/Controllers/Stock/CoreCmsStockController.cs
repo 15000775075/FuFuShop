@@ -34,7 +34,7 @@ namespace FuFuShop.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class StockController : ControllerBase
+    public class CoreCmsStockController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IStockServices _stockServices;
@@ -46,7 +46,7 @@ namespace FuFuShop.Admin.Controllers
         /// <summary>
         /// 构造函数
         ///</summary>
-        public StockController(IWebHostEnvironment webHostEnvironment
+        public CoreCmsStockController(IWebHostEnvironment webHostEnvironment
             , IStockServices stockServices, IProductsServices productsServices, IHttpContextUser user, IStockLogServices stockLogServices, ISysUserServices sysUserServices)
         {
             _webHostEnvironment = webHostEnvironment;

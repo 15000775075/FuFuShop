@@ -97,17 +97,17 @@ namespace FuFuShop.Model.Entities
         /// <summary>
         /// 打开位置
         /// </summary>
-        [Display(Name = "打开位置")]
-        [SugarColumn(ColumnDescription = "打开位置", IsNullable = true)]
-        [StringLength(100, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String target { get; set; }
+        //[Display(Name = "打开位置")]
+        //[SugarColumn(ColumnDescription = "打开位置", IsNullable = true)]
+        //[StringLength(100, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        //public System.String target { get; set; }
         /// <summary>
         /// 菜单图标颜色
-        /// </summary>
-        [Display(Name = "菜单图标颜色")]
-        [SugarColumn(ColumnDescription = "菜单图标颜色", IsNullable = true)]
-        [StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
-        public System.String iconColor { get; set; }
+        ///// </summary>
+        //[Display(Name = "菜单图标颜色")]
+        //[SugarColumn(ColumnDescription = "菜单图标颜色", IsNullable = true)]
+        //[StringLength(50, ErrorMessage = "【{0}】不能超过{1}字符长度")]
+        //public System.String iconColor { get; set; }
         /// <summary>
         /// 是否隐藏,0否,1是
         /// </summary>
