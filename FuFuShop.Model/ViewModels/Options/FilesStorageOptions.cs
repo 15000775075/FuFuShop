@@ -10,7 +10,7 @@ namespace FuFuShop.Model.ViewModels.Options
         /// <summary>
         ///     存储方式（'LocalStorage','AliYunOSS','QCloudOSS'）
         /// </summary>
-        public string StorageType { get; set; } = "LocalStorage";
+        public string StorageType { get; set; } = "QCloudOSS";
 
         /// <summary>
         ///     存储目录

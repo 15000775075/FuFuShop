@@ -10,14 +10,14 @@
 <style>
     /* 重写样式 */
 </style>
-<script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/CoreCmsNotice/GetIndex" lay-done="layui.data.done(d);">
+<script type="text/html" template lay-type="Post" lay-url="{{ layui.setter.apiUrl }}Api/Notice/GetIndex" lay-done="layui.data.done(d);">
 
 </script>
 <div class="table-body">
-    <table id="LAY-app-CoreCmsNotice-tableBox" lay-filter="LAY-app-CoreCmsNotice-tableBox"></table>
+    <table id="LAY-app-Notice-tableBox" lay-filter="LAY-app-Notice-tableBox"></table>
 </div>
 
-<script type="text/html" id="LAY-app-CoreCmsNotice-toolbar">
+<script type="text/html" id="LAY-app-Notice-toolbar">
     <div class="layui-form coreshop-toolbar-search-form">
         <div class="layui-form-item">
             <div class="layui-inline">
@@ -26,17 +26,17 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-CoreCmsNotice-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="LAY-app-Notice-search"><i class="layui-icon layui-icon-search"></i>筛选</button>
             </div>
         </div>
     </div>
 </script>
-<script type="text/html" id="LAY-app-CoreCmsNotice-pagebar">
+<script type="text/html" id="LAY-app-Notice-pagebar">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-1"></i>添加数据</button>
     </div>
 </script>
-<script type="text/html" id="LAY-app-CoreCmsNotice-tableBox-bar">
+<script type="text/html" id="LAY-app-Notice-tableBox-bar">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -63,20 +63,20 @@
                
                 var searchwhere;
                 //监听搜索
-                form.on('submit(LAY-app-CoreCmsNotice-search)',
+                form.on('submit(LAY-app-Notice-search)',
                     function (data) {
                         var field = data.field;
                         searchwhere = field;
                         //执行重载
-                        table.reloadData('LAY-app-CoreCmsNotice-tableBox', { where: field });
+                        table.reloadData('LAY-app-Notice-tableBox', { where: field });
                     });
                 //数据绑定
                 table.render({
-                    elem: '#LAY-app-CoreCmsNotice-tableBox',
-                    url: layui.setter.apiUrl + 'Api/CoreCmsNotice/GetPageList',
+                    elem: '#LAY-app-Notice-tableBox',
+                    url: layui.setter.apiUrl + 'Api/Notice/GetPageList',
                     method: 'POST',
-                    toolbar: '#LAY-app-CoreCmsNotice-toolbar',
-                    pagebar: '#LAY-app-CoreCmsNotice-pagebar',
+                    toolbar: '#LAY-app-Notice-toolbar',
+                    pagebar: '#LAY-app-Notice-pagebar',
                     className: 'pagebarbox',
                     defaultToolbar: ['filter', 'print', 'exports'],
                     height: 'full-127',//无面包屑127,搜索框189,1行62
@@ -91,13 +91,13 @@
                             { field: 'contentBody', title: '公告内容', sort: false },
                             { field: 'sort', title: '排序', sort: false, width: 105 },
                             { field: 'createTime', title: '创建时间', width: 130, sort: false },
-                            { width: 122, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-CoreCmsNotice-tableBox-bar' }
+                            { width: 122, align: 'center', title: '操作', fixed: 'right', toolbar: '#LAY-app-Notice-tableBox-bar' }
                         ]
                     ]
                 });
                 //监听排序事件
-                table.on('sort(LAY-app-CoreCmsNotice-tableBox)', function (obj) {
-                    table.reloadData('LAY-app-CoreCmsNotice-tableBox', {
+                table.on('sort(LAY-app-Notice-tableBox)', function (obj) {
+                    table.reloadData('LAY-app-Notice-tableBox', {
                         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
                         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                             orderField: obj.field, //排序字段
@@ -106,7 +106,7 @@
                     });
                 });
                 //头工具栏事件
-                table.on('pagebar(LAY-app-CoreCmsNotice-tableBox)', function (obj) {
+                table.on('pagebar(LAY-app-Notice-tableBox)', function (obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
                         case 'addData':
@@ -115,7 +115,7 @@
                     };
                 });
                 //监听工具条
-                table.on('tool(LAY-app-CoreCmsNotice-tableBox)',
+                table.on('tool(LAY-app-Notice-tableBox)',
                     function (obj) {
                         if (obj.event === 'del') {
                             doDelete(obj);
@@ -125,17 +125,17 @@
                     });
                 //执行创建操作
                 function doCreate() {
-                    coreHelper.Post("Api/CoreCmsNotice/GetCreate", null, function (e) {
+                    coreHelper.Post("Api/Notice/GetCreate", null, function (e) {
                         if (e.code === 0) {
                             admin.popup({
                                 shadeClose: false,
                                 title: '创建数据',
                                 area: ['1200px', '90%'],
-                                id: 'LAY-popup-CoreCmsNotice-create',
+                                id: 'LAY-popup-Notice-create',
                                 success: function (layero, index) {
                                     view(this.id).render('content/notice/create', { data: e.data }).done(function () {
                                         //监听提交
-                                        form.on('submit(LAY-app-CoreCmsNotice-createForm-submit)',
+                                        form.on('submit(LAY-app-Notice-createForm-submit)',
                                             function (data) {
                                                 var field = data.field; //获取提交的字段
 
@@ -149,10 +149,10 @@
 
                                                 if (debug) { console.log(field); } //开启调试返回数据
                                                 //提交 Ajax 成功后，关闭当前弹层并重载表格
-                                                coreHelper.Post("Api/CoreCmsNotice/DoCreate", field, function (e) {
+                                                coreHelper.Post("Api/Notice/DoCreate", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reloadData('LAY-app-CoreCmsNotice-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-Notice-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -164,7 +164,7 @@
                                 }
                                 , btn: ['确定', '取消']
                                 , yes: function (index, layero) {
-                                    layero.contents().find("#LAY-app-CoreCmsNotice-createForm-submit").click();
+                                    layero.contents().find("#LAY-app-Notice-createForm-submit").click();
                                 }
                             });
                         } else {
@@ -174,17 +174,17 @@
                 }
                 //执行编辑操作
                 function doEdit(obj) {
-                    coreHelper.Post("Api/CoreCmsNotice/GetEdit", { id: obj.data.id }, function (e) {
+                    coreHelper.Post("Api/Notice/GetEdit", { id: obj.data.id }, function (e) {
                         if (e.code === 0) {
                             admin.popup({
                                 shadeClose: false,
                                 title: '编辑数据',
                                 area: ['1200px', '90%'],
-                                id: 'LAY-popup-CoreCmsNotice-edit',
+                                id: 'LAY-popup-Notice-edit',
                                 success: function (layero, index) {
                                     view(this.id).render('content/notice/edit', { data: e.data }).done(function () {
                                         //监听提交
-                                        form.on('submit(LAY-app-CoreCmsNotice-editForm-submit)',
+                                        form.on('submit(LAY-app-Notice-editForm-submit)',
                                             function (data) {
                                                 var field = data.field; //获取提交的字段
 
@@ -198,10 +198,10 @@
 
                                                 if (debug) { console.log(field); } //开启调试返回数据
                                                 //提交 Ajax 成功后，关闭当前弹层并重载表格
-                                                coreHelper.Post("Api/CoreCmsNotice/DoEdit", field, function (e) {
+                                                coreHelper.Post("Api/Notice/DoEdit", field, function (e) {
                                                     console.log(e)
                                                     if (e.code === 0) {
-                                                        layui.table.reloadData('LAY-app-CoreCmsNotice-tableBox'); //重载表格
+                                                        layui.table.reloadData('LAY-app-Notice-tableBox'); //重载表格
                                                         layer.close(index); //再执行关闭
                                                         layer.msg(e.msg);
                                                     } else {
@@ -213,7 +213,7 @@
                                 }
                                 , btn: ['确定', '取消']
                                 , yes: function (index, layero) {
-                                    layero.contents().find("#LAY-app-CoreCmsNotice-editForm-submit").click();
+                                    layero.contents().find("#LAY-app-Notice-editForm-submit").click();
                                 }
                             });
                         } else {
@@ -224,9 +224,9 @@
                 //执行单个删除
                 function doDelete(obj) {
                     layer.confirm('确定删除吗？删除后将无法恢复。', function (index) {
-                        coreHelper.Post("Api/CoreCmsNotice/DoDelete", { id: obj.data.id }, function (e) {
+                        coreHelper.Post("Api/Notice/DoDelete", { id: obj.data.id }, function (e) {
                             if (debug) { console.log(e); } //开启调试返回数据
-                            table.reloadData('LAY-app-CoreCmsNotice-tableBox');
+                            table.reloadData('LAY-app-Notice-tableBox');
                             layer.msg(e.msg);
                         });
                     });
@@ -234,9 +234,9 @@
                 //监听 表格复选框操作
 
                 layui.form.on('switch(switch_isDel)', function (obj) {
-                    coreHelper.Post("Api/CoreCmsNotice/DoSetisDel", { id: this.value, data: obj.elem.checked }, function (e) {
+                    coreHelper.Post("Api/Notice/DoSetisDel", { id: this.value, data: obj.elem.checked }, function (e) {
                         if (debug) { console.log(e); } //开启调试返回数据
-                        //table.reloadData('LAY-app-CoreCmsNotice-tableBox');
+                        //table.reloadData('LAY-app-Notice-tableBox');
                         layer.msg(e.msg);
                     });
                 });

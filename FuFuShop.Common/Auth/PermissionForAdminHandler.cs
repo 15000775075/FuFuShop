@@ -1,20 +1,6 @@
-﻿using Flurl.Http;
-using FuFuShop.Common.AppSettings;
-using FuFuShop.Common.Extensions;
-using FuFuShop.Common.Helper;
-using FuFuShop.Model.Entities;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using SqlSugar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace FuFuShop.Common.Auth
 {
@@ -29,7 +15,7 @@ namespace FuFuShop.Common.Auth
         public IAuthenticationSchemeProvider Schemes { get; set; }
         private readonly IHttpContextAccessor _accessor;
 
-     
+
         /// <summary>
         /// 构造函数注入
         /// </summary>

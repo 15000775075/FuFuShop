@@ -446,14 +446,14 @@ HangfireDispose.HangfireService();
 
 app.UseEndpoints(endpoints =>
 {
-endpoints.MapControllerRoute(
-    "areas",
-    "{area:exists}/{controller=Default}/{action=Index}/{id?}"
-);
+    endpoints.MapControllerRoute(
+        "areas",
+        "{area:exists}/{controller=Default}/{action=Index}/{id?}"
+    );
 
-endpoints.MapControllerRoute(
-    "default",
-    "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapControllerRoute(
+        "default",
+        "{controller=Home}/{action=Index}/{id?}");
 });
 //设置默认起始页（如default.html）
 //此处的路径是相对于wwwroot文件夹的相对路径

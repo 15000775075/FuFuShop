@@ -413,7 +413,7 @@ namespace FuFuShop.Admin.Controllers.System
                         createTime = p.createTime,
                         deleted = p.deleted,
                         hide = p.hide,
-                      //  iconColor = p.iconColor,
+                        //  iconColor = p.iconColor,
                         menuName = p.menuName,
                         menuIcon = p.menuIcon,
                         menuType = p.menuType,

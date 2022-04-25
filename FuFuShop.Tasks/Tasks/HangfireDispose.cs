@@ -1,6 +1,4 @@
-﻿using Hangfire;
-
-namespace FuFuShop.Tasks.Tasks
+﻿namespace FuFuShop.Tasks.Tasks
 {
     public class HangfireDispose
     {

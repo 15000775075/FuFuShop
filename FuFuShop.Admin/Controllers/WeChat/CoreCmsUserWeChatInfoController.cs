@@ -6,7 +6,6 @@ using FuFuShop.Common.Extensions;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.UI;
-using FuFuShop.Services.User;
 using FuFuShop.Services.WeChat;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

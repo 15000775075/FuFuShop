@@ -1,5 +1,5 @@
 <script type="text/html" template lay-done="layui.data.done(d);">
-    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-CoreCmsNotice-createForm" id="LAY-app-CoreCmsNotice-createForm">
+    <div class="layui-form coreshop-form layui-form-pane" lay-filter="LAY-app-Notice-createForm" id="LAY-app-Notice-createForm">
 
         <div class="layui-form-item">
             <label for="title" class="layui-form-label">公告标题</label>
@@ -34,7 +34,7 @@
             <div class="layui-form-mid layui-word-aux">请输入数字</div>
         </div>
         <div class="layui-form-item core-hidden">
-            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-CoreCmsNotice-createForm-submit" id="LAY-app-CoreCmsNotice-createForm-submit" value="确认添加">
+            <input type="button" class="layui-btn" lay-submit lay-filter="LAY-app-Notice-createForm-submit" id="LAY-app-Notice-createForm-submit" value="确认添加">
         </div>
     </div>
 </script>
@@ -117,7 +117,7 @@
 
 
                 laydate.render({
-                    elem: '#createTime-CoreCmsNotice-createTime',
+                    elem: '#createTime-Notice-createTime',
                     type: 'datetime'
                 });
                 form.verify({

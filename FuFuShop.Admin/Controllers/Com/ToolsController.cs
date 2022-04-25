@@ -962,7 +962,7 @@ namespace FuFuShop.Admin.Controllers.Com
                 unpaidCount,
                 unshipCount,
                 aftersalesCount,
-               // goodsStaticsTotalWarn
+                // goodsStaticsTotalWarn
             };
 
             return jm;

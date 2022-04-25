@@ -1,6 +1,7 @@
 using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Caching.Manual;
 using FuFuShop.Common.Extensions;
+using FuFuShop.Common.Helper;
 using FuFuShop.Model.Entities.Shop;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.Basics;
@@ -178,11 +179,10 @@ namespace FuFuShop.Services.Shop
             filesStorageOptions.QiNiuBucketName = GetValue(SystemSettingConstVars.FilesStorageQiNiuBucketName, configs, settings);
 
             //格式化存储文件夹路径
-            //filesStorageOptions.Path = UpLoadHelper.PathFormat(filesStorageOptions.StorageType, filesStorageOptions.Path);
+            filesStorageOptions.Path = UpLoadHelper.PathFormat(filesStorageOptions.StorageType, filesStorageOptions.Path);
 
             return filesStorageOptions;
         }
-
 
         /// <summary>
         /// 获取短信配置实体
@@ -205,7 +205,6 @@ namespace FuFuShop.Services.Shop
             return sms;
         }
 
-
         public string GetValue(string key, Dictionary<string, DictionaryKeyValues> configs, List<Setting> settings)
         {
             var objSetting = settings.Find(p => p.sKey == key);
@@ -217,14 +216,5 @@ namespace FuFuShop.Services.Shop
             return di?.sValue;
         }
 
-        Task<FilesStorageOptions> ISettingServices.GetFilesStorageOptions()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<SMSOptions> ISettingServices.GetSmsOptions()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

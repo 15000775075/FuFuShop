@@ -644,19 +644,19 @@
         /// <summary>
         /// 存储方式
         /// </summary>
-        public static readonly string FilesStorageType = "filesStorageType";
+        public static readonly string FilesStorageType = "QCloudOSS";
         /// <summary>
         /// 存储路径
         /// </summary>
-        public static readonly string FilesStoragePath = "filesStoragePath";
+        public static readonly string FilesStoragePath = "cloudcar/wx/upload/equipment/";
         /// <summary>
         /// 文件后缀类型
         /// </summary>
-        public static readonly string FilesStorageFileSuffix = "filesStorageFileSuffix";
+        public static readonly string FilesStorageFileSuffix = "a.jpg";
         /// <summary>
         /// 文件最大大小M
         /// </summary>
-        public static readonly string FilesStorageFileMaxSize = "filesStorageFileMaxSize";
+        public static readonly string FilesStorageFileMaxSize = "250";
 
         /// <summary>
         /// 云存储绑定域名
@@ -665,24 +665,24 @@
         /// <summary>
         /// 云存储授权账户
         /// </summary>
-        public static readonly string FilesStorageAccessKeyId = "filesStorageAccessKeyId";
+        public static readonly string FilesStorageAccessKeyId = "AKIDGMBk7D3cuvf8KFtGMBj00iALFsEJ7dsq";
         /// <summary>
         /// 云存储授权密钥
         /// </summary>
-        public static readonly string FilesStorageAccessKeySecret = "filesStorageAccessKeySecret";
+        public static readonly string FilesStorageAccessKeySecret = "i9IBn8Bzav0pMcbJkunPjmY3HsCF2Zom";
 
         /// <summary>
         /// 腾讯云账户标识
         /// </summary>
-        public static readonly string FilesStorageTencentAccountId = "filesStorageTencentAccountId";
+        public static readonly string FilesStorageTencentAccountId = "1257017226";
         /// <summary>
         /// 腾讯云存储桶地域
         /// </summary>
-        public static readonly string FilesStorageTencentCosRegion = "filesStorageTencentCosRegion";
+        public static readonly string FilesStorageTencentCosRegion = "ap-guangzhou";
         /// <summary>
         /// 腾讯云存储桶名称
         /// </summary>
-        public static readonly string FilesStorageTencentBucketName = "filesStorageTencentBucketName";
+        public static readonly string FilesStorageTencentBucketName = "znyc-images-1304677865";
 
         /// <summary>
         /// 阿里云节点

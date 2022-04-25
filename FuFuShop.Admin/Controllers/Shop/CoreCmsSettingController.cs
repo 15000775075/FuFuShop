@@ -1,9 +1,16 @@
-
+/***********************************************************************
+ *            Project: 
+ *        ProjectName: 核心内容管理系统                                
+ *                Web: https://www..net                      
+ *             Author: 大灰灰                                          
+ *              Email: jianweie@163.com                                
+ *         CreateTime: 2021/1/31 21:45:10
+ *        Description: 暂无
+ ***********************************************************************/
 
 using FuFuShop.Admin.Filter;
 using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Helper;
-using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services.Shop;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +27,7 @@ namespace FuFuShop.Admin.Controllers.Shop
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsSettingController : ControllerBase
+    public class SettingController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ISettingServices _SettingServices;
@@ -30,7 +37,7 @@ namespace FuFuShop.Admin.Controllers.Shop
         ///</summary>
         ///  <param name="webHostEnvironment"></param>
         ///<param name="SettingServices"></param>
-        public CoreCmsSettingController(IWebHostEnvironment webHostEnvironment, ISettingServices SettingServices)
+        public SettingController(IWebHostEnvironment webHostEnvironment, ISettingServices SettingServices)
         {
             _webHostEnvironment = webHostEnvironment;
             _SettingServices = SettingServices;

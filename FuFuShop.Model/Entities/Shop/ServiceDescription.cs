@@ -15,7 +15,7 @@ namespace FuFuShop.Model.Entities
     /// <summary>
     /// 商城服务说明
     /// </summary>
-    [SugarTable("ServiceDescription", TableDescription = "商城服务说明")]
+    [SugarTable("FuFuShop_ServiceDescription", TableDescription = "商城服务说明")]
     public partial class ServiceDescription
     {
         /// <summary>

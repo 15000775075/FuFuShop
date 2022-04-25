@@ -316,11 +316,11 @@ namespace FuFuShop.Admin.Controllers.Good
             if (kc != null)
             {
                 var kcNumer = kc.ObjectToInt();
-                totalWarn = await _GoodsServices.GetCountAsync(p =>    p.isDel == false && p.isMarketable);
+                totalWarn = await _GoodsServices.GetCountAsync(p => p.isDel == false && p.isMarketable);
             }
             else
             {
-                totalWarn = await _GoodsServices.GetCountAsync(p =>  p.isDel == false && p.isMarketable);
+                totalWarn = await _GoodsServices.GetCountAsync(p => p.isDel == false && p.isMarketable);
             }
 
             //获取商品分类

@@ -1,7 +1,3 @@
-
-using SqlSugar;
-using System.ComponentModel.DataAnnotations;
-
 namespace FuFuShop.Model.Entities
 {
     /// <summary>
