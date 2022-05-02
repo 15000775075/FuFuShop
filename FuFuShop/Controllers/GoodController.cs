@@ -202,13 +202,15 @@ namespace FuFuShop.Controllers
                 foreach (var goods in list)
                 {
                     goods.images = !string.IsNullOrEmpty(goods.images) ? goods.images.Split(",")[0] : "/static/images/common/empty.png";
+                    goods.product = await _productsServices.QueryByClauseAsync(p => p.goodsId == goods.id && p.isDefalut == true && p.isDel == false);
+  
                 }
             }
 
             //获取品牌
             var brands = await _brandServices.QueryListByClauseAsync(p => p.isShow == true, p => p.sort, OrderByType.Desc);
 
-
+   
             //返回数据
             jm.status = true;
             jm.data = new
@@ -221,7 +223,7 @@ namespace FuFuShop.Controllers
                 entity.limit,
                 entity.where,
                 entity.order,
-                brands
+                brands,
             };
             jm.msg = "数据调用成功!";
 
