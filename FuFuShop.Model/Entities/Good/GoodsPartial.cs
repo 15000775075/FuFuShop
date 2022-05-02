@@ -134,5 +134,13 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(IsIgnore = true)] public DateTime groupEndTime { get; set; }
 
         [SugarColumn(IsIgnore = true)] public int groupTimestamp { get; set; }
+
+
+        /// <summary>
+        ///     关联参数
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<Products> products { get; set; } = new();
+
     }
 }

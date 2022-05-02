@@ -445,6 +445,9 @@ namespace FuFuShop.Services.Good
             {
                 model.isFav = await _goodsCollectionServices.ExistsAsync(p => p.goodsId == model.id && p.userId == userId);
             }
+
+            //取所有货品
+            model.products = await _productsServices.QueryListByClauseAsync(p => p.goodsId == model.id  && p.isDel == false);
             //取默认货品
             var products = await _productsServices.QueryByClauseAsync(p => p.goodsId == model.id && p.isDefalut == true && p.isDel == false);
             if (products == null) return null;
