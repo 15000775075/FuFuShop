@@ -132,7 +132,7 @@ namespace FuFuShop.Services
             }
 
             var cosXml = new CosXmlServer(config, qCloudCredentialProvider);
-            COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(options.TencentBucketName, filePath, bytes);
+            COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest("znyc-images-1304677865", filePath, bytes);
             cosXml.PutObject(putObjectRequest);
 
             return options.BucketBindUrl + filePath;
@@ -158,7 +158,9 @@ namespace FuFuShop.Services
 
             //初始化 CosXmlConfig
             string appid = options.AccountId;//设置腾讯云账户的账户标识 APPID
-            string region = options.CosRegion; //设置一个默认的存储桶地域
+            string region = "ap-guangzhou";
+            //options.CosRegion; //设置一个默认的存储桶地域
+            Console.WriteLine(region);
             CosXmlConfig config = new CosXmlConfig.Builder()
                 //.SetAppid(appid)
                 .IsHttps(true)  //设置默认 HTTPS 请求
@@ -167,16 +169,16 @@ namespace FuFuShop.Services
                 .Build();  //创建 CosXmlConfig 对象
 
             long durationSecond = 600;  //每次请求签名有效时长，单位为秒
-            QCloudCredentialProvider qCloudCredentialProvider = new DefaultQCloudCredentialProvider(options.AccessKeyId, options.AccessKeySecret, durationSecond);
+            QCloudCredentialProvider qCloudCredentialProvider = new DefaultQCloudCredentialProvider("AKIDGMBk7D3cuvf8KFtGMBj00iALFsEJ7dsq", "i9IBn8Bzav0pMcbJkunPjmY3HsCF2Zom", durationSecond);
 
             var cosXml = new CosXmlServer(config, qCloudCredentialProvider);
 
             var filePath = options.Path + today + "/" + newFileName; //云文件保存路径
-            COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest(options.TencentBucketName, filePath, bytes);
+            COSXML.Model.Object.PutObjectRequest putObjectRequest = new COSXML.Model.Object.PutObjectRequest("znyc-images-1304677865", filePath, bytes);
 
             cosXml.PutObject(putObjectRequest);
 
-            return options.BucketBindUrl + filePath;
+            return "https://znyc-images-1304677865.file.myqcloud.com/" + filePath;
         }
         #endregion
 

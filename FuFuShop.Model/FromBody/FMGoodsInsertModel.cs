@@ -14,7 +14,7 @@ namespace FuFuShop.Model.FromBody
         /// <summary>
         ///     生成货品信息
         /// </summary>
-       // public List<Products> products { get; set; } = null;
+        public List<Products> products { get; set; } = null;
 
         /// <summary>
         ///     会员价格体系

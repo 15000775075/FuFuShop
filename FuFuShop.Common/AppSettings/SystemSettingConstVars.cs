@@ -661,7 +661,7 @@
         /// <summary>
         /// 云存储绑定域名
         /// </summary>
-        public static readonly string FilesStorageBucketBindUrl = "filesStorageBucketBindUrl";
+        public static readonly string FilesStorageBucketBindUrl = "https://znyc-images-1304677865.file.myqcloud.com/";
         /// <summary>
         /// 云存储授权账户
         /// </summary>
