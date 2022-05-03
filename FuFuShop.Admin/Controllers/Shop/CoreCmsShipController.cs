@@ -24,7 +24,7 @@ namespace FuFuShop.Admin.Controllers.Shop
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsShipController : ControllerBase
+    public class ShipController : ControllerBase
     {
         private readonly IShipServices _ShipServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -34,7 +34,7 @@ namespace FuFuShop.Admin.Controllers.Shop
         /// <summary>
         ///     构造函数
         /// </summary>
-        public CoreCmsShipController(IWebHostEnvironment webHostEnvironment
+        public ShipController(IWebHostEnvironment webHostEnvironment
             , IShipServices ShipServices
             , ILogisticsServices logisticsServices, IAreaServices areaServices)
         {

@@ -2,14 +2,12 @@
 using FuFuShop.Common.Auth;
 using FuFuShop.Common.Auth.HttpContextUser;
 using FuFuShop.Model.Entities;
-using FuFuShop.Model.Entities.User;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.DTO;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services;
 using FuFuShop.Services.Good;
 using FuFuShop.Services.Shop;
-using FuFuShop.Services.User;
 using FuFuShop.Services.WeChat;
 using FuFuShop.WeChat.Enums;
 using FuFuShop.WeChat.Services.HttpClients;
@@ -24,7 +22,6 @@ using SqlSugar;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-
 namespace FuFuShop.Controllers
 {
     /// <summary>

@@ -8,7 +8,6 @@ using FuFuShop.Model.Entities;
 using FuFuShop.Model.Entities.Shop;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services.BaseServices;
-using FuFuShop.Services.User;
 using FuFuShop.Services.WeChat;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;

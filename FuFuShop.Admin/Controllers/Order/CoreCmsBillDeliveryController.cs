@@ -25,7 +25,7 @@ namespace FuFuShop.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsBillDeliveryController : ControllerBase
+    public class BillDeliveryController : ControllerBase
     {
         private readonly IAreaServices _areaServices;
         private readonly IBillDeliveryServices _BillDeliveryServices;
@@ -36,7 +36,7 @@ namespace FuFuShop.Admin.Controllers
         /// <summary>
         ///     构造函数
         /// </summary>
-        public CoreCmsBillDeliveryController(IWebHostEnvironment webHostEnvironment,
+        public BillDeliveryController(IWebHostEnvironment webHostEnvironment,
             IBillDeliveryServices BillDeliveryServices, IAreaServices areaServices,
             IBillDeliveryItemServices itemServices, ILogisticsServices logisticsServices)
         {

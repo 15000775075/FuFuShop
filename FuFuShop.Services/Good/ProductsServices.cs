@@ -7,7 +7,6 @@ using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.Good;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
-using FuFuShop.Services.User;
 using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 using System.Linq.Expressions;

@@ -117,6 +117,14 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(IsIgnore = true)]
         public List<Label> labels { get; set; } = new();
 
+
+        /// <summary>
+        ///     关联参数
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<Products> products { get; set; } = new();
+
+
         /// <summary>
         ///     所属团购秒杀
         /// </summary>
@@ -136,11 +144,7 @@ namespace FuFuShop.Model.Entities
         [SugarColumn(IsIgnore = true)] public int groupTimestamp { get; set; }
 
 
-        /// <summary>
-        ///     关联参数
-        /// </summary>
-        [SugarColumn(IsIgnore = true)]
-        public List<Products> products { get; set; } = new();
+
 
     }
 }

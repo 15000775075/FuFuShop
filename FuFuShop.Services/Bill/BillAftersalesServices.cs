@@ -13,7 +13,6 @@ using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 using FuFuShop.Services.Good;
 using FuFuShop.Services.Shop;
-using FuFuShop.Services.User;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
 using SqlSugar;

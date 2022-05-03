@@ -795,7 +795,7 @@ namespace FuFuShop.Repository.Good
         }
 
         // 随机抽取数组中的数据
-        static int GetRandomNumber(int[] a)
+        private static int GetRandomNumber(int[] a)
         {
             Random rnd = new Random();
             int index = rnd.Next(a.Length);

@@ -18,7 +18,7 @@ namespace FuFuShop.Admin.Controllers.Message
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsSmsSettingController : ControllerBase
+    public class SmsSettingController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ISettingServices _SettingServices;
@@ -28,7 +28,7 @@ namespace FuFuShop.Admin.Controllers.Message
         ///</summary>
         ///  <param name="webHostEnvironment"></param>
         ///<param name="SettingServices"></param>
-        public CoreCmsSmsSettingController(IWebHostEnvironment webHostEnvironment, ISettingServices SettingServices)
+        public SmsSettingController(IWebHostEnvironment webHostEnvironment, ISettingServices SettingServices)
         {
             _webHostEnvironment = webHostEnvironment;
             _SettingServices = SettingServices;

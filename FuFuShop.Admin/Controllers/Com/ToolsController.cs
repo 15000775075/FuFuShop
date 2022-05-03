@@ -13,7 +13,6 @@ using FuFuShop.Services;
 using FuFuShop.Services.Bill;
 using FuFuShop.Services.Good;
 using FuFuShop.Services.Shop;
-using FuFuShop.Services.User;
 using FuFuShop.WeChat.Services.HttpClients;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

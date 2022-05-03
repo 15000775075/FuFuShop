@@ -7,7 +7,7 @@ using FuFuShop.Common.Helper;
 using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.UI;
-using FuFuShop.Services.User;
+using FuFuShop.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.HSSF.UserModel;
@@ -25,7 +25,7 @@ namespace FuFuShop.Admin.Controllers.User
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsUserController : ControllerBase
+    public class UserController : ControllerBase
     {
 
         private readonly IUserServices _UserServices;
@@ -40,7 +40,7 @@ namespace FuFuShop.Admin.Controllers.User
         /// <param name="UserGradeServices"></param>
         /// <param name="UserBalanceServices"></param>
         /// <param name="UserPointLogServices"></param>
-        public CoreCmsUserController(
+        public UserController(
             IWebHostEnvironment webHostEnvironment
             , IUserServices UserServices
 

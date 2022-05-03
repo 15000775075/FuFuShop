@@ -1,11 +1,24 @@
+/***********************************************************************
+ *            Project: 
+ *        ProjectName: 核心内容管理系统                                
+ *                Web: https://www..net                      
+ *             Author: 大灰灰                                          
+ *              Email: jianweie@163.com                                
+ *         CreateTime: 2021/1/31 21:45:10
+ *        Description: 暂无
+ ***********************************************************************/
+
 using FuFuShop.Common.Extensions;
 using FuFuShop.Model.Entities;
+using FuFuShop.Model.ViewModels.Basics;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 using SqlSugar;
+using System.Linq.Expressions;
 
-namespace FuFuShop.Repository.User
+
+namespace FuFuShop.Repository
 {
     /// <summary>
     /// 用户表 接口实现
@@ -17,111 +30,111 @@ namespace FuFuShop.Repository.User
         }
 
 
-        ///// <summary>
-        /////     获取下级推广用户数量
-        ///// </summary>
-        ///// <param name="parentId">父类序列</param>
-        ///// <param name="type">1获取1级，其他为2级</param>
-        ///// <param name="thisMonth">显示当月</param>
-        ///// <returns></returns>
-        //public async Task<int> QueryChildCountAsync(int parentId, int type = 1, bool thisMonth = false)
-        //{
-        //    var totalSum = 0;
+        /// <summary>
+        ///     获取下级推广用户数量
+        /// </summary>
+        /// <param name="parentId">父类序列</param>
+        /// <param name="type">1获取1级，其他为2级</param>
+        /// <param name="thisMonth">显示当月</param>
+        /// <returns></returns>
+        public async Task<int> QueryChildCountAsync(int parentId, int type = 1, bool thisMonth = false)
+        {
+            var totalSum = 0;
 
-        //    DateTime dt = DateTime.Now;
-        //    //本月第一天时间      
-        //    DateTime dtFirst = dt.AddDays(1 - (dt.Day));
-        //    dtFirst = new DateTime(dtFirst.Year, dtFirst.Month, dtFirst.Day, 0, 0, 0);
-        //    //获得某年某月的天数    
-        //    int year = dt.Date.Year;
-        //    int month = dt.Date.Month;
-        //    int dayCount = DateTime.DaysInMonth(year, month);
-        //    //本月最后一天时间    
-        //    DateTime dtLast = dtFirst.AddDays(dayCount - 1);
-
-
-        //    if (type == 1)
-        //    {
-        //        totalSum = await DbClient.Queryable<User>().Where(p => p.parentId == parentId)
-        //            .WhereIF(thisMonth, p => p.createTime > dtFirst && p.createTime < dtLast).With(SqlWith.NoLock)
-        //            .CountAsync();
-        //    }
-        //    else
-        //    {
-        //        totalSum = await DbClient.Queryable<User, User>(
-        //                (p, sParentUser) => new object[]
-        //                {
-        //                    JoinType.Left,p.parentId==sParentUser.id
-        //                }
-        //            )
-        //            .Select((p, sParentUser) => new User()
-        //            {
-        //                id = p.id,
-        //                parentId = p.parentId,
-        //                childNum = SqlFunc.Subqueryable<User>().Where(o => o.parentId == p.id).WhereIF(thisMonth, o => o.createTime > dtFirst && o.createTime < dtLast).Count()
-        //            })
-        //            .MergeTable().With(SqlWith.Null)
-        //            .Where(p => p.parentId == parentId)
-        //            .SumAsync(p => p.childNum);
-        //    }
-
-        //    return totalSum;
-        //}
+            DateTime dt = DateTime.Now;
+            //本月第一天时间      
+            DateTime dtFirst = dt.AddDays(1 - (dt.Day));
+            dtFirst = new DateTime(dtFirst.Year, dtFirst.Month, dtFirst.Day, 0, 0, 0);
+            //获得某年某月的天数    
+            int year = dt.Date.Year;
+            int month = dt.Date.Month;
+            int dayCount = DateTime.DaysInMonth(year, month);
+            //本月最后一天时间    
+            DateTime dtLast = dtFirst.AddDays(dayCount - 1);
 
 
+            if (type == 1)
+            {
+                totalSum = await DbClient.Queryable<FuFuShopUser>().Where(p => p.parentId == parentId)
+                    .WhereIF(thisMonth, p => p.createTime > dtFirst && p.createTime < dtLast).With(SqlWith.NoLock)
+                    .CountAsync();
+            }
+            else
+            {
+                totalSum = await DbClient.Queryable<FuFuShopUser, FuFuShopUser>(
+                        (p, sParentFuFuShopUser) => new object[]
+                        {
+                            JoinType.Left,p.parentId==sParentFuFuShopUser.id
+                        }
+                    )
+                    .Select((p, sParentFuFuShopUser) => new FuFuShopUser()
+                    {
+                        id = p.id,
+                        parentId = p.parentId,
+                        childNum = SqlFunc.Subqueryable<FuFuShopUser>().Where(o => o.parentId == p.id).WhereIF(thisMonth, o => o.createTime > dtFirst && o.createTime < dtLast).Count()
+                    })
+                    .MergeTable().With(SqlWith.Null)
+                    .Where(p => p.parentId == parentId)
+                    .SumAsync(p => p.childNum);
+            }
+
+            return totalSum;
+        }
 
 
-        ///// <summary>
-        /////     根据条件查询分页数据
-        ///// </summary>
-        ///// <param name="predicate">判断集合</param>
-        ///// <param name="orderByType">排序方式</param>
-        ///// <param name="pageIndex">当前页面索引</param>
-        ///// <param name="pageSize">分布大小</param>
-        ///// <param name="orderByExpression"></param>
-        ///// <returns></returns>
-        //public async Task<IPageList<User>> QueryPageAsync(Expression<Func<User, bool>> predicate,
-        //    Expression<Func<User, object>> orderByExpression, OrderByType orderByType, int pageIndex = 1,
-        //    int pageSize = 20)
-        //{
-        //    RefAsync<int> totalCount = 0;
-        //    var page = await DbClient.Queryable<User, UserWeChatInfo, User>(
-        //            (p, sWeChatInfo, sParentUser) => new object[]
-        //            {
-        //                JoinType.Left,p.id==sWeChatInfo.userId,
-        //                JoinType.Left,p.parentId==sParentUser.id
-        //            }
-        //        )
-        //        .Select((p, sWeChatInfo, sParentUser) => new User()
-        //        {
-        //            id = p.id,
-        //            userName = p.userName,
-        //            passWord = p.passWord,
-        //            mobile = p.mobile,
-        //            sex = p.sex,
-        //            birthday = p.birthday,
-        //            avatarImage = p.avatarImage,
-        //            nickName = p.nickName,
-        //            balance = p.balance,
-        //            point = p.point,
-        //            grade = p.grade,
-        //            createTime = p.createTime,
-        //            updataTime = p.updataTime,
-        //            status = p.status,
-        //            parentId = p.parentId,
-        //            userWx = p.userWx,
-        //            isDelete = p.isDelete,
-        //            type = (int)sWeChatInfo.type,
-        //            parentNickName = sParentUser.nickName,
-        //            childNum = SqlFunc.Subqueryable<User>().Where(o => o.parentId == p.id).Count()
-        //        })
-        //        .MergeTable().With(SqlWith.Null)
-        //        By(orderByExpression, orderByType)
-        //        .Where(predicate)
-        //        .ToPageListAsync(pageIndex, pageSize, totalCount);
-        //    var list = new PageList<User>(page, pageIndex, pageSize, totalCount);
-        //    return list;
-        //}
+
+
+        /// <summary>
+        ///     根据条件查询分页数据
+        /// </summary>
+        /// <param name="predicate">判断集合</param>
+        /// <param name="orderByType">排序方式</param>
+        /// <param name="pageIndex">当前页面索引</param>
+        /// <param name="pageSize">分布大小</param>
+        /// <param name="orderByExpression"></param>
+        /// <returns></returns>
+        public async Task<IPageList<FuFuShopUser>> QueryPageAsync(Expression<Func<FuFuShopUser, bool>> predicate,
+            Expression<Func<FuFuShopUser, object>> orderByExpression, OrderByType orderByType, int pageIndex = 1,
+            int pageSize = 20)
+        {
+            RefAsync<int> totalCount = 0;
+            var page = await DbClient.Queryable<FuFuShopUser, UserWeChatInfo, FuFuShopUser>(
+                    (p, sWeChatInfo, sParentFuFuShopUser) => new object[]
+                    {
+                        JoinType.Left,p.id==sWeChatInfo.userId,
+                        JoinType.Left,p.parentId==sParentFuFuShopUser.id
+                    }
+                )
+                .Select((p, sWeChatInfo, sParentFuFuShopUser) => new FuFuShopUser()
+                {
+                    id = p.id,
+                    userName = p.userName,
+                    passWord = p.passWord,
+                    mobile = p.mobile,
+                    sex = p.sex,
+                    birthday = p.birthday,
+                    avatarImage = p.avatarImage,
+                    nickName = p.nickName,
+                    balance = p.balance,
+                    point = p.point,
+                    grade = p.grade,
+                    createTime = p.createTime,
+                    updataTime = p.updataTime,
+                    status = p.status,
+                    parentId = p.parentId,
+                    userWx = p.userWx,
+                    isDelete = p.isDelete,
+                    type = (int)sWeChatInfo.type,
+                    parentNickName = sParentFuFuShopUser.nickName,
+                    childNum = SqlFunc.Subqueryable<FuFuShopUser>().Where(o => o.parentId == p.id).Count()
+                })
+                .MergeTable().With(SqlWith.Null)
+                .OrderBy(orderByExpression, orderByType)
+                .Where(predicate)
+                .ToPageListAsync(pageIndex, pageSize, totalCount);
+            var list = new PageList<FuFuShopUser>(page, pageIndex, pageSize, totalCount);
+            return list;
+        }
 
 
         /// <summary>

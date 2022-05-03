@@ -22,7 +22,7 @@ namespace FuFuShop.Admin.Controllers.Good
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsGoodsCategoryController : ControllerBase
+    public class GoodsCategoryController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IGoodsCategoryServices _GoodsCategoryServices;
@@ -32,7 +32,7 @@ namespace FuFuShop.Admin.Controllers.Good
         ///  <summary>
         ///  构造函数
         /// </summary>
-        public CoreCmsGoodsCategoryController(IWebHostEnvironment webHostEnvironment
+        public GoodsCategoryController(IWebHostEnvironment webHostEnvironment
             , IGoodsCategoryServices GoodsCategoryServices
             , IMapper mapper, IGoodsServices goodsServices)
         {

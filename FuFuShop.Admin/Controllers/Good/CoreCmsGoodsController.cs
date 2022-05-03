@@ -25,7 +25,7 @@ namespace FuFuShop.Admin.Controllers.Good
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsGoodsController : ControllerBase
+    public class GoodsController : ControllerBase
     {
         private readonly IBrandServices _brandServices;
         private readonly IGoodsCategoryExtendServices _categoryExtendServices;
@@ -39,13 +39,14 @@ namespace FuFuShop.Admin.Controllers.Good
         private readonly IGoodsTypeSpecServices _typeSpecServices;
         private readonly IGoodsTypeSpecValueServices _typeSpecValueServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
+        private readonly IUserGradeServices _userGradeServices;
+        //   private readonly IGoodsGradeServices _goodsGradeServices;
 
 
         /// <summary>
         ///     构造函数
         /// </summary>
-        public CoreCmsGoodsController(IWebHostEnvironment webHostEnvironment
+        public GoodsController(IWebHostEnvironment webHostEnvironment
             , IGoodsServices GoodsServices
             , ISettingServices settingServices
             , IBrandServices brandServices
@@ -56,7 +57,8 @@ namespace FuFuShop.Admin.Controllers.Good
             , IProductsServices productsServices
             , IGoodsCategoryExtendServices categoryExtendServices
             , ILabelServices labelServices
-            , IGoodsTypeSpecServices goodsTypeSpecServices)
+            , IGoodsTypeSpecServices goodsTypeSpecServices,
+            IUserGradeServices userGradeServices)
         {
             _webHostEnvironment = webHostEnvironment;
             _GoodsServices = GoodsServices;
@@ -70,6 +72,7 @@ namespace FuFuShop.Admin.Controllers.Good
             _categoryExtendServices = categoryExtendServices;
             _labelServices = labelServices;
             _goodsTypeSpecServices = goodsTypeSpecServices;
+            _userGradeServices = userGradeServices;
         }
 
         #region 获取列表============================================================
@@ -402,7 +405,6 @@ namespace FuFuShop.Admin.Controllers.Good
         }
 
         #endregion
-
         #region 编辑数据============================================================
 
         // POST: Api/Goods/GetEdit
@@ -430,7 +432,10 @@ namespace FuFuShop.Admin.Controllers.Good
             var categories = await _GoodsCategoryServices.GetCaChe();
             categories = categories.Where(p => p.isShow == true).ToList();
 
-
+            //获取用户等级
+            var userGrade = await _userGradeServices.QueryAsync();
+            //用户价格体系
+            //var goodsGrades = await _goodsGradeServices.QueryListByClauseAsync(p => p.goodsId == model.id);
             //货品信息
             var products =
                 await _productsServices.QueryListByClauseAsync(p => p.goodsId == model.id && p.isDel == false);
@@ -448,6 +453,27 @@ namespace FuFuShop.Admin.Controllers.Good
             //获取品牌
             var brands = await _brandServices.QueryListByClauseAsync(p => p.id > 0 && p.isShow == true, p => p.id, OrderByType.Desc, true);
 
+
+            if (products != null && products.Any())
+            {
+                var pIds = products.Select(p => p.id).ToList();
+                if (pIds.Any())
+                {
+                    //// 获取商品分销明细
+                    //var pds = await _productsDistributionServices.QueryListByClauseAsync(p => pIds.Contains(p.productsId), p => p.id, OrderByType.Asc);
+                    //products.ForEach(p =>
+                    //{
+                    //    foreach (var o in pds.Where(o => o.productsId == p.id))
+                    //    {
+                    //        p.levelOne = o.levelOne;
+                    //        p.levelTwo = o.levelTwo;
+                    //        p.levelThree = o.levelThree;
+                    //    }
+                    //});
+                    //jm.otherData = pds;
+                }
+
+            }
 
             //获取参数信息
             var goodsTypeSpec = new List<GoodsTypeSpec>();
@@ -472,12 +498,13 @@ namespace FuFuShop.Admin.Controllers.Good
                 });
                 goodsTypeSpec = typeSpecs;
             }
-
             jm.data = new
             {
                 model,
                 categories = GoodsHelper.GetTree(categories, false),
                 brands,
+                userGrade,
+                // goodsGrades,
                 products,
                 categoryExtend,
                 goodsTypeSpec,
@@ -492,6 +519,9 @@ namespace FuFuShop.Admin.Controllers.Good
         }
 
         #endregion
+
+
+
 
         #region 编辑提交============================================================
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FuFuShop.Common.Helper
+﻿namespace FuFuShop.Common.Helper
 {
     /// <summary>
     /// 上传帮助类

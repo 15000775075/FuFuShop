@@ -8,7 +8,6 @@ using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services;
-using FuFuShop.Services.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.HSSF.UserModel;
@@ -26,7 +25,7 @@ namespace FuFuShop.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsBillAftersalesController : ControllerBase
+    public class BillAftersalesController : ControllerBase
     {
         private readonly IBillAftersalesServices _BillAftersalesServices;
         private readonly IBillAftersalesImagesServices _imagesServices;
@@ -38,7 +37,7 @@ namespace FuFuShop.Admin.Controllers
         /// <summary>
         ///     构造函数
         /// </summary>
-        public CoreCmsBillAftersalesController(IWebHostEnvironment webHostEnvironment
+        public BillAftersalesController(IWebHostEnvironment webHostEnvironment
             , IBillAftersalesServices BillAftersalesServices
             , IUserServices userServices
             , IBillAftersalesItemServices itemServices

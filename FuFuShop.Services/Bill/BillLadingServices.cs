@@ -4,7 +4,6 @@ using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository;
 using FuFuShop.Repository.UnitOfWork;
-using FuFuShop.Repository.User;
 using FuFuShop.Services.BaseServices;
 using SqlSugar;
 

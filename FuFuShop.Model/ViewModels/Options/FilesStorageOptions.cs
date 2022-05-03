@@ -26,7 +26,7 @@ namespace FuFuShop.Model.ViewModels.Options
         ///     存储桶地域（腾讯云）
         /// </summary>
         public string CosRegion { get; set; }
- 
+
         /// <summary>
         ///     存储桶名称（腾讯云）
         /// </summary>

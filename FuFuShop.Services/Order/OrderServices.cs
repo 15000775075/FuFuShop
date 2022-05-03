@@ -12,7 +12,6 @@ using FuFuShop.Services.BaseServices;
 using FuFuShop.Services.Bill;
 using FuFuShop.Services.Good;
 using FuFuShop.Services.Shop;
-using FuFuShop.Services.User;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

@@ -447,7 +447,7 @@ namespace FuFuShop.Services.Good
             }
 
             //取所有货品
-            model.products = await _productsServices.QueryListByClauseAsync(p => p.goodsId == model.id  && p.isDel == false);
+            model.products = await _productsServices.QueryListByClauseAsync(p => p.goodsId == model.id && p.isDel == false);
             //取默认货品
             var products = await _productsServices.QueryByClauseAsync(p => p.goodsId == model.id && p.isDefalut == true && p.isDel == false);
             if (products == null) return null;

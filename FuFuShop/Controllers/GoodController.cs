@@ -213,7 +213,7 @@ namespace FuFuShop.Controllers
             //获取品牌
             var brands = await _brandServices.QueryListByClauseAsync(p => p.isShow == true, p => p.sort, OrderByType.Desc);
 
-   
+
             //返回数据
             jm.status = true;
             jm.data = new

@@ -8,7 +8,6 @@ using FuFuShop.Repository;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 using FuFuShop.Services.Shop;
-using FuFuShop.Services.User;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

@@ -22,7 +22,7 @@ namespace FuFuShop.Admin.Controllers.Shop
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsLogisticsController : ControllerBase
+    public class LogisticsController : ControllerBase
     {
         private readonly ILogisticsServices _LogisticsServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -32,7 +32,7 @@ namespace FuFuShop.Admin.Controllers.Shop
         /// </summary>
         /// <param name="webHostEnvironment"></param>
         /// <param name="LogisticsServices"></param>
-        public CoreCmsLogisticsController(IWebHostEnvironment webHostEnvironment,
+        public LogisticsController(IWebHostEnvironment webHostEnvironment,
             ILogisticsServices LogisticsServices)
         {
             _webHostEnvironment = webHostEnvironment;

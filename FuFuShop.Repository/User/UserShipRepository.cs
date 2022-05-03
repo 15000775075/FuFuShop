@@ -1,10 +1,19 @@
+/***********************************************************************
+ *            Project: 
+ *        ProjectName: 核心内容管理系统                                
+ *                Web: https://www..net                      
+ *             Author: 大灰灰                                          
+ *              Email: jianweie@163.com                                
+ *         CreateTime: 2021/1/31 21:45:10
+ *        Description: 暂无
+ ***********************************************************************/
 using FuFuShop.Common.AppSettings;
-using FuFuShop.Model.Entities.User;
+using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Repository.BaseRepository;
 using FuFuShop.Repository.UnitOfWork;
 
-namespace FuFuShop.Repository.User
+namespace FuFuShop.Repository
 {
     /// <summary>
     /// 用户地址表 接口实现

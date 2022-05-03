@@ -1,10 +1,20 @@
-using FuFuShop.Model.Entities.User;
+/***********************************************************************
+ *            Project: 
+ *        ProjectName: 核心内容管理系统                                
+ *                Web: https://www..net                      
+ *             Author: 大灰灰                                          
+ *              Email: jianweie@163.com                                
+ *         CreateTime: 2021/1/31 21:45:10
+ *        Description: 暂无
+ ***********************************************************************/
+
+using FuFuShop.Model.Entities;
 using FuFuShop.Model.ViewModels.UI;
+using FuFuShop.Repository;
 using FuFuShop.Repository.UnitOfWork;
-using FuFuShop.Repository.User;
 using FuFuShop.Services.BaseServices;
 
-namespace FuFuShop.Services.User
+namespace FuFuShop.Services
 {
     /// <summary>
     /// 用户地址表 接口实现
@@ -16,7 +26,7 @@ namespace FuFuShop.Services.User
         public UserShipServices(IUnitOfWork unitOfWork, IUserShipRepository dal)
         {
             _dal = dal;
-            BaseDal = dal;
+            base.BaseDal = dal;
             _unitOfWork = unitOfWork;
         }
 

@@ -8,7 +8,6 @@ using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services;
-using FuFuShop.Services.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.HSSF.UserModel;
@@ -26,7 +25,7 @@ namespace FuFuShop.Admin.Controllers.Financial
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsBillRefundController : ControllerBase
+    public class BillRefundController : ControllerBase
     {
         private readonly IBillRefundServices _BillRefundServices;
         private readonly IUserServices _userServices;
@@ -38,7 +37,7 @@ namespace FuFuShop.Admin.Controllers.Financial
         /// <param name="webHostEnvironment"></param>
         /// <param name="BillRefundServices"></param>
         /// <param name="userServices"></param>
-        public CoreCmsBillRefundController(IWebHostEnvironment webHostEnvironment
+        public BillRefundController(IWebHostEnvironment webHostEnvironment
             , IBillRefundServices BillRefundServices, IUserServices userServices)
         {
             _webHostEnvironment = webHostEnvironment;

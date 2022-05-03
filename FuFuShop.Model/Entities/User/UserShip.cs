@@ -1,7 +1,7 @@
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace FuFuShop.Model.Entities.User
+namespace FuFuShop.Model.Entities
 {
     /// <summary>
     /// 用户地址表

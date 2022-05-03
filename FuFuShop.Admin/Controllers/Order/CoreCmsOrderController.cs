@@ -11,7 +11,6 @@ using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services;
 using FuFuShop.Services.Bill;
 using FuFuShop.Services.Shop;
-using FuFuShop.Services.User;
 using FuFuShop.Services.WeChat;
 using FuFuShop.WeChat.Services.HttpClients;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +30,7 @@ namespace FuFuShop.Admin.Controllers
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsOrderController : ControllerBase
+    public class OrderController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IOrderServices _OrderServices;
@@ -53,7 +52,7 @@ namespace FuFuShop.Admin.Controllers
         /// <summary>
         /// 构造函数
         ///</summary>
-        public CoreCmsOrderController(IWebHostEnvironment webHostEnvironment
+        public OrderController(IWebHostEnvironment webHostEnvironment
             , IOrderServices OrderServices
             , IUserServices userServices
             , IAreaServices areaServices

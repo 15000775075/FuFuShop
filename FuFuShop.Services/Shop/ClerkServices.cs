@@ -10,7 +10,6 @@ using FuFuShop.Repository;
 using FuFuShop.Repository.UnitOfWork;
 using FuFuShop.Services.BaseServices;
 using FuFuShop.Services.Shop;
-using FuFuShop.Services.User;
 using SqlSugar;
 using System.Linq.Expressions;
 

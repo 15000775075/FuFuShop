@@ -325,9 +325,9 @@ builder.Services.AddHangfireServer(options =>
 builder.Services.AddMvc(options =>
 {
     //实体验证
-    //options.Filters.Add<GlobalExceptionsFilter>();
+    options.Filters.Add<RequiredErrorForAdmin>();
     //异常处理
-    // options.Filters.Add<GlobalExceptionsFilterForClent>();
+    options.Filters.Add<GlobalExceptionsFilterForAdmin>();
     //Swagger剔除不需要加入api展示的列表
     //options.Conventions.Add(new ApiExplorerIgnores());
 })

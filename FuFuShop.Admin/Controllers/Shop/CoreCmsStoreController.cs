@@ -8,7 +8,6 @@ using FuFuShop.Model.Entities.Shop;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.UI;
 using FuFuShop.Services;
-using FuFuShop.Services.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
@@ -25,7 +24,7 @@ namespace FuFuShop.Admin.Controllers.Shop
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsStoreController : ControllerBase
+    public class StoreController : ControllerBase
     {
         private readonly IClerkServices _ClerkServices;
         private readonly IStoreServices _StoreServices;
@@ -35,7 +34,7 @@ namespace FuFuShop.Admin.Controllers.Shop
         /// <summary>
         ///     构造函数
         /// </summary>
-        public CoreCmsStoreController(IWebHostEnvironment webHostEnvironment,
+        public StoreController(IWebHostEnvironment webHostEnvironment,
             IStoreServices StoreServices, IClerkServices ClerkServices,
             IUserServices UserServices)
         {

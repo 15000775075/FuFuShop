@@ -23,7 +23,7 @@ namespace FuFuShop.Admin.Controllers.Good
     [ApiController]
     [RequiredErrorForAdmin]
     [Authorize(Permissions.Name)]
-    public class CoreCmsProductsController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IProductsServices _ProductsServices;
@@ -31,7 +31,7 @@ namespace FuFuShop.Admin.Controllers.Good
         /// <summary>
         /// 构造函数
         ///</summary>
-        public CoreCmsProductsController(IWebHostEnvironment webHostEnvironment
+        public ProductsController(IWebHostEnvironment webHostEnvironment
             , IProductsServices ProductsServices
             )
         {
