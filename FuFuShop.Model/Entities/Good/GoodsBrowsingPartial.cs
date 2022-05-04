@@ -23,5 +23,7 @@ namespace FuFuShop.Model.Entities
         [Display(Name = "是否收藏")]
         [SugarColumn(IsIgnore = true)]
         public bool isCollection { get; set; }
+
+        public Goods goods { get; set; }
     }
 }

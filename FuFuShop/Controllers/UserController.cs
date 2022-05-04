@@ -15,10 +15,12 @@ using FuFuShop.WeChat.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Nito.AsyncEx;
 using SKIT.FlurlHttpClient.Wechat.Api;
 using SKIT.FlurlHttpClient.Wechat.Api.Models;
 using SqlSugar;
+using SqlSugar.Extensions;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -578,13 +580,17 @@ namespace FuFuShop.Controllers
         {
             var jm = new WebApiCallBack();
 
-            var data = await _goodsCollectionServices.QueryPageAsync(p => p.userId == _user.ID, p => p.createTime, OrderByType.Desc, entity.page, entity.limit);
+            var goodsCollections = await _goodsCollectionServices.QueryPageAsync(p => p.userId == _user.ID, p => p.createTime, OrderByType.Desc, entity.page, entity.limit);
 
+            foreach (var goodsCollection in goodsCollections)
+            {
+                goodsCollection.goods = await _goodsServices.GetGoodsDetial(goodsCollection.goodsId);
+            }
             jm.status = true;
             jm.data = new
             {
-                list = data,
-                count = data.TotalCount,
+                list = goodsCollections,
+                count = goodsCollections.TotalCount,
 
             };
             return jm;
@@ -619,14 +625,25 @@ namespace FuFuShop.Controllers
         {
             var jm = new WebApiCallBack();
 
-            var data = await _goodsBrowsingServices.QueryPageAsync(p => p.userId == _user.ID, p => p.createTime, OrderByType.Desc, entity.page, entity.limit);
+
+            var otherData = entity.otherData.ObjToString();
+            var obj = JsonConvert.DeserializeAnonymousType(otherData, new
+                 {
+                     startTime = Convert.ToDateTime(DateTime.Now.ToString("D").ToString()),
+                     endTime = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("D").ToString()).AddSeconds(-1),
+                 });
+            
+           var goodsBrowsings= await _goodsBrowsingServices.QueryPageAsync(p => p.userId == _user.ID && p.createTime> obj.startTime.ObjToDate() && p.createTime<=obj.endTime.ObjToDate(), p => p.createTime, OrderByType.Desc, entity.page, entity.limit);
+            foreach (var goodsBrowsing in goodsBrowsings)
+            {
+                goodsBrowsing.goods = await _goodsServices.GetGoodsDetial(goodsBrowsing.goodsId);
+            }
 
             jm.status = true;
             jm.data = new
             {
-                list = data,
-                count = data.TotalCount,
-
+                list = goodsBrowsings,
+                count = goodsBrowsings.TotalCount,
             };
             return jm;
 
