@@ -148,7 +148,7 @@ namespace FuFuShop.Controllers
         [Authorize]
         public async Task<WebApiCallBack> GetOrderList([FromBody] GetOrderListPost entity)
         {
-            var jm = await _orderServices.GetOrderList(entity.status, _user.ID, entity.page, entity.limit);
+            var jm = await _orderServices.GetOrderList(entity.key,entity.startTime,entity.endTime, entity.status, _user.ID, entity.page, entity.limit);
             return jm;
         }
 

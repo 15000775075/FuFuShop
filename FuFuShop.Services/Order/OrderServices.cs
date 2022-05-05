@@ -934,7 +934,7 @@ namespace FuFuShop.Services
         /// 获取订单列表微信小程序
         /// </summary>
         /// <returns></returns>
-        public async Task<WebApiCallBack> GetOrderList(int status = -1, int userId = 0, int page = 1, int limit = 5)
+        public async Task<WebApiCallBack> GetOrderList(string key, string startTime, string endTime, int status = -1, int userId = 0, int page = 1, int limit = 5)
         {
             var jm = new WebApiCallBack { status = true };
 
@@ -948,7 +948,15 @@ namespace FuFuShop.Services
             {
                 where = where.And(p => p.userId == userId);
             }
-            var list = await _dal.QueryPageAsync(where, p => p.createTime, OrderByType.Desc, page, limit);
+            if(!string.IsNullOrWhiteSpace(key))
+            {
+                where = where.And(p => p.orderId.Contains(key) || p.shipName.Contains(key) || p.shipMobile.Contains(key));
+            }
+            if(!string.IsNullOrWhiteSpace(startTime) && !string.IsNullOrWhiteSpace(endTime))
+            {
+                where = where.And(p=>p.createTime>= startTime.ObjectToDate() && p.createTime<=endTime.ObjectToDate());
+            }
+            var list = await _dal.QueryPageAsync(where, p => p.payStatus, OrderByType.Asc, page, limit);
 
             if (list.Any())
             {

@@ -83,7 +83,7 @@ namespace FuFuShop.Services
         ///     获取订单列表微信小程序
         /// </summary>
         /// <returns></returns>
-        Task<WebApiCallBack> GetOrderList(int status = -1, int userId = 0, int page = 1, int limit = 5);
+        Task<WebApiCallBack> GetOrderList(string key, string startTime, string endTime,int status = -1, int userId = 0, int page = 1, int limit = 5);
 
 
         /// <summary>

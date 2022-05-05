@@ -184,6 +184,19 @@ namespace FuFuShop.Model.ViewModels.DTO
         ///     状态
         /// </summary>
         public int status { get; set; } = 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string key { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string startTime { get; set; }
+
+
+        public string endTime { get; set; }
     }
 
     /// <summary>
