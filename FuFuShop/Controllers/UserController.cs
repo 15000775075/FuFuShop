@@ -628,22 +628,30 @@ namespace FuFuShop.Controllers
 
             var otherData = entity.otherData.ObjToString();
             var obj = JsonConvert.DeserializeAnonymousType(otherData, new
-                 {
-                     startTime = Convert.ToDateTime(DateTime.Now.ToString("D").ToString()),
-                     endTime = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("D").ToString()).AddSeconds(-1),
-                 });
-            
-           var goodsBrowsings= await _goodsBrowsingServices.QueryPageAsync(p => p.userId == _user.ID && p.createTime> obj.startTime.ObjToDate() && p.createTime<=obj.endTime.ObjToDate(), p => p.createTime, OrderByType.Desc, entity.page, entity.limit);
+            {
+                startTime = Convert.ToDateTime(DateTime.Now.ToString("D").ToString()),
+                endTime = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("D").ToString()).AddSeconds(-1),
+            });
+
+            var goodsBrowsings = await _goodsBrowsingServices.QueryPageAsync(p => p.userId == _user.ID && p.createTime > obj.startTime.ObjToDate() && p.createTime <= obj.endTime.ObjToDate(), p => p.createTime, OrderByType.Desc, entity.page, entity.limit);
             foreach (var goodsBrowsing in goodsBrowsings)
             {
                 goodsBrowsing.goods = await _goodsServices.GetGoodsDetial(goodsBrowsing.goodsId);
             }
 
+
+            var goodsBrowsings2 = goodsBrowsings.GroupBy(x => x.createTime.ToString("yyyy-MM-dd")).Select
+           (grp => new FMGoodsBrowsing
+           {
+               Time = grp.Key.ToString(),
+               Goods = grp.ToList()
+           });
+
+
             jm.status = true;
             jm.data = new
             {
-                list = goodsBrowsings,
-                count = goodsBrowsings.TotalCount,
+                list = goodsBrowsings2,
             };
             return jm;
 
