@@ -971,6 +971,19 @@ namespace FuFuShop.Services
                     order.confirmStatusText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderConfirmStatus>(order.confirmStatus);
                     order.taxTypeText = EnumHelper.GetEnumDescriptionByValue<GlobalEnumVars.OrderTaxType>(order.taxType);
                     order.paymentCodeText = EnumHelper.GetEnumDescriptionByKey<GlobalEnumVars.PaymentsTypes>(order.paymentCode);
+
+                    //发货单
+                    order.delivery = await _billDeliveryServices.QueryListByClauseAsync(p => p.orderId == order.orderId);
+                    if (order.delivery != null && order.delivery.Any())
+                    {
+                        foreach (var item in order.delivery)
+                        {
+                            var outFirstAsync = await _logisticsServices.QueryByClauseAsync(p => p.logiCode == item.logiCode);
+                            item.logiName = outFirstAsync != null ? outFirstAsync.logiName : item.logiCode;
+                        }
+                    }
+
+
                 }
             }
             jm.data = new
