@@ -1,6 +1,8 @@
 ﻿using FuFuShop.Common.AppSettings;
 using FuFuShop.Common.Auth.HttpContextUser;
+using FuFuShop.Common.Extensions;
 using FuFuShop.Common.Helper;
+using FuFuShop.Model.Entities;
 using FuFuShop.Model.FromBody;
 using FuFuShop.Model.ViewModels.DTO;
 using FuFuShop.Model.ViewModels.UI;
@@ -8,6 +10,7 @@ using FuFuShop.Services;
 using FuFuShop.Services.Shop;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
 
 namespace FuFuShop.Controllers
 {
@@ -22,6 +25,10 @@ namespace FuFuShop.Controllers
         private readonly IOrderServices _orderServices;
         private readonly IAreaServices _areaServices;
         private readonly ILogisticsServices _logisticsServices;
+        private readonly IBillAftersalesServices _aftersalesServices;
+        private readonly ISettingServices _settingServices;
+        private readonly IShipServices _shipServices;
+        private readonly IBillReshipServices _reshipServices;
 
 
         /// <summary>
@@ -30,7 +37,11 @@ namespace FuFuShop.Controllers
         public OrderController(IHttpContextUser user
         , IOrderServices orderServices
         , IAreaServices areaServices,
-            ILogisticsServices logisticsServices
+            ILogisticsServices logisticsServices    ,
+            IBillAftersalesServices aftersalesServices ,
+            ISettingServices settingServices ,
+            IShipServices shipServices  ,
+            IBillReshipServices reshipServices
 
 )
         {
@@ -38,6 +49,10 @@ namespace FuFuShop.Controllers
             _orderServices = orderServices;
             _areaServices = areaServices;
             _logisticsServices = logisticsServices;
+            _aftersalesServices = aftersalesServices;
+            _settingServices = settingServices;
+            _shipServices = shipServices;
+            _reshipServices = reshipServices;
 
         }
 
@@ -259,5 +274,174 @@ namespace FuFuShop.Controllers
         #endregion
 
 
+        #region 添加售后单=======================================================
+
+        /// <summary>
+        /// 添加售后单
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        public async Task<WebApiCallBack> AddAftersales([FromBody] ToAddBillAfterSalesPost entity)
+        {
+            var jm = new WebApiCallBack();
+
+            jm.otherData = entity;
+            if (string.IsNullOrEmpty(entity.orderId))
+            {
+                jm.msg = GlobalErrorCodeVars.Code13100;
+                jm.code = 13100;
+                return jm;
+            }
+            if (entity.type == 0)
+            {
+                jm.msg = GlobalErrorCodeVars.Code10051;
+                jm.code = 10051;
+                return jm;
+            }
+            jm = await _aftersalesServices.ToAdd(_user.ID, entity.orderId, entity.type, entity.items, entity.images,
+                entity.reason, entity.refund);
+            return jm;
+
+        }
+
+        #endregion
+
+        #region 获取售后单列表=======================================================
+
+        /// <summary>
+        /// 获取售后单列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        public async Task<WebApiCallBack> AftersalesList([FromBody] FMPageByStringId entity)
+        {
+            var jm = new WebApiCallBack();
+
+            jm.status = true;
+            jm.msg = "数据获取成功";
+
+            var where = PredicateBuilder.True<BillAftersales>();
+            where = where.And(p => p.userId == _user.ID);
+            if (!string.IsNullOrEmpty(entity.order))
+            {
+                where = where.And(p => p.orderId == entity.id);
+            }
+            var data = await _aftersalesServices.QueryPageAsync(where, p => p.createTime, OrderByType.Desc, entity.page, entity.limit);
+
+            jm.data = new
+            {
+                list = data,
+                page = data.PageIndex,
+                totalPage = data.TotalPages,
+                hasNextPage = data.HasNextPage
+            };
+
+            return jm;
+
+        }
+
+        #endregion
+
+        #region 获取单个售后单详情
+
+        /// <summary>
+        /// 获取售后单列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        public async Task<WebApiCallBack> Aftersalesinfo([FromBody] FMStringId entity)
+        {
+            var jm = new WebApiCallBack { status = true, msg = "数据获取成功" };
+
+            var info = await _aftersalesServices.GetInfo(entity.id, _user.ID);
+
+            var allConfigs = await _settingServices.GetConfigDictionaries();
+
+            var reshipAddress = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ReshipAddress);
+            var reshipArea = string.Empty;
+            var reshipId = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ReshipAreaId).ObjectToInt(0);
+            if (reshipId > 0)
+            {
+                var result = await _areaServices.GetAreaFullName(reshipId);
+                if (result.status)
+                {
+                    reshipArea = result.data.ToString();
+                }
+            }
+            var reshipMobile = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ReshipMobile);
+            var reshipName = CommonHelper.GetConfigDictionary(allConfigs, SystemSettingConstVars.ReshipName);
+            var reship = new
+            {
+                reshipAddress,
+                reshipArea,
+                reshipMobile,
+                reshipName
+            };
+
+            jm.data = new
+            {
+                info,
+                reship
+            };
+            return jm;
+
+        }
+
+        #endregion
+
+        #region 提交售后发货快递信息
+
+        /// <summary>
+        /// 提交售后发货快递信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        public async Task<WebApiCallBack> SendReship([FromBody] FMBillReshipForSendReshipPost entity)
+        {
+            var jm = new WebApiCallBack();
+
+            if (string.IsNullOrEmpty(entity.reshipId))
+            {
+                jm.data = jm.msg = GlobalErrorCodeVars.Code13212;
+                return jm;
+            }
+            else if (string.IsNullOrEmpty(entity.logiCode))
+            {
+                jm.data = jm.msg = GlobalErrorCodeVars.Code13213;
+                return jm;
+            }
+            else if (string.IsNullOrEmpty(entity.logiNo))
+            {
+                jm.data = jm.msg = GlobalErrorCodeVars.Code13214;
+                return jm;
+            }
+
+
+            var model = await _reshipServices.QueryByIdAsync(entity.reshipId);
+            if (model == null)
+            {
+                jm.data = jm.msg = GlobalErrorCodeVars.Code13211;
+                return jm;
+            }
+
+            var up = await _reshipServices.UpdateAsync(
+                p => new BillReship()
+                {
+                    logiCode = entity.logiCode,
+                    logiNo = entity.logiNo,
+                    status = (int)GlobalEnumVars.BillReshipStatus.运输中
+                }, p => p.reshipId == entity.reshipId);
+
+            jm.status = true;
+            jm.msg = "数据保存成功";
+
+            return jm;
+        }
+
+        #endregion
     }
 }
