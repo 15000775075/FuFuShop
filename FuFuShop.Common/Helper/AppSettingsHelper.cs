@@ -10,9 +10,9 @@ namespace FuFuShop.Common.Helper
     {
         private static IConfiguration Configuration { get; set; }
 
-        public AppSettingsHelper(string contentPath)
+        public AppSettingsHelper(string contentPath,string environmentName)
         {
-            string Path = "appsettings.json";
+            string Path = $"appsettings.{environmentName}.json";
             Configuration = new ConfigurationBuilder().SetBasePath(contentPath).Add(new JsonConfigurationSource { Path = Path, Optional = false, ReloadOnChange = true }).Build();
         }
 

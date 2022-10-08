@@ -41,7 +41,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 //添加本地路径获取支持
-builder.Services.AddSingleton(new AppSettingsHelper(builder.Environment.ContentRootPath));
+builder.Services.AddSingleton(new AppSettingsHelper(builder.Environment.ContentRootPath, builder.Environment.EnvironmentName));
 builder.Services.AddSingleton(new LogLockHelper(builder.Environment.ContentRootPath));
 // Add services to the container.
 
@@ -49,6 +49,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+
+Console.WriteLine(builder.Environment.EnvironmentName);
 
 #region Swagger
 builder.Services.AddSwaggerGen((s) =>
