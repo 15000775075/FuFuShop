@@ -92,7 +92,19 @@ namespace FuFuShop.Controllers
             var jm = await _cartServices.SetCartNum(entity.id, entity.nums, _user.ID, 2, 1);
             return jm;
         }
-
+        /// <summary>
+        /// 获取购物车原始列表(未核算)
+        /// </summary>
+        /// <param name="userId">用户序号</param>
+        /// <param name="ids">已选择货号</param>
+        /// <param name="type">购物车类型/同订单类型</param>
+        /// <param name="objectId">关联非订单类型数据序列</param>
+        /// <returns></returns>
+        public async Task<WebApiCallBack> GetCartDtoData(int userId, int[] ids = null, int type = 1, int objectId = 0)
+        {
+            var jm = await _cartServices.GetCartDtoData(userId, ids, type, objectId);
+            return jm;
+        }
 
 
     }

@@ -53,7 +53,9 @@ namespace FuFuShop.Services
         /// <param name="type">购物车类型/同订单类型</param>
         /// <param name="objectId">关联非订单类型数据序列</param>
         /// <returns></returns>
-        Task<WebApiCallBack> GetCartDtoData(int userId, int[] ids = null, int type = 1, int objectId = 0);
+        Task<WebApiCallBack> 
+            {
+            (int userId, int[] ids = null, int type = 1, int objectId = 0);
 
 
 
@@ -81,5 +83,15 @@ namespace FuFuShop.Services
         /// <returns></returns>
         Task<int> GetCountAsync(int userId);
 
+
+        /// <summary>
+        /// Gets the cart dto data.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="ids">The ids.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="objectId">The object identifier.</param>
+        /// <returns></returns>
+        Task<WebApiCallBack> GetCartDtoData(int userId, int[] ids = null, int type = 1, int objectId = 0);
     }
 }
